@@ -1,18 +1,45 @@
-group "com.example"
-version "1.0-SNAPSHOT"
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven(MultiplatformDependencies.gradleMaven)
+    }
+
+    dependencies {
+        classpath(Plugins.kotlin)
+        classpath(Plugins.gradle)
+        classpath(Plugins.kmpNativeCoroutines)
+    }
+}
+
+plugins {
+    id(Plugins.ktLint) version Versions.ktLint
+}
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven(MultiplatformDependencies.composeMaven)
+        maven(MultiplatformDependencies.jitpack)
     }
 }
 
-plugins {
-    kotlin("multiplatform") apply false
-    kotlin("android") apply false
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.compose") apply false
+subprojects {
+    apply(plugin = Plugins.ktLint)
+    ktlint {
+        debug.set(true)
+        verbose.set(true)
+        android.set(false)
+        outputToConsole.set(true)
+        outputColorName.set("RED")
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
+        }
+    }
+}
+
+tasks.register("clean").configure {
+    delete("build")
 }

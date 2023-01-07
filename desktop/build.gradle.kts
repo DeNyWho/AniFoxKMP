@@ -1,10 +1,7 @@
-import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose")
 }
 
 group = "com.example"
@@ -21,21 +18,9 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common"))
-                implementation(compose.desktop.currentOs)
+                implementation(project(":shared"))
             }
         }
         val jvmTest by getting
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "AniFoxKMP"
-            packageVersion = "1.0.0"
-        }
     }
 }
