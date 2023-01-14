@@ -1,58 +1,51 @@
 plugins {
     kotlin(Plugins.multiplatform)
     id("com.android.library")
+    id("org.jetbrains.compose") version Versions.compose
 }
 
 group = "com.example"
 version = "1.0-SNAPSHOT"
 
+android {
+    compileSdk = Android.compileSdkVersion
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = Android.minSdkVersion
+        targetSdk = Android.targetSdkVersion
+    }
+}
+
 kotlin {
     android()
-    jvm("desktop") {
+    jvm("jvmMain") {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
         }
     }
+
     sourceSets {
-        val commonMain by getting {
-            dependencies {
+        sourceSets["commonMain"].dependencies {
+            implementation(MultiplatformDependencies.kotlinxCoroutines)
 
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-                api("androidx.appcompat:appcompat:1.5.1")
-                api("androidx.core:core-ktx:1.9.0")
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13.2")
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
+//            implementation(MultiplatformDependencies.kotlinxSerialization)
 
-            }
-        }
-        val desktopTest by getting
-    }
-}
+            api(MultiplatformDependencies.koinCore)
 
-android {
-    compileSdkVersion(33)
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(33)
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+            implementation(MultiplatformDependencies.ktorCore)
+            implementation(MultiplatformDependencies.ktorSerialization)
+            implementation(MultiplatformDependencies.ktorLogging)
+
+            implementation(MultiplatformDependencies.multiplatformSettings)
+            implementation(MultiplatformDependencies.multiplatformSettingsCoroutines)
+        }
+
+        sourceSets["androidMain"].dependencies {
+            implementation(MultiplatformDependencies.ktorAndroid)
+        }
+
+//        sourceSets["jvmMain"].dependencies {
+//            api(MultiplatformDependencies.ktorJvm)
+//        }
     }
 }

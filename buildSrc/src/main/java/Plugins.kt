@@ -8,4 +8,7 @@ object Plugins {
     const val androidLibrary = "com.android.library"
     const val kotlinXSerialization = "plugin.serialization"
     const val nativeCoroutines = "com.rickclephas.kmp.nativecoroutines"
+
+    const val androidApplication = "com.android.application"
+    const val android = "android"
 }

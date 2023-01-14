@@ -1,8 +1,5 @@
-include(":androidApp")
+include(":android")
+include(":desktop")
 include(":shared")
-include(":desktopApp")
 
 rootProject.name = "AniFoxKMP"
-
-include(":android", ":desktop", ":shared")
-include("untitled")

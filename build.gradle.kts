@@ -6,9 +6,9 @@ buildscript {
     }
 
     dependencies {
-        classpath(Plugins.kotlin)
-        classpath(Plugins.gradle)
-        classpath(Plugins.kmpNativeCoroutines)
+        classpath("com.android.tools.build:gradle:${Versions.gradle}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
     }
 }
 
@@ -38,8 +38,4 @@ subprojects {
             include("**/kotlin/**")
         }
     }
-}
-
-tasks.register("clean").configure {
-    delete("build")
 }

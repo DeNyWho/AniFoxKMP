@@ -1,8 +1,12 @@
 .gradle
+.idea
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
+!**/src/main/**/.gradle/
+!**/src/test/**/.gradle/
 !**/src/test/**/build/
+local.properties
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

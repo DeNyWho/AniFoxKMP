@@ -1,12 +1,9 @@
-
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
+    id("org.jetbrains.compose") version Versions.composeDesktop
 }
-
-group = "com.example"
-version = "1.0-SNAPSHOT"
-
 
 kotlin {
     jvm {
@@ -19,8 +16,21 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":shared"))
+                implementation(compose.desktop.currentOs)
             }
         }
-        val jvmTest by getting
     }
 }
+
+
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "jvmMain"
+            packageVersion = "1.0.0"
+        }
+    }
+}
+
