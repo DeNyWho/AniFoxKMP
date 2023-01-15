@@ -2,31 +2,31 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven(MultiplatformDependencies.gradleMaven)
+        maven(Dependencies.MultiPlatform.gradleMaven)
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.gradle}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
+        classpath("com.android.tools.build:gradle:${Dependencies.Versions.gradle}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Dependencies.Versions.kotlin}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Dependencies.Versions.kotlin}")
     }
 }
 
 plugins {
-    id(Plugins.ktLint) version Versions.ktLint
+    id(Dependencies.Plugins.ktLint) version Dependencies.Versions.ktLint
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(MultiplatformDependencies.composeMaven)
-        maven(MultiplatformDependencies.jitpack)
+        maven(Dependencies.MultiPlatform.composeMaven)
+        maven(Dependencies.MultiPlatform.jitpack)
     }
 }
 
 subprojects {
-    apply(plugin = Plugins.ktLint)
+    apply(plugin = Dependencies.Plugins.ktLint)
     ktlint {
         debug.set(true)
         verbose.set(true)

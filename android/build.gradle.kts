@@ -1,20 +1,20 @@
 plugins {
-    id(Plugins.androidApplication)
-    kotlin(Plugins.android)
+    id(Dependencies.Plugins.androidApplication)
+    kotlin(Dependencies.Plugins.android)
 }
 
 android {
-    compileSdk = Android.compileSdkVersion
+    compileSdk = Dependencies.Android.compileSdkVersion
 
     defaultConfig {
-        applicationId = Android.id
+        applicationId = Dependencies.Android.id
 
-        minSdk = Android.minSdkVersion
-        targetSdk = Android.targetSdkVersion
-        versionCode = Android.versionCode
-        versionName = Android.versionName
+        minSdk = Dependencies.Android.minSdkVersion
+        targetSdk = Dependencies.Android.targetSdkVersion
+        versionCode = Dependencies.Android.versionCode
+        versionName = Dependencies.Android.versionName
 
-        testInstrumentationRunner = Android.testInstrumentationRunner
+        testInstrumentationRunner = Dependencies.Android.testInstrumentationRunner
     }
 
     buildTypes {
@@ -45,53 +45,39 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.complierCompose
+        kotlinCompilerExtensionVersion = Dependencies.Versions.complierCompose
     }
 }
 
 dependencies {
     implementation(project(BuildModules.shared))
+    with(Dependencies.Android) {
+        implementation(androidCore)
+        implementation("androidx.compose.runtime:runtime:1.0.1")
+        implementation(material)
+        implementation(composeUI)
+        implementation(composeMaterial)
+        implementation(composeTooling)
+        implementation(composeRuntime)
+        implementation(composeUtil)
+        implementation(composeActivity)
+        implementation(accompanistPager)
+        implementation(accompanistInsets)
+        implementation(accompanistAnimation)
+        implementation(accompanistSystemUIController)
+        implementation(accompanistMaterialPlaceHolder)
+        implementation(accompanistPagerIndicator)
+        implementation(lifecycleRuntime)
+        implementation(koinAndroid)
+        implementation(koinCompose)
+        implementation(composeNavigation)
+        implementation(coil)
+        implementation(palette)
+        implementation(ratingBar)
+        implementation(oneBoneToolbar)
+        debugImplementation(leakCanary)
+        implementation(osmdroidAndroid)
+    }
 
-    implementation(Android.androidCore)
 
-    implementation(Android.material)
-
-    implementation(Android.composeUI)
-    implementation(Android.composeMaterial)
-    implementation(Android.composeTooling)
-    implementation(Android.composeRuntime)
-    implementation(Android.composeUtil)
-    implementation(Android.composeActivity)
-
-    implementation(Android.accompanistPager)
-    implementation(Android.accompanistInsets)
-    implementation(Android.accompanistAnimation)
-    implementation(Android.accompanistSystemUIController)
-    implementation(Android.accompanistMaterialPlaceHolder)
-    implementation(Android.accompanistPagerIndicator)
-
-    implementation(Android.lifecycleRuntime)
-
-    // Koin-Dependency injection
-    implementation(Android.koinAndroid)
-    implementation(Android.koinCompose)
-
-    // Compose Navigation-Navigation between various screens
-    implementation(Android.composeNavigation)
-
-    // Coil-Image Loader
-    implementation(Android.coil)
-
-    // Palette-Used to extract color palette from images
-    implementation(Android.palette)
-
-    // Gowtham Compose Rating Bar
-    implementation(Android.ratingBar)
-
-    // Collapsing toolbar
-    implementation(Android.oneBoneToolbar)
-    implementation("androidx.compose.material:material:1.1.1")
-
-    // Leak Canary - Memory leaks
-    debugImplementation(Android.leakCanary)
 }

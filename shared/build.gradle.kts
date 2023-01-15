@@ -1,18 +1,18 @@
 plugins {
-    kotlin(Plugins.multiplatform)
+    kotlin(Dependencies.Plugins.multiplatform)
     id("com.android.library")
-    id("org.jetbrains.compose") version Versions.compose
+    id("org.jetbrains.compose") version Dependencies.Versions.compose
 }
 
 group = "com.example"
 version = "1.0-SNAPSHOT"
 
 android {
-    compileSdk = Android.compileSdkVersion
+    compileSdk = Dependencies.Android.compileSdkVersion
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = Android.minSdkVersion
-        targetSdk = Android.targetSdkVersion
+        minSdk = Dependencies.Android.minSdkVersion
+        targetSdk = Dependencies.Android.targetSdkVersion
     }
 }
 
@@ -25,27 +25,29 @@ kotlin {
     }
 
     sourceSets {
-        sourceSets["commonMain"].dependencies {
-            implementation(MultiplatformDependencies.kotlinxCoroutines)
+        val commonMain by getting {
+            dependencies {
+                with(Dependencies.Ktor) {
+                    implementation(clientCore)
+                    implementation(clientJson)
+                    implementation(clientLogging)
+                    implementation(contentNegotiation)
+                    implementation(json)
+                }
 
-//            implementation(MultiplatformDependencies.kotlinxSerialization)
+                implementation(Dependencies.MultiPlatform.multiplatformSettings)
+                implementation(Dependencies.MultiPlatform.multiplatformSettingsCoroutines)
 
-            api(MultiplatformDependencies.koinCore)
-
-            implementation(MultiplatformDependencies.ktorCore)
-            implementation(MultiplatformDependencies.ktorSerialization)
-            implementation(MultiplatformDependencies.ktorLogging)
-
-            implementation(MultiplatformDependencies.multiplatformSettings)
-            implementation(MultiplatformDependencies.multiplatformSettingsCoroutines)
+                api(Dependencies.MultiPlatform.koinCore)
+                implementation(Dependencies.MultiPlatform.kotlinxCoroutines)
+            }
         }
 
-        sourceSets["androidMain"].dependencies {
-            implementation(MultiplatformDependencies.ktorAndroid)
+        val androidMain by getting {
+            dependencies {
+                implementation(Dependencies.Ktor.clientAndroid)
+                implementation("androidx.compose.runtime:runtime:1.0.1")
+            }
         }
-
-//        sourceSets["jvmMain"].dependencies {
-//            api(MultiplatformDependencies.ktorJvm)
-//        }
     }
 }
