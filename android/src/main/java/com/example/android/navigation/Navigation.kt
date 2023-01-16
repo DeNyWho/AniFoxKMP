@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.android.common.OnDestinationChanged
 import com.example.android.presentation.home.HomeScreen
+import com.example.android.presentation.signIn.SignInScreen
+import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -28,6 +30,28 @@ fun Navigation(window: Window){
             )
 
             SplashScreen(navController = navController)
+        }
+
+        composable(Screen.SignIn.route){
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                color = Color.Transparent,
+                drawOverStatusBar = true,
+                window = window
+            )
+
+            SignInScreen(navController = navController)
+        }
+
+        composable(Screen.SignUp.route){
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                color = Color.Transparent,
+                drawOverStatusBar = true,
+                window = window
+            )
+
+            SignUpScreen(navController = navController)
         }
 
 

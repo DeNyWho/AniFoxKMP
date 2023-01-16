@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.android">
     <application
             android:name=".AniFoxApplication"
-            android:allowBackup="false"
+            android:allowBackup="true"
             android:supportsRtl="true"
             android:icon="@drawable/anifoxicon"
             android:roundIcon="@drawable/anifoxicon"
             android:label="@string/appName"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:dataExtractionRules="@xml/data_extraction_rules">
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

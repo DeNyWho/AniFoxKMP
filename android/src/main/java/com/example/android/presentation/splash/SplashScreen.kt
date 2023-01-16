@@ -1,5 +1,6 @@
 package com.example.android.presentation.splash
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -18,6 +19,8 @@ import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.ui.blueLikeSky
 import com.example.android.ui.bluest
+import com.example.android.ui.gray
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -28,20 +31,18 @@ fun SplashScreen(
 
     splash()
     LaunchedEffect(Unit) {
+        delay(2000)
         navController.navigate(route = Screen.Home.route)
     }
 }
 
-
-@Preview
 @Composable
 fun splash(){
-
     val modifier = if (isSystemInDarkTheme()){
         Modifier.background(Color.Black)
     } else {
         Modifier.background(
-            Brush.verticalGradient(listOf(bluest, blueLikeSky))
+            Brush.radialGradient (listOf(blueLikeSky, bluest), radius =  1800f)
         )
     }
 
@@ -54,6 +55,16 @@ fun splash(){
             contentDescription = "stringResource(R.string.logo)"
         )
     }
+}
 
+@Preview
+@Composable
+fun splashPrevDay(){
+    splash()
+}
 
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun splashPrevNight(){
+    splash()
 }
