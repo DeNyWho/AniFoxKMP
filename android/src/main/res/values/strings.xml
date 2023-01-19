@@ -3,6 +3,8 @@
     <string name="appName">AniFox</string>
     <string name="haveAccount">Уже есть аккаунт?</string>
     <string name="haveNotAccount">Нет аккаунта?</string>
+    <string name="signInFull">Войдите в аккаунт</string>
+    <string name="signInHintEmail">Введите почту</string>
     <string name="SignIn">Войти</string>
     <string name="SignUp">Зарегистрироваться</string>
     <string name="guest">Войти в качестве гостя</string>

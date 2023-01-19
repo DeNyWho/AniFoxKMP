@@ -16,6 +16,31 @@ val vietnamPro = FontFamily(
 
 
 val Typography = Typography(
+    h1 = TextStyle(
+        fontFamily = vietnamPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp
+    ),
+    h2 = TextStyle(
+        fontFamily = vietnamPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp
+    ),
+    h3 = TextStyle(
+        fontFamily = vietnamPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp
+    ),
+    h4 = TextStyle(
+        fontFamily = vietnamPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    h5 = TextStyle(
+        fontFamily = vietnamPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
     h6 = TextStyle(
         fontFamily = vietnamPro,
         fontWeight = FontWeight.Normal,

@@ -22,6 +22,7 @@ object Dependencies {
         const val complierCompose = "1.3.2"
         const val compose = "1.2.1"
         const val androidCore = "1.7.0"
+        const val runtime = "1.0.1"
         const val material = "1.6.0"
         const val appCompat = "1.4.1"
         const val splash = "1.0.0"
@@ -122,6 +123,10 @@ object Dependencies {
         const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
         const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
 
+        const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.runtime}"
+
+        const val icons = "androidx.compose.material:material-icons-extended:${Versions.compose}"
+
         const val material = "com.google.android.material:material:${Versions.material}"
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
 
@@ -131,7 +136,7 @@ object Dependencies {
         const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"
         const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
         const val composeTooling = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
-        const val composeRuntime =
+        const val composeRuntimeLive =
             "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
         const val composeUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val composeConstraintLayout =

@@ -46,7 +46,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Dependencies.Ktor.clientAndroid)
-                implementation("androidx.compose.runtime:runtime:1.0.1")
+                implementation(Dependencies.Android.composeRuntime)
             }
         }
     }
