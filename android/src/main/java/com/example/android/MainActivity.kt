@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.android.navigation.Navigation
+import com.example.android.ui.AniFoxTheme
 import com.google.accompanist.insets.ProvideWindowInsets
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            AniFoxTheme {
                 Navigation(window = window)
             }
         }

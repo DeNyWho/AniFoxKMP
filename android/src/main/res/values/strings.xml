@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">AniFox</string>
+    <string name="haveAccount">Уже есть аккаунт?</string>
+    <string name="haveNotAccount">Нет аккаунта?</string>
+    <string name="SignIn">Войти</string>
+    <string name="SignUp">Зарегистрироваться</string>
+    <string name="guest">Войти в качестве гостя</string>
 </resources>

@@ -36,7 +36,7 @@ fun Navigation(window: Window){
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
-                drawOverStatusBar = true,
+                drawOverStatusBar = false,
                 window = window
             )
 
@@ -47,7 +47,7 @@ fun Navigation(window: Window){
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
-                drawOverStatusBar = true,
+                drawOverStatusBar = false,
                 window = window
             )
 

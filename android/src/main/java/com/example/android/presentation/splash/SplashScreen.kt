@@ -28,11 +28,10 @@ fun SplashScreen(
     navController: NavController,
     viewModel: SplashViewModel = getViewModel()
 ) {
-
     splash()
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate(route = Screen.Home.route)
+        navController.navigate(route = Screen.SignIn.route)
     }
 }
 
