@@ -19,17 +19,17 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = vietnamPro,
         fontWeight = FontWeight.Normal,
-        fontSize = 28.sp
+        fontSize = 22.sp
     ),
     h2 = TextStyle(
         fontFamily = vietnamPro,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 20.sp
     ),
     h3 = TextStyle(
         fontFamily = vietnamPro,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp
+        fontSize = 18.sp
     ),
     h4 = TextStyle(
         fontFamily = vietnamPro,

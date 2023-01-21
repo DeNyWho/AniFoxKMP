@@ -3,6 +3,7 @@ package com.example.android.presentation.signIn
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,7 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.android.R
+import com.example.android.navigation.Screen
 import com.example.android.presentation.splash.SplashViewModel
 import com.example.android.ui.gray
 import com.example.android.ui.lighterGray
@@ -39,12 +42,6 @@ fun SignInScreen(
     navController: NavController,
     viewModel: SplashViewModel = getViewModel()
 ){
-    signInUI()
-
-}
-
-@Composable
-fun signInUI(){
     Box (
         Modifier
             .background(MaterialTheme.colors.background)
@@ -58,7 +55,7 @@ fun signInUI(){
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.6f),
+                    .fillMaxWidth(0.5f),
                 painter = painterResource(id = R.drawable.fox_logo),
                 contentDescription = null
             )
@@ -119,7 +116,7 @@ fun signInUI(){
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
-                label = { Text("Type your password") },
+                label = { Text(stringResource(R.string.signInHintPassword)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
@@ -147,12 +144,7 @@ fun signInUI(){
 
             Button(
                 onClick = {
-//                    val user = UserDto(
-//                        email = email.text,
-//                        password = password.text,
-//                        name = name.text
-//                    )
-//                    userViewModel.getUserSignUp(user)
+
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.textButtonColors(
@@ -164,35 +156,69 @@ fun signInUI(){
                     .padding(start = 25.dp, end = 25.dp, top = 25.dp)
                     .height(50.dp),
             ) {
-                Text(text = "Join AniBox", fontSize = 20.sp)
+                Text(text = stringResource(R.string.SignIn), fontSize = 20.sp)
+            }
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 0.dp,
+                        top = 90.dp,
+                        bottom = 0.dp,
+                        end = 0.dp
+                    )
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp, end = 8.dp)
+                        .align(Alignment.CenterVertically)
+                        .clickable {
+                            navController.navigate(Screen.Home.route)
+                        },
+                    text = stringResource(R.string.skip),
+                    style = MaterialTheme.typography.h3
+                )
+                Image(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .fillMaxWidth(0.2f)
+                        .clickable {
+                            navController.navigate(Screen.Home.route)
+                        },
+                    painter = painterResource(id = R.drawable.skip),
+                    contentDescription = null
+                )
             }
         }
-        Row (
+        Row(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             Text(
+                modifier = Modifier.padding(
+                    start = 0.dp,
+                    bottom = 8.dp,
+                    top = 0.dp,
+                    end = 0.dp
+                ),
                 text = stringResource(R.string.haveNotAccount),
                 style = MaterialTheme.typography.h4
             )
             Text(
-                modifier = Modifier.padding(start = 6.dp, 0.dp ,0.dp ,0.dp),
+                modifier = Modifier.padding(
+                    start = 6.dp,
+                    bottom = 8.dp,
+                    top = 0.dp,
+                    end = 0.dp
+                ).clickable {
+                    navController.navigate(route = Screen.SignUp.route)
+                }
+                ,
                 text = stringResource(R.string.SignUp),
                 color = Color.Red,
-                style = MaterialTheme.typography.h4
+                style = MaterialTheme.typography.h4,
             )
         }
     }
-}
 
-
-@Preview
-@Composable
-fun previewDaySignIn(){
-    signInUI()
-}
-
-@Preview( uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun previewNightSignIn(){
-    signInUI()
 }
