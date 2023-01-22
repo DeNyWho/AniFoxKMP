@@ -22,6 +22,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = getViewModel()
 ){
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()

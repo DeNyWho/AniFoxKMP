@@ -6,6 +6,8 @@ object Dependencies {
         const val kotlin = "1.7.20"
         const val gradle = "7.3.0"
         const val ktLint = "10.3.0"
+        const val spring = "3.0.2"
+        const val springDep = "1.1.0"
 
         // KMM Dependencies Version
         const val kmpNativeCoroutines = "0.13.3"
@@ -99,6 +101,10 @@ object Dependencies {
         const val clientJava = "io.ktor:ktor-client-java:${Versions.ktor}"
         const val clientDarwin = "io.ktor:ktor-client-darwin:${Versions.ktor}"
         const val clientJs = "io.ktor:ktor-client-js:${Versions.ktor}"
+    }
+
+    object Spring {
+
     }
 
 

@@ -23,8 +23,15 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
-
     sourceSets {
+//        val jvmBackMain by getting {
+//            dependencies {
+//                implementation("org.springframework.boot:spring-boot-starter")
+//                implementation("org.jetbrains.kotlin:kotlin-reflect")
+//                implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+//            }
+//        }
+
         val commonMain by getting {
             dependencies {
                 with(Dependencies.Ktor) {
