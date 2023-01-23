@@ -4,17 +4,19 @@ plugins {
 }
 
 android {
-    compileSdk = Dependencies.Android.compileSdkVersion
+    with(Dependencies.Android.Defaults) {
+        compileSdk = compileSdkVersion
 
-    defaultConfig {
-        applicationId = Dependencies.Android.id
+        defaultConfig {
+            applicationId = id
 
-        minSdk = Dependencies.Android.minSdkVersion
-        targetSdk = Dependencies.Android.targetSdkVersion
-        versionCode = Dependencies.Android.versionCode
-        versionName = Dependencies.Android.versionName
+            minSdk = minSdkVersion
+            targetSdk = targetSdkVersion
+            versionCode = versionCode
+            versionName = versionName
 
-        testInstrumentationRunner = Dependencies.Android.testInstrumentationRunner
+            testInstrumentationRunner = testInstrumentationRunner
+        }
     }
 
     buildTypes {
@@ -51,35 +53,38 @@ android {
 
 dependencies {
     implementation(project(BuildModules.shared))
-    with(Dependencies.Android) {
+
+    implementation(Dependencies.MultiPlatform.composeRuntime)
+    with(Dependencies.Android.AndroidXAnDCompose) {
         implementation(androidCore)
-        implementation("androidx.compose.runtime:runtime:1.0.1")
-        implementation("androidx.compose.material:material-icons-extended:")
-        implementation(material)
         implementation(composeUI)
         implementation(icons)
         implementation(composeMaterial)
         implementation(composeTooling)
-        implementation(composeRuntime)
         implementation(composeRuntimeLive)
         implementation(composeUtil)
         implementation(composeActivity)
+        implementation(lifecycleRuntime)
+        implementation(composeNavigation)
+        implementation(coil)
+        implementation(oneBoneToolbar)
+    }
+    with(Dependencies.Android) {
+        implementation(material)
+        implementation(osmdroidAndroid)
+        debugImplementation(leakCanary)
+    }
+    with(Dependencies.Android.Koin) {
+        implementation(koinAndroid)
+        implementation(koinCompose)
+    }
+    with(Dependencies.Android.Accompanist) {
         implementation(accompanistPager)
         implementation(accompanistInsets)
         implementation(accompanistAnimation)
         implementation(accompanistSystemUIController)
         implementation(accompanistMaterialPlaceHolder)
         implementation(accompanistPagerIndicator)
-        implementation(lifecycleRuntime)
-        implementation(koinAndroid)
-        implementation(koinCompose)
-        implementation(composeNavigation)
-        implementation(coil)
-        implementation(palette)
-        implementation(ratingBar)
-        implementation(oneBoneToolbar)
-        debugImplementation(leakCanary)
-        implementation(osmdroidAndroid)
     }
 
 

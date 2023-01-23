@@ -17,6 +17,19 @@ object Dependencies {
         const val kotlinxSerialization = "1.7.20"
         const val multiplatformSettings = "0.8.1"
 
+        // Backend Dependencies Version
+        const val swagger = "1.6.9"
+        const val skrapeIT = "1.2.2"
+        const val gson = "2.9.0"
+        const val springLogging = "2.1.23"
+        const val jjwt = "0.9.1"
+        const val jjwtApi = "0.10.6"
+        const val uniRest = "1.4.9"
+        const val guava = "31.1-jre"
+        const val mapStruct = "1.5.2.Final"
+        const val common = "2.4"
+        const val tomcat = "9.0.56"
+
         // Desktop Dependencies Version
         const val composeDesktop = "1.2.1"
 
@@ -67,6 +80,8 @@ object Dependencies {
     object MultiPlatform {
         const val kotlinxCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
 
+        const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.runtime}"
+
         const val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
 
         const val kotlinxSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.kotlinxSerialization}"
@@ -105,93 +120,113 @@ object Dependencies {
 
     object Spring {
 
+        const val logging = "io.github.microutils:kotlin-logging-jvm:${Versions.springLogging}"
+        const val skrapeIT = "it.skrape:skrapeit:${Versions.skrapeIT}"
+        const val jackson = "com.fasterxml.jackson.module:jackson-module-kotlin"
+        const val gson = "com.google.code.gson:gson:${Versions.gson}"
+        const val jjwt = "io.jsonwebtoken:jjwt:${Versions.jjwt}"
+        const val jjwtApi = "io.jsonwebtoken:jjwt-api:${Versions.jjwtApi}"
+        const val uniRest = "com.mashape.unirest:unirest-java:${Versions.uniRest}"
+        const val tomcat = "org.apache.tomcat.embed:tomcat-embed-core:${Versions.tomcat}"
+        const val guava = "com.google.guava:guava:${Versions.guava}"
+        const val mapStruct = "org.mapstruct:mapstruct:${Versions.mapStruct}"
+        const val commonsIO = "commons-io:commons-io:${Versions.common}"
+
+        object Defaults {
+            const val actuator = "org.springframework.boot:spring-boot-starter-actuator:${Versions.spring}"
+            const val web = "org.springframework.boot:spring-boot-starter-web:${Versions.spring}"
+            const val dataJpa = "org.springframework.boot:spring-boot-starter-data-jpa:${Versions.spring}"
+            const val mail = "org.springframework.boot:spring-boot-starter-mail:${Versions.spring}"
+            const val security = "org.springframework.boot:spring-boot-starter-security:${Versions.spring}"
+            const val thymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.spring}"
+        }
+
+        const val scrapeIT = "it.skrape:skrapeit:"
+
+        object swagger {
+            const val swaggerData = "org.springdoc:springdoc-openapi-data-rest:${Versions.swagger}"
+            const val swaggerUi = "org.springdoc:springdoc-openapi-ui:${Versions.swagger}"
+            const val swaggerKotlin = "org.springdoc:springdoc-openapi-kotlin:${Versions.swagger}"
+        }
     }
 
 
     object Android {
 
-        const val id = "com.example.anifox"
-        const val appName = "AniFox"
+        object Defaults {
 
-        const val versionName="demo"
-        const val versionCode=1
+            const val id = "com.example.anifox"
+            const val appName = "AniFox"
 
-        const val buildToolVersion = "30.0.3"
+            const val versionName="demo"
+            const val versionCode=1
 
-        const val minSdkVersion = 21
-        const val compileSdkVersion = 33
-        const val targetSdkVersion = compileSdkVersion
+            const val buildToolVersion = "30.0.3"
 
-        const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            const val minSdkVersion = 21
+            const val compileSdkVersion = 33
+            const val targetSdkVersion = compileSdkVersion
+
+        }
+
+        object AndroidXAnDCompose {
+
+            const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
+            const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+            const val constraintLayout =
+                "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+            const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"
+            const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
+            const val composeTooling = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
+            const val composeRuntimeLive =
+                "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
+            const val composeUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
+            const val composeConstraintLayout =
+                "androidx.constraintlayout:constraintlayout-compose:${Versions.compose_constraint}"
+            const val composeActivity =
+                "androidx.activity:activity-compose:${Versions.compose_activity}"
+            const val material3 = "androidx.compose.material3:material3:${Versions.composeMat3}"
+            const val composeNavigation =
+                "androidx.navigation:navigation-compose:${Versions.navigation}"
+            const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+            const val icons = "androidx.compose.material:material-icons-extended:${Versions.compose}"
+            const val oneBoneToolbar = "me.onebone:toolbar-compose:${Versions.oneBoneToolbar}"
+            const val coil = "io.coil-kt:coil-compose:${Versions.coil}"
+
+        }
+
+        object Accompanist {
+
+            const val accompanistPager =
+                "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
+            const val accompanistInsets =
+                "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
+            const val accompanistAnimation =
+                "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
+            const val accompanistSystemUIController =
+                "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+            const val accompanistMaterialPlaceHolder =
+                "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
+            const val accompanistPagerIndicator =
+                "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
+
+        }
+
+        object Koin {
+
+            const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
+            const val koinCompose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
+
+        }
 
         const val osmdroidAndroid = "org.osmdroid:osmdroid-android:${Versions.osmdroidAndroid}"
 
         const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
-        const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
-
-        const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.runtime}"
-
-        const val icons = "androidx.compose.material:material-icons-extended:${Versions.compose}"
 
         const val material = "com.google.android.material:material:${Versions.material}"
-        const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
-
-        const val constraintLayout =
-            "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
-
-        const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"
-        const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
-        const val composeTooling = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
-        const val composeRuntimeLive =
-            "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
-        const val composeUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
-        const val composeConstraintLayout =
-            "androidx.constraintlayout:constraintlayout-compose:${Versions.compose_constraint}"
-        const val composeActivity =
-            "androidx.activity:activity-compose:${Versions.compose_activity}"
-        const val material3 = "androidx.compose.material3:material3:${Versions.composeMat3}"
-
-        const val accompanistPager =
-            "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
-        const val accompanistInsets =
-            "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
-        const val accompanistAnimation =
-            "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
-        const val accompanistSystemUIController =
-            "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
-        const val accompanistMaterialPlaceHolder =
-            "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
-        const val accompanistPagerIndicator =
-            "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
-
-        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
-
-        // Koin-Dependency injection
-        const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
-        const val koinCompose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
-
-        // Compose Navigation-Navigation between various screens
-        const val composeNavigation =
-            "androidx.navigation:navigation-compose:${Versions.navigation}"
-
-        // Coil-Image Loader
-        const val coil = "io.coil-kt:coil-compose:${Versions.coil}"
-
-        // Palette-Used to extract color palette from images
-        const val palette = "com.android.support:palette-v7:${Versions.palette}"
-
-        // Gowtham Compose Rating Bar
-        const val ratingBar = "com.github.a914-gowtham:compose-ratingbar:${Versions.rating_bar}"
 
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
-
-        //Firebase
-        const val firebaseBOM = "com.google.firebase:firebase-bom:${Versions.firebase_bom}"
-        const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
-        const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-ktx"
-        const val firebasePerformance = "com.google.firebase:firebase-perf"
-
-        const val oneBoneToolbar = "me.onebone:toolbar-compose:${Versions.oneBoneToolbar}"
     }
 
 }

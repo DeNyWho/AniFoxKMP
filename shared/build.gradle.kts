@@ -8,11 +8,11 @@ group = "com.example"
 version = "1.0-SNAPSHOT"
 
 android {
-    compileSdk = Dependencies.Android.compileSdkVersion
+    compileSdk = Dependencies.Android.Defaults.compileSdkVersion
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = Dependencies.Android.minSdkVersion
-        targetSdk = Dependencies.Android.targetSdkVersion
+        minSdk = Dependencies.Android.Defaults.minSdkVersion
+        targetSdk = Dependencies.Android.Defaults.targetSdkVersion
     }
 }
 
@@ -41,6 +41,7 @@ kotlin {
                     implementation(contentNegotiation)
                     implementation(json)
                 }
+                api(compose.runtime)
 
                 implementation(Dependencies.MultiPlatform.multiplatformSettings)
                 implementation(Dependencies.MultiPlatform.multiplatformSettingsCoroutines)
@@ -53,7 +54,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Dependencies.Ktor.clientAndroid)
-                implementation(Dependencies.Android.composeRuntime)
             }
         }
     }
