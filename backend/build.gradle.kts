@@ -18,6 +18,7 @@ kotlin {
 		}
 		withJava()
 	}
+
 	sourceSets {
 		println(this.names)
 		val jvmBackMain by getting {
@@ -29,6 +30,7 @@ kotlin {
 					implementation(mail)
 					implementation(security)
 					implementation(thymeleaf)
+					implementation(migration)
 				}
 				with(Dependencies.Spring.swagger){
 					implementation(swaggerData)

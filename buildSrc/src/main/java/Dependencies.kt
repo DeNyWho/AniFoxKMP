@@ -28,7 +28,7 @@ object Dependencies {
         const val guava = "31.1-jre"
         const val mapStruct = "1.5.2.Final"
         const val common = "2.4"
-        const val tomcat = "9.0.56"
+        const val tomcat = "10.1.4"
 
         // Desktop Dependencies Version
         const val composeDesktop = "1.2.1"
@@ -69,7 +69,7 @@ object Dependencies {
         const val kapt = "kotlin-kapt"
         const val navigationSafeArgs = "androidx.navigation.safeargs"
         const val nativeCoroutines = "com.rickclephas.kmp.nativecoroutines"
-        const val kotlinXSerialization = "plugin.serialization"
+        const val kotlinXSerialization = "kotlinx-serialization"
         const val dagger = "dagger.hilt.android.plugin"
         const val ktLint = "org.jlleitschuh.gradle.ktlint"
         const val kotlinPlugin = "gradle-plugin"
@@ -119,7 +119,6 @@ object Dependencies {
     }
 
     object Spring {
-
         const val logging = "io.github.microutils:kotlin-logging-jvm:${Versions.springLogging}"
         const val skrapeIT = "it.skrape:skrapeit:${Versions.skrapeIT}"
         const val jackson = "com.fasterxml.jackson.module:jackson-module-kotlin"
@@ -139,6 +138,7 @@ object Dependencies {
             const val mail = "org.springframework.boot:spring-boot-starter-mail:${Versions.spring}"
             const val security = "org.springframework.boot:spring-boot-starter-security:${Versions.spring}"
             const val thymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.spring}"
+            const val migration = "org.springframework.boot:spring-boot-properties-migrator:${Versions.spring}"
         }
 
         const val scrapeIT = "it.skrape:skrapeit:"
