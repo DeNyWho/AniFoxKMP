@@ -15,7 +15,7 @@ class SwaggerConfig {
     fun publicApiV1(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("anifox-api")
-            .pathsToMatch("/api2/**")
+            .pathsToMatch("/api/**")
             .build()
     }
 

@@ -15,11 +15,12 @@ object Dependencies {
         const val kotlinxCoroutines = "1.6.4"
         const val koin = "3.2.2"
         const val kotlinxSerialization = "1.7.20"
+        const val kotlinxSerializationJson = "1.4.1"
         const val multiplatformSettings = "0.8.1"
 
         // Backend Dependencies Version
         const val swagger = "1.6.9"
-        const val skrapeIT = "1.2.2"
+        const val skrapeIT = "1.3.0-alpha.1"
         const val gson = "2.9.0"
         const val springLogging = "2.1.23"
         const val jjwt = "0.9.1"
@@ -85,6 +86,7 @@ object Dependencies {
         const val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
 
         const val kotlinxSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.kotlinxSerialization}"
+        const val kotlinxSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationJson}"
 
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
@@ -132,11 +134,12 @@ object Dependencies {
         const val commonsIO = "commons-io:commons-io:${Versions.common}"
 
         object Defaults {
+            const val postgreSQLRun = "org.postgresql:postgresql"
+            const val starterValidation = "org.springframework.boot:spring-boot-starter-validation"
             const val actuator = "org.springframework.boot:spring-boot-starter-actuator:${Versions.spring}"
             const val web = "org.springframework.boot:spring-boot-starter-web:${Versions.spring}"
             const val dataJpa = "org.springframework.boot:spring-boot-starter-data-jpa:${Versions.spring}"
             const val mail = "org.springframework.boot:spring-boot-starter-mail:${Versions.spring}"
-            const val security = "org.springframework.boot:spring-boot-starter-security:${Versions.spring}"
             const val thymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.spring}"
             const val migration = "org.springframework.boot:spring-boot-properties-migrator:${Versions.spring}"
         }

@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot")
+	id("kotlinx-serialization")
 	id("io.spring.dependency-management")
 	kotlin("multiplatform")
 	kotlin("plugin.spring") version Dependencies.Versions.kotlin
@@ -20,17 +21,20 @@ kotlin {
 	}
 
 	sourceSets {
-		println(this.names)
 		val jvmBackMain by getting {
 			dependencies {
+				with(Dependencies.MultiPlatform){
+					implementation(kotlinxSerializationJson)
+				}
 				with(Dependencies.Spring.Defaults){
 					implementation(actuator)
 					implementation(web)
 					implementation(dataJpa)
 					implementation(mail)
-					implementation(security)
 					implementation(thymeleaf)
 					implementation(migration)
+					implementation(starterValidation)
+					runtimeOnly(postgreSQLRun)
 				}
 				with(Dependencies.Spring.swagger){
 					implementation(swaggerData)

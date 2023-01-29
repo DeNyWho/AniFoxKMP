@@ -11,22 +11,22 @@ data class MangaTable(
     val id: String = UUID.randomUUID().toString(),
     var title: String = "",
     var image: String = "",
-    val url: String = "",
+    var url: String = "",
     @Column(columnDefinition = "TEXT")
-    val description: String = "",
+    var description: String = "",
     @OneToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    val genres: MutableSet<MangaGenre> = mutableSetOf(),
+    var genres: MutableSet<MangaGenre> = mutableSetOf(),
     @OneToOne(cascade = [CascadeType.ALL])
-    val types: MangaTypes = MangaTypes(),
+    var types: MangaTypes = MangaTypes(),
     @OneToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    val chapters: MutableSet<MangaChapters> = mutableSetOf(),
-    val chaptersCount: Int = 0,
+    var chapters: MutableSet<MangaChapters> = mutableSetOf(),
+    var chaptersCount: Int = 0,
     val views: Int = 0,
     @OneToMany(
         fetch = FetchType.EAGER,
@@ -37,7 +37,7 @@ data class MangaTable(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    val linked: MutableSet<MangaLinked> = mutableSetOf(),
+    var linked: MutableSet<MangaLinked> = mutableSetOf(),
     val updateTime: LocalDateTime = LocalDateTime.now()
 ){
     fun addMangaLinked(linkedTemp: List<MangaLinked>){
