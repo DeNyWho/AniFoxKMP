@@ -1,5 +1,6 @@
 package com.example.backend.jpa.manga
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -11,7 +12,10 @@ data class MangaTypes(
     @Id
     val id: String = UUID.randomUUID().toString(),
     val type: String = "",
-    val year: String = "",
-    val status: String = "",
-    val limitation: String = ""
+    @Column(nullable = true)
+    val year: Int? = null,
+    @Column(nullable = true)
+    val status: String? = null,
+    @Column(nullable = true)
+    val limitation: String? = null
 )

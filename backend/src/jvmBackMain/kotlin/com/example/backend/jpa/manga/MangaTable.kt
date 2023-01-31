@@ -18,6 +18,7 @@ data class MangaTable(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
+    @JoinTable(schema = "manga")
     var genres: MutableSet<MangaGenre> = mutableSetOf(),
     @OneToOne(cascade = [CascadeType.ALL])
     var types: MangaTypes = MangaTypes(),
@@ -25,6 +26,7 @@ data class MangaTable(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
+    @JoinTable(schema = "manga")
     var chapters: MutableSet<MangaChapters> = mutableSetOf(),
     var chaptersCount: Int = 0,
     val views: Int = 0,
@@ -32,15 +34,17 @@ data class MangaTable(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
+    @JoinTable(schema = "manga")
     val rate: MutableSet<MangaRating> = mutableSetOf(),
     @OneToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    var linked: MutableSet<MangaLinked> = mutableSetOf(),
+    @JoinTable(schema = "manga")
+    var linked: MutableSet<MangaTable> = mutableSetOf(),
     val updateTime: LocalDateTime = LocalDateTime.now()
 ){
-    fun addMangaLinked(linkedTemp: List<MangaLinked>){
+    fun addMangaLinked(linkedTemp: List<MangaTable>){
         linked.addAll(linkedTemp)
     }
 
@@ -48,13 +52,12 @@ data class MangaTable(
         rate.add(rating)
     }
 
+    fun addMangaGenre(genreTemp: MangaGenre){
+        genres.add(genreTemp)
+    }
+
     fun addMangaChapters(chaptersTemp: List<MangaChapters>){
         chapters.addAll(chaptersTemp)
     }
-
-    fun addMangaGenres(genresTemp: List<MangaGenre>){
-        genres.addAll(genresTemp)
-    }
-
 
 }
