@@ -14,11 +14,16 @@ data class MangaTable(
     var url: String = "",
     @Column(columnDefinition = "TEXT")
     var description: String = "",
-    @OneToMany(
+    @ManyToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    @JoinTable(schema = "manga")
+    @JoinTable(
+        name = "manga_genres",
+        joinColumns = [JoinColumn(name = "manga_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "genres_id", referencedColumnName = "id")],
+        schema = "manga"
+    )
     var genres: MutableSet<MangaGenre> = mutableSetOf(),
     @OneToOne(cascade = [CascadeType.ALL])
     var types: MangaTypes = MangaTypes(),
@@ -36,16 +41,22 @@ data class MangaTable(
     )
     @JoinTable(schema = "manga")
     val rate: MutableSet<MangaRating> = mutableSetOf(),
-    @OneToMany(
+    @ManyToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    @JoinTable(schema = "manga")
+    @JoinTable(
+        name = "manga_linked",
+        joinColumns = [JoinColumn(name = "manga_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "linked_id", referencedColumnName = "id")],
+        schema = "manga"
+    )
     var linked: MutableSet<MangaTable> = mutableSetOf(),
     val updateTime: LocalDateTime = LocalDateTime.now()
 ){
-    fun addMangaLinked(linkedTemp: List<MangaTable>){
-        linked.addAll(linkedTemp)
+    fun addMangaLinked(linkedTemp: MangaTable): MangaTable{
+        linked.add(linkedTemp)
+        return this
     }
 
     fun addMangaRating(rating: MangaRating){

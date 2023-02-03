@@ -10,6 +10,11 @@ import com.example.backend.repository.manga.MangaGenreRepository
 import com.example.backend.repository.manga.MangaRepository
 import com.example.backend.repository.manga.MangaRepositoryImpl
 import com.example.backend.service.image.ImageService
+import com.example.common.models.mangaResponse.detail.GenresDetail
+import com.example.common.models.mangaResponse.detail.MangaDetail
+import com.example.common.models.mangaResponse.detail.TypesDetail
+import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.common.models.response.ServiceResponse
 import com.google.gson.Gson
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
@@ -27,11 +32,10 @@ import kotlinx.serialization.json.Json
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.net.URL
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -60,6 +64,101 @@ class MangaService: MangaRepositoryImpl {
     private var pagesBoolean = false
 
     private var pagesBooleanLinked = false
+
+
+    fun toMangaDetails(
+        id: String,
+        title: String,
+        image: String,
+        url: String,
+        description: String,
+        genres: MutableSet<GenresDetail>,
+        types: TypesDetail,
+        chaptersCount: Int,
+        views: Int,
+    ): MangaDetail {
+        return MangaDetail(
+            id = id,
+            title = title,
+            image = image,
+            url = url,
+            description = description,
+            genres = genres,
+            types = types,
+            chaptersCount = chaptersCount,
+            views = views
+        )
+    }
+
+    fun toMangaLight(
+        id: String,
+        title: String,
+        image: String,
+    ): MangaLight {
+        return MangaLight(
+            id = id,
+            title = title,
+            image = image,
+        )
+    }
+
+    override fun getAllManga(): List<MangaLight> {
+        val mangaLight = mutableListOf<MangaLight>()
+        mangaRepository.findAll().forEach { manga ->
+            mangaLight.add(
+                toMangaLight(
+                    id = manga.id,
+                    title = manga.title,
+                    image = manga.image,
+                )
+            )
+        }
+        println(mangaLight.size)
+        return mangaLight
+    }
+
+    override fun getMangaById(id: String): ServiceResponse<MangaDetail> {
+        val temp = mangaRepository.findMangaDetailById(id).get()
+        println(temp)
+//        val genresDetail = mutableListOf<GenresDetail>()
+//        temp.genres.forEach { genre ->
+//            genresDetail.add(
+//                GenresDetail(
+//                    id = genre.id,
+//                    title = genre.title
+//                )
+//            )
+//        }
+//        val detail = toMangaDetails(
+//            id = temp.id,
+//            title = temp.title,
+//            image = temp.image,
+//            url = temp.url,
+//            description = temp.description,
+//            genres = genresDetail.toMutableSet(),
+//            types = TypesDetail(
+//                type = temp.types.type,
+//                year = temp.types.year,
+//                status = temp.types.status,
+//                limitation = temp.types.limitation
+//            ),
+//            chaptersCount = temp.chaptersCount,
+//            views = temp.views
+//        )
+        return try {
+            ServiceResponse(
+                data = listOf(MangaDetail()),
+                message = "Success",
+                status = HttpStatus.OK
+            )
+        } catch (e: Exception){
+            ServiceResponse(
+                data = null,
+                message = e.message.toString(),
+                status = HttpStatus.BAD_REQUEST
+            )
+        }
+    }
 
     override fun addDataToDB(): MangaTable {
         var pageSize = 0
@@ -172,14 +271,22 @@ class MangaService: MangaRepositoryImpl {
                                     this.a {
                                         withClass = "tag.fw-medium"
                                         val tempGenres = findAll { return@findAll eachText }
-                                        tempGenres.forEach {
+                                        tempGenres.forEach { genre ->
                                             val id = UUID.randomUUID().toString()
-                                            mangaGenreRepository.save(
-                                                MangaGenre(id = id, title = it.replace("#", ""))
-                                            )
-                                            manga.addMangaGenre(
-                                                MangaGenre(id = id, title = it.replace("#", ""))
-                                            )
+                                            val genreIs = mangaGenreRepository.findByTitle(genre).isPresent
+                                            if(genreIs){
+                                                val temp = mangaGenreRepository.findByTitle(genre).get()
+                                                manga.addMangaGenre(
+                                                    MangaGenre(id = temp.id, title = temp.title)
+                                                )
+                                            } else {
+                                                mangaGenreRepository.save(
+                                                    MangaGenre(id = id, title = genre)
+                                                )
+                                                manga.addMangaGenre(
+                                                    MangaGenre(id = id, title = genre)
+                                                )
+                                            }
                                         }
                                     }
                                     manga.image = imageService.save(IOUtils.toByteArray(URL(tempStart.image)))
@@ -220,9 +327,9 @@ class MangaService: MangaRepositoryImpl {
                                 tL.forEach { url ->
                                     val temp = mangaRepository.mangaByUrl(mangaSmall + url)
                                     if(temp.isPresent){
-                                        manga.linked.add(temp.get())
+                                        manga.addMangaLinked(linkedTemp = temp.get())
                                     } else {
-                                        manga.linked.add(addLinkedManga(urlLink = url, prevUrlLink = it))
+                                        manga.addMangaLinked(linkedTemp = addLinkedManga(urlLink = url, prevUrlLink = it))
                                     }
                                 }
                             }
@@ -384,14 +491,22 @@ class MangaService: MangaRepositoryImpl {
                             this.a {
                                 withClass = "tag.fw-medium"
                                 val tempGenres = findAll { return@findAll eachText }
-                                tempGenres.forEach {
+                                tempGenres.forEach { genre ->
                                     val id = UUID.randomUUID().toString()
-                                    mangaGenreRepository.save(
-                                        MangaGenre(id = id, title = it.replace("#", ""))
-                                    )
-                                    manga.addMangaGenre(
-                                        MangaGenre(id = id, title = it.replace("#", ""))
-                                    )
+                                    val genreIs = mangaGenreRepository.findByTitle(genre).isPresent
+                                    if(genreIs){
+                                        val temp = mangaGenreRepository.findByTitle(genre).get()
+                                        manga.addMangaGenre(
+                                            MangaGenre(id = temp.id, title = temp.title)
+                                        )
+                                    } else {
+                                        mangaGenreRepository.save(
+                                            MangaGenre(id = id, title = genre)
+                                        )
+                                        manga.addMangaGenre(
+                                            MangaGenre(id = id, title = genre)
+                                        )
+                                    }
                                 }
                             }
                             manga.image = imageService.save(IOUtils.toByteArray(URL(tempStart.image)))
@@ -432,11 +547,11 @@ class MangaService: MangaRepositoryImpl {
                         tL.forEach {
                             val temp = mangaRepository.mangaByUrl(mangaSmall + it)
                             if(temp.isPresent){
-                                manga.linked.add(temp.get())
+                                manga.addMangaLinked(linkedTemp = temp.get())
                             } else {
                                 println("URLLINK = $it")
                                 println("URLLINKDZXC = $urlLink")
-                                if(it != prevUrlLink) manga.linked.add(addLinkedManga(prevUrlLink = urlLink, urlLink = it))
+                                if(it != prevUrlLink) manga.addMangaLinked(linkedTemp = addLinkedManga(prevUrlLink = urlLink, urlLink = it))
                             }
                         }
                     }
