@@ -41,20 +41,14 @@ data class MangaTable(
     )
     @JoinTable(schema = "manga")
     val rate: MutableSet<MangaRating> = mutableSetOf(),
-    @ManyToMany(
+    @OneToMany(
         fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
-    @JoinTable(
-        name = "manga_linked",
-        joinColumns = [JoinColumn(name = "manga_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "linked_id", referencedColumnName = "id")],
-        schema = "manga"
-    )
-    var linked: MutableSet<MangaTable> = mutableSetOf(),
+    var linked: MutableSet<MangaLinked> = mutableSetOf(),
     val updateTime: LocalDateTime = LocalDateTime.now()
 ){
-    fun addMangaLinked(linkedTemp: MangaTable): MangaTable{
+    fun addMangaLinked(linkedTemp: MangaLinked): MangaTable{
         linked.add(linkedTemp)
         return this
     }
