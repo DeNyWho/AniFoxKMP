@@ -1,8 +1,6 @@
 package com.example.backend.jpa.manga
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -13,6 +11,6 @@ data class MangaChapters(
     @Id
     val id: String = UUID.randomUUID().toString(),
     val title: String = "",
-    val url: String = "",
+    val urlCode: Int = 0,
     val date: LocalDate = LocalDate.now()
 )

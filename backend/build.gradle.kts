@@ -37,9 +37,7 @@ kotlin {
 					runtimeOnly(postgreSQLRun)
 				}
 				with(Dependencies.Spring.swagger){
-					implementation(swaggerData)
-					implementation(swaggerUi)
-					implementation(swaggerKotlin)
+					implementation(swaggerMVC)
 				}
 				implementation(Dependencies.MultiPlatform.composeRuntime)
 				with(Dependencies.Spring){

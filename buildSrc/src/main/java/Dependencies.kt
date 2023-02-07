@@ -19,7 +19,7 @@ object Dependencies {
         const val multiplatformSettings = "0.8.1"
 
         // Backend Dependencies Version
-        const val swagger = "1.6.9"
+        const val swagger = "2.0.2"
         const val skrapeIT = "1.3.0-alpha.1"
         const val gson = "2.9.0"
         const val springLogging = "2.1.23"
@@ -147,9 +147,7 @@ object Dependencies {
         const val scrapeIT = "it.skrape:skrapeit:"
 
         object swagger {
-            const val swaggerData = "org.springdoc:springdoc-openapi-data-rest:${Versions.swagger}"
-            const val swaggerUi = "org.springdoc:springdoc-openapi-ui:${Versions.swagger}"
-            const val swaggerKotlin = "org.springdoc:springdoc-openapi-kotlin:${Versions.swagger}"
+            const val swaggerMVC = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.swagger}"
         }
     }
 
