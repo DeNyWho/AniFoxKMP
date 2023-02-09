@@ -15,6 +15,8 @@ interface MangaRepository: JpaRepository<MangaTable, String> {
     @Query("Select m From MangaTable m where m.url = :url")
     fun mangaByUrl(url: String): Optional<MangaTable>
 
+    @Query("Select m From MangaTable m inner join m.chapters where m.id = :id")
+    fun mangaChapters(pageable: Pageable, @Param("id") id: String): List<MangaChapters>
 
     @Query("select m from MangaTable m where upper(m.title) like concat('%', upper(?1), '%')")
     fun findByTitleSearch(pageable: Pageable, @Param("title") title: String): Page<MangaTable>

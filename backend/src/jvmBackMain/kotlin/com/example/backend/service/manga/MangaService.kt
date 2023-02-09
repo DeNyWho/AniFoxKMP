@@ -1,12 +1,14 @@
 package com.example.backend.service.manga
 
 import com.example.backend.jpa.manga.*
+import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
 import com.example.backend.repository.manga.MangaChaptersRepository
 import com.example.backend.repository.manga.MangaGenreRepository
 import com.example.backend.repository.manga.MangaRepository
 import com.example.backend.repository.manga.MangaRepositoryImpl
 import com.example.backend.service.image.ImageService
+import com.example.backend.util.extractInt
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
@@ -35,6 +37,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 import com.example.backend.util.toPage
+import java.util.regex.Pattern
 
 
 @Service
@@ -143,29 +146,53 @@ class MangaService: MangaRepositoryImpl {
     }
 
     override fun getMangaChapters(id: String, pageNum: Int, pageSize: Int): ServiceResponse<ChaptersLight> {
-//        return try {
+        return try {
             val manga = mangaRepository.findById(id).get()
-//            return try {
-                val sort = Sort.by(Sort.Order(Sort.Direction.DESC, "title"))
-                val pageable: Pageable = PageRequest.of(pageNum, pageSize, sort)
-        println(pageable)
-                val chapters = manga.chapters.toList().toPage(pageable)
-        println(chapters.content)
-        println(chapters)
-        val chaptersLight = mutableListOf<ChaptersLight>()
-                chaptersLight.add(0, ChaptersLight(
-                    title = chapters.last().title,
-                    url = "$mangaSmall/read/${chapters.last().urlCode}",
-                    date = chapters.last().date,
-                    id = chapters.last().id
-                ))
+            try {
+                val temp = mutableListOf<Pair<ChaptersHelper, MangaChapters>>()
+                manga.chapters.forEach {
+                    val tom = it.title.replace("Том ", "").split('.')[0]
+                    var chapter =
+                        it.title.replace("Глава", "").split("-")[0].replace("[^0-9.]".toRegex(), "").drop(tom.length)
+                    val numbers = it.title.replace("[^0-9]".toRegex(), "")
+                    if (chapter[0] == '.') {
+                        chapter = chapter.drop(1)
+                    }
+                    val part = if (numbers.length - (chapter.length + tom.length) > 0) {
+                        numbers.takeLast(numbers.length - (chapter.length + tom.length)).toInt()
+                    } else 0
+                    temp.add(
+                        Pair(
+                            ChaptersHelper(tom = tom.toInt(), chapter = chapter.toDouble(), part = part),
+                            it
+                        )
+                    )
+                }
+                val sort = temp.sortedWith(
+                    compareBy<Pair<ChaptersHelper, MangaChapters>> { false }
+                        .thenBy { it.first.chapter }
+                        .thenBy { it.first.tom }
+                )
+                val chapters = mutableListOf<MangaChapters>()
+                sort.forEach {
+                    chapters.add(it.second)
+                }
+                val chaptersLight = mutableListOf<ChaptersLight>()
+                chaptersLight.add(
+                    0, ChaptersLight(
+                        title = chapters.last().title,
+                        url = "${chapters.last().urlCode}",
+                        date = chapters.last().date,
+                        id = chapters.last().id
+                    )
+                )
                 chaptersLight.removeLast()
                 chapters.forEach { chapter ->
                     chaptersLight.add(
                         ChaptersLight(
                             id = chapter.id,
                             title = chapter.title,
-                            url = "$mangaSmall/read/${chapter.urlCode}",
+                            url = "${chapter.urlCode}",
                             date = chapter.date
                         )
                     )
@@ -175,20 +202,20 @@ class MangaService: MangaRepositoryImpl {
                     message = "Success",
                     status = HttpStatus.OK
                 )
-//            } catch (e: Exception) {
-//                ServiceResponse(
-//                    data = null,
-//                    message = e.message.toString(),
-//                    status = HttpStatus.BAD_REQUEST
-//                )
-//            }
-//        } catch (e: Exception) {
-//            ServiceResponse(
-//                data = null,
-//                message = "Manga with id = $id not found",
-//                status = HttpStatus.NOT_FOUND
-//            )
-//        }
+            } catch (e: Exception) {
+                ServiceResponse(
+                    data = null,
+                    message = e.message.toString(),
+                    status = HttpStatus.BAD_REQUEST
+                )
+            }
+        } catch (e: Exception) {
+            ServiceResponse(
+                data = null,
+                message = "Manga with id = $id not found",
+                status = HttpStatus.NOT_FOUND
+            )
+        }
     }
 
     override fun getMangaLinked(id: String): ServiceResponse<MangaLight> {
@@ -306,7 +333,6 @@ class MangaService: MangaRepositoryImpl {
                             timeout = 400_000
                         }
                         response {
-                            println(this.baseUri)
                             document.a {
                                 withClass = "d-block.rounded.fast-view-layer"
                                 mangaUrls.addAll(findAll { return@findAll eachHref })
@@ -323,8 +349,7 @@ class MangaService: MangaRepositoryImpl {
         mangaUrls.forEach loop@{
             pagesBoolean = false
             while (!pagesBoolean) {
-//                try {
-                    println(it)
+                try {
                     val json = Json { ignoreUnknownKeys = true }
                     val gson = Gson()
                     val manga = MangaTable()
@@ -517,7 +542,6 @@ class MangaService: MangaRepositoryImpl {
                                 document.allElements.filter { it.className.contains("scroller-item me-3") }
                             val c = mutableListOf<String>()
                             val d = mutableListOf<DocElement>()
-                            println(elements)
                             elements.forEach { element ->
                                 c.addAll(
                                     element.div {
@@ -532,10 +556,8 @@ class MangaService: MangaRepositoryImpl {
                             }
 
                             val tL = c.takeLast(d.size)
-                            println(tL)
 
                             tL.forEach { url ->
-                                println(url)
                                 val temp = mangaRepository.mangaByUrl(mangaSmall + url)
                                 if (temp.isPresent) {
                                     manga.addMangaLinked(linkedTemp = temp.get().id)
@@ -552,20 +574,14 @@ class MangaService: MangaRepositoryImpl {
                             if (prevManga.isPresent) mangaRepository.deleteById(prevManga.get().id)
 
                             mangaRepository.save(manga)
-
-//                            if(tL.isNotEmpty()){
-//                                manga.linked.forEach { linked ->
-//                                    linked.
-//                                }
-//                            }
                         }
                     }
 
                     pagesBoolean = true
-//                } catch (e: Exception) {
-//                    println("ERROR = ${e.cause}")
-//                    pagesBoolean = false
-//                }
+                } catch (e: Exception) {
+                    println("ERROR = ${e.cause}")
+                    pagesBoolean = false
+                }
             }
         }
         return MangaTable()
@@ -752,7 +768,6 @@ class MangaService: MangaRepositoryImpl {
                             document.allElements.filter { it.className.contains("scroller-item me-3") }
                         val c = mutableListOf<String>()
                         val d = mutableListOf<DocElement>()
-                        println(elements)
                         elements.forEach { element ->
                             c.addAll(
                                 element.div {
@@ -767,10 +782,8 @@ class MangaService: MangaRepositoryImpl {
                         }
 
                         val tL = c.takeLast(d.size)
-                        println(tL)
 
                         tL.forEach { url ->
-                            println(url)
                             val temp = mangaRepository.mangaByUrl(mangaSmall + url)
                             if (temp.isPresent) {
                                 manga.addMangaLinked(linkedTemp = temp.get().id)
@@ -800,7 +813,4 @@ class MangaService: MangaRepositoryImpl {
         }
         return mangaRepository.findById(manga.id).get()
     }
-
-
-
 }
