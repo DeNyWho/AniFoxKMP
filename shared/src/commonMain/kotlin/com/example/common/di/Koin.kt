@@ -1,5 +1,6 @@
 package com.example.common.di
 
+import com.example.common.network.AniFoxApi
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -17,7 +18,10 @@ import org.koin.dsl.module
 fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModule(enableNetworkLogs = enableNetworkLogs), platformModule())
+        modules(
+            commonModule(enableNetworkLogs = enableNetworkLogs), platformModule(),
+            networkModule
+        )
     }
 
 fun commonModule(enableNetworkLogs: Boolean) = module {
@@ -26,7 +30,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
 
-//    single { AniFoxApi(get()) }
+    single { AniFoxApi(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

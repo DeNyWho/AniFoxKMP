@@ -6,6 +6,7 @@ import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.models.response.ServiceResponse
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.constraints.Max
@@ -43,9 +44,15 @@ class MangaController {
 
     @GetMapping()
     @Operation(summary = "get all manga")
-    fun getManga(): ServiceResponse<MangaLight> {
+    fun getManga(
+        @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
+        @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
+        @RequestParam(name = "genre", required = false) genre: List<String>?,
+        @Schema(name = "status", required = false, description = "Must be one of: онгоинг, завершён, продолжается, заброшен") status: String?,
+        @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", ) order: String?
+    ): ServiceResponse<MangaLight>? {
         return try {
-            return ServiceResponse(data = mangaService.getAllManga(), status = HttpStatus.OK)
+            mangaService.getAllManga(pageNum, pageSize, order, genre, status)
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         }

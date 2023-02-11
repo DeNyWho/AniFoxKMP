@@ -8,7 +8,6 @@ import com.example.backend.repository.manga.MangaGenreRepository
 import com.example.backend.repository.manga.MangaRepository
 import com.example.backend.repository.manga.MangaRepositoryImpl
 import com.example.backend.service.image.ImageService
-import com.example.backend.util.extractInt
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
@@ -36,8 +35,8 @@ import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import com.example.backend.util.toPage
-import java.util.regex.Pattern
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 
 
 @Service
@@ -90,30 +89,145 @@ class MangaService: MangaRepositoryImpl {
         )
     }
 
-    fun toMangaLight(
-        id: String,
-        title: String,
-        image: String,
-    ): MangaLight {
-        return MangaLight(
-            id = id,
-            title = title,
-            image = image,
-        )
-    }
-
-    override fun getAllManga(): List<MangaLight> {
+    fun listToMangaLight(
+        manga: List<MangaTable>
+    ): List<MangaLight> {
         val mangaLight = mutableListOf<MangaLight>()
-        mangaRepository.findAll().forEach { manga ->
+        manga.forEach {
             mangaLight.add(
-                toMangaLight(
-                    id = manga.id,
-                    title = manga.title,
-                    image = manga.image,
+                MangaLight(
+                    id = it.id,
+                    title = it.title,
+                    image = it.image,
                 )
             )
         }
         return mangaLight
+    }
+
+    fun mangaLightSuccess(
+        mangaLight: List<MangaLight>
+    ): ServiceResponse<MangaLight> {
+        return ServiceResponse(
+            data = mangaLight,
+            message = "Success",
+            status = HttpStatus.OK
+        )
+    }
+
+    override fun getAllManga(
+        pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
+        pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
+        order: String?,
+        genre: List<String>?,
+        status: String?
+    ): ServiceResponse<MangaLight> {
+
+        val sort = when (order) {
+            "popular" -> Sort.by(
+                Sort.Order(Sort.Direction.DESC, "views"),
+                Sort.Order(Sort.Direction.DESC, "countRate")
+            )
+
+            "views" -> Sort.by(
+                Sort.Order(Sort.Direction.DESC, "views")
+            )
+
+            else -> null
+        }
+
+        val pageable: Pageable =
+            if (sort != null) PageRequest.of(pageNum, pageSize, sort) else PageRequest.of(pageNum, pageSize)
+
+        return when (order) {
+            "random" -> if (genre != null && status != null) {
+                val b = mutableListOf<MangaGenre>()
+                genre.forEach {
+                    b.add(mangaGenreRepository.findById(it).get())
+                }
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByGenresAndStatusInRandom(
+                            pageable = pageable,
+                            genres = b,
+                            status = status
+                        )
+                    )
+                )
+            } else if (genre != null) {
+                val b = mutableListOf<MangaGenre>()
+                genre.forEach {
+                    b.add(mangaGenreRepository.findById(it).get())
+                }
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByGenresInRandom(
+                            pageable = pageable,
+                            genres = b
+                        )
+                    )
+                )
+            } else if (status != null) {
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByStatusRandom(
+                            pageable = pageable,
+                            status = status
+                        )
+                    )
+                )
+            } else {
+                mangaLightSuccess(listToMangaLight(mangaRepository.findMangaTableByRandom(pageable = pageable)))
+            }
+
+            null -> if (genre != null && status != null) {
+                val b = mutableListOf<MangaGenre>()
+                genre.forEach {
+                    b.add(mangaGenreRepository.findById(it).get())
+                }
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByGenresAndStatusIn(
+                            pageable = pageable,
+                            genres = b,
+                            status = status
+                        )
+                    )
+                )
+            } else if(genre != null) {
+                val b = mutableListOf<MangaGenre>()
+                genre.forEach {
+                    b.add(mangaGenreRepository.findById(it).get())
+                }
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByGenresIn(
+                            pageable = pageable,
+                            genres = b
+                        )
+                    )
+                )
+            }  else if(status != null) {
+                mangaLightSuccess(
+                    listToMangaLight(
+                        mangaRepository.findMangaTableByStatus(
+                            pageable = pageable,
+                            status = status
+                        )
+                    )
+                )
+            } else {
+                mangaLightSuccess(listToMangaLight(mangaRepository.findAll()))
+            }
+
+            else -> {
+                return ServiceResponse(
+                    data = null,
+                    message = "Something went wrong",
+                    status = HttpStatus.BAD_REQUEST
+                )
+            }
+        }
     }
 
     override fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight> {
@@ -323,7 +437,6 @@ class MangaService: MangaRepositoryImpl {
                         }
                     }
                 }
-
 
                 for (i in 1 until pageSize) {
                     println(i)

@@ -11,7 +11,13 @@ import jakarta.validation.constraints.Min
 interface MangaRepositoryImpl {
 
     fun addDataToDB(): MangaTable
-    fun getAllManga(): List<MangaLight>
+    fun getAllManga(
+        pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
+        pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
+        order: String?,
+        genre: List<String>?,
+        status: String?
+    ): ServiceResponse<MangaLight>
     fun getMangaById(id: String): ServiceResponse<MangaDetail>
     fun getMangaChapters(
         id: String,
