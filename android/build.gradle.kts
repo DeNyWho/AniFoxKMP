@@ -74,6 +74,9 @@ dependencies {
         implementation(osmdroidAndroid)
         debugImplementation(leakCanary)
     }
+    with(Dependencies.Android.UI){
+        implementation(shimmer)
+    }
     with(Dependencies.Android.Koin) {
         implementation(koinAndroid)
         implementation(koinCompose)

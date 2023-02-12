@@ -17,6 +17,7 @@ object Dependencies {
         const val kotlinxSerialization = "1.7.20"
         const val kotlinxSerializationJson = "1.4.1"
         const val multiplatformSettings = "0.8.1"
+        const val nativeCoroutine = "0.13.2"
 
         // Backend Dependencies Version
         const val swagger = "2.0.2"
@@ -42,18 +43,18 @@ object Dependencies {
         const val material = "1.6.0"
         const val appCompat = "1.4.1"
         const val splash = "1.0.0"
+        const val shimmer = "1.0.4"
         const val constraintLayout = "2.1.4"
         const val composeMat3 = "1.0.0-alpha13"
         const val compose_activity = "1.4.0"
         const val compose_constraint = "1.0.0-rc01"
-        const val accompanist = "0.25.1"
+        const val accompanist = "0.28.0"
         const val navigation = "2.5.2"
         const val lifecycle = "2.3.1"
-        const val coil = "1.4.0"
+        const val coil = "2.0.0"
         const val palette = "28.0.0"
         const val paging = "3.0.0"
         const val coroutines = "1.5.2"
-        const val firebase_bom = "30.3.1"
         const val rating_bar = "1.1.1"
         const val leakCanary = "2.9.1"
         const val paging_compose = "1.0.0-alpha14"
@@ -80,6 +81,8 @@ object Dependencies {
 
     object MultiPlatform {
         const val kotlinxCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
+
+        const val nativeCoroutines = "com.rickclephas.kmp:kmp-nativecoroutines-annotations:commonMain:${Versions.nativeCoroutine}"
 
         const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.runtime}"
 
@@ -220,6 +223,11 @@ object Dependencies {
             const val koinCompose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
 
         }
+
+        object UI {
+            const val shimmer = "com.valentinilk.shimmer:compose-shimmer:${Versions.shimmer}"
+        }
+
 
         const val osmdroidAndroid = "org.osmdroid:osmdroid-android:${Versions.osmdroidAndroid}"
 

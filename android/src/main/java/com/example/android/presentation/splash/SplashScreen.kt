@@ -19,7 +19,6 @@ import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.ui.blueLikeSky
 import com.example.android.ui.bluest
-import com.example.android.ui.gray
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.getViewModel
 

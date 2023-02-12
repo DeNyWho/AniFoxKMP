@@ -7,9 +7,11 @@ import com.example.android.presentation.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val appModule = module {
+internal val appModule = module {
     viewModel { SplashViewModel() }
     viewModel { SignInViewModel() }
     viewModel { SignUpViewModel() }
-    viewModel { HomeViewModel() }
+    viewModel {
+        HomeViewModel(get())
+    }
 }

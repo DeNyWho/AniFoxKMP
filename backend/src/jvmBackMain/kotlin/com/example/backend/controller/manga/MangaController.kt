@@ -4,7 +4,7 @@ import com.example.backend.service.manga.MangaService
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.models.response.ServiceResponse
+import com.example.backend.models.ServiceResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag

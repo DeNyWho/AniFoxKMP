@@ -3,6 +3,7 @@ package com.example.backend.service.manga
 import com.example.backend.jpa.manga.*
 import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
+import com.example.backend.models.ServiceResponse
 import com.example.backend.repository.manga.MangaChaptersRepository
 import com.example.backend.repository.manga.MangaGenreRepository
 import com.example.backend.repository.manga.MangaRepository
@@ -13,7 +14,6 @@ import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.detail.TypesDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.models.response.ServiceResponse
 import com.google.gson.Gson
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
@@ -24,6 +24,8 @@ import it.skrape.selects.DocElement
 import it.skrape.selects.eachHref
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import kotlinx.serialization.json.Json
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,12 +33,18 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.awt.Graphics2D
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
+import javax.imageio.IIOImage
+import javax.imageio.ImageIO
+import javax.imageio.ImageWriteParam
+import javax.imageio.ImageWriter
+import javax.imageio.stream.ImageOutputStream
 
 
 @Service
@@ -490,7 +498,6 @@ class MangaService: MangaRepositoryImpl {
                                 manga.url = tempStart.url
                                 manga.title = tempStart.name
                                 manga.description = tempStart.description
-                                manga.image = tempStart.image
                                 this.div {
                                     withClass = "fs-2.text-muted.fw-medium.d-flex.align-items-center"
                                     val tempTypes =
@@ -564,7 +571,10 @@ class MangaService: MangaRepositoryImpl {
                                         return@a
                                     }
                                 }
-                                manga.image = imageService.save(IOUtils.toByteArray(URL(tempStart.image)))
+                                println("WTF = ${tempStart.image}")
+                                println("WTF = ${IOUtils.toByteArray(URL(tempStart.image)).size}")
+
+                                manga.image = imageService.save(compressImage(ImageIO.read(URL(tempStart.image))))
                             }
                         }
                     }
@@ -732,7 +742,6 @@ class MangaService: MangaRepositoryImpl {
                             manga.url = tempStart.url
                             manga.title = tempStart.name
                             manga.description = tempStart.description
-                            manga.image = tempStart.image
                             this.div {
                                 withClass = "fs-2.text-muted.fw-medium.d-flex.align-items-center"
                                 val tempTypes =
@@ -796,7 +805,7 @@ class MangaService: MangaRepositoryImpl {
                                     }
                                 }
                             }
-                            manga.image = imageService.save(IOUtils.toByteArray(URL(tempStart.image)))
+                            manga.image = imageService.save(compressImage(ImageIO.read(URL(tempStart.image))))
                         }
                     }
                 }
@@ -925,5 +934,44 @@ class MangaService: MangaRepositoryImpl {
             }
         }
         return mangaRepository.findById(manga.id).get()
+    }
+
+
+    fun compressImage(image: BufferedImage): ByteArray {
+        val convertedImg = BufferedImage(image.width, image.height, 6)
+        convertedImg.graphics.drawImage(image, 0, 0, null)
+        val ww = removeAlphaChannel(convertedImg)
+        val outputStream = ByteArrayOutputStream()
+
+        val imageWriters: Iterator<ImageWriter> =
+            ImageIO.getImageWritersByFormatName("jpg")
+        val imageOutputStream: ImageOutputStream = ImageIO.createImageOutputStream(outputStream)
+        val imageWriter: ImageWriter = imageWriters.next()
+        imageWriter.output = imageOutputStream
+        val imageWriteParam: ImageWriteParam = imageWriter.defaultWriteParam
+
+        imageWriteParam.compressionMode = ImageWriteParam.MODE_EXPLICIT
+        imageWriteParam.compressionQuality = 0.5f
+
+        imageWriter.write(null, IIOImage(ww, null, null), imageWriteParam)
+        val imageBytes = outputStream.toByteArray()
+        println(imageBytes.size)
+        return outputStream.toByteArray()
+    }
+
+    private fun removeAlphaChannel(img: BufferedImage): BufferedImage {
+        if (!img.colorModel.hasAlpha()) {
+            return img
+        }
+        val target = createImage(img.width, img.height, false)
+        val g = target.createGraphics()
+        g.fillRect(0, 0, img.width, img.height)
+        g.drawImage(img, 0, 0, null)
+        g.dispose()
+        return target
+    }
+
+    private fun createImage(width: Int, height: Int, hasAlpha: Boolean): BufferedImage {
+        return BufferedImage(width, height, if (hasAlpha) BufferedImage.TYPE_INT_ARGB else BufferedImage.TYPE_INT_RGB)
     }
 }

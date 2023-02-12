@@ -1,9 +1,10 @@
 package com.example.common.di
 
-import com.example.common.network.AniFoxApi
+import com.example.common.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
@@ -19,8 +20,10 @@ fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclarat
     startKoin {
         appDeclaration()
         modules(
-            commonModule(enableNetworkLogs = enableNetworkLogs), platformModule(),
-            networkModule
+            commonModule(enableNetworkLogs = enableNetworkLogs),
+            platformModule(),
+            networkModule,
+            useCaseModule
         )
     }
 
@@ -30,7 +33,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
 
-    single { AniFoxApi(get()) }
+    single { MangaRepository(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
@@ -44,6 +47,9 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.INFO
+        }
+        install(HttpTimeout){
+            requestTimeoutMillis = 300000
         }
     }
 }

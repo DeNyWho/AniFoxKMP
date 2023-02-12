@@ -1,6 +1,5 @@
 package com.example.android.presentation.signIn
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,15 +22,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.presentation.splash.SplashViewModel
-import com.example.android.ui.gray
+import com.example.android.ui.grey
 import com.example.android.ui.lighterGray
 import com.example.android.ui.orange
 import com.example.android.ui.red
@@ -79,7 +76,7 @@ fun SignInScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 textStyle = MaterialTheme.typography.h4,
                 singleLine = true,
@@ -112,7 +109,7 @@ fun SignInScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,

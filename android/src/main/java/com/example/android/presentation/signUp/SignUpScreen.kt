@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
-import com.example.android.ui.gray
+import com.example.android.ui.grey
 import com.example.android.ui.lighterGray
 import com.example.android.ui.orange
 import com.example.android.ui.red
@@ -62,7 +62,7 @@ fun SignUpScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 textStyle = MaterialTheme.typography.h4,
                 singleLine = true,
@@ -94,7 +94,7 @@ fun SignUpScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 singleLine = true,
                 label = { Text(stringResource(R.string.signInHintName)) },
@@ -126,7 +126,7 @@ fun SignUpScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
@@ -170,7 +170,7 @@ fun SignUpScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black,
-                    focusedLabelColor = gray
+                    focusedLabelColor = grey
                 ),
                 visualTransformation = if (passwordConfirmVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,

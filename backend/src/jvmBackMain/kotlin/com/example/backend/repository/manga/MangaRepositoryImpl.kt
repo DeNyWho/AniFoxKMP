@@ -4,7 +4,7 @@ import com.example.backend.jpa.manga.MangaTable
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.models.response.ServiceResponse
+import com.example.backend.models.ServiceResponse
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 

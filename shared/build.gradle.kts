@@ -2,7 +2,6 @@ plugins {
     kotlin(Dependencies.Plugins.multiplatform)
     id("com.android.library")
     id("kotlinx-serialization")
-    id("org.springframework.boot")
     id("org.jetbrains.compose") version Dependencies.Versions.compose
 }
 
@@ -44,8 +43,6 @@ kotlin {
                     implementation(json)
                 }
                 api(compose.runtime)
-                implementation(Dependencies.Spring.Defaults.web)
-
                 implementation(Dependencies.MultiPlatform.multiplatformSettings)
                 implementation(Dependencies.MultiPlatform.multiplatformSettingsCoroutines)
 

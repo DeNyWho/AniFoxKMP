@@ -2,7 +2,7 @@ package com.example.backend.jpa.manga
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name = "manga", schema = "manga")
@@ -15,7 +15,7 @@ data class MangaTable(
     @Column(columnDefinition = "TEXT")
     var description: String = "",
     @ManyToMany(
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(
@@ -28,7 +28,7 @@ data class MangaTable(
     @OneToOne(cascade = [CascadeType.ALL])
     var types: MangaTypes = MangaTypes(),
     @OneToMany(
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(schema = "manga")
@@ -36,12 +36,12 @@ data class MangaTable(
     var chaptersCount: Int = 0,
     val views: Int = 0,
     @OneToMany(
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(schema = "manga")
     val rate: MutableSet<MangaRating> = mutableSetOf(),
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(nullable = true)
     @CollectionTable(name = "manga_linked", schema = "manga")
     var linked: MutableSet<String> = mutableSetOf(),
