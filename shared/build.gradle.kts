@@ -35,6 +35,23 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
+                with(Dependencies.Android.UI){
+                    implementation(shimmer)
+                }
+                with(Dependencies.Android.AndroidXAnDCompose) {
+                    implementation(androidCore)
+                    implementation(composeUI)
+                    implementation(icons)
+                    implementation(composeMaterial)
+                    implementation(composeTooling)
+                    implementation(composeRuntimeLive)
+                    implementation(composeUtil)
+                    implementation(composeActivity)
+                    implementation(lifecycleRuntime)
+                    implementation(composeNavigation)
+                    implementation(coil)
+                    implementation(oneBoneToolbar)
+                }
                 with(Dependencies.Ktor) {
                     implementation(clientCore)
                     implementation(clientJson)

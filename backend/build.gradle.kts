@@ -39,6 +39,15 @@ kotlin {
 				with(Dependencies.Spring.swagger){
 					implementation(swaggerMVC)
 				}
+				with(Dependencies.Spring.ImageIO){
+					implementation(bmp)
+					implementation(tiff)
+					implementation(jpeg)
+					implementation(psd)
+					implementation(pdf)
+					implementation(hdr)
+					implementation(servlet)
+				}
 				implementation(Dependencies.MultiPlatform.composeRuntime)
 				with(Dependencies.Spring){
 					implementation(logging)

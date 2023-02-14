@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class GetRandomMangaUseCase(private val repository: MangaRepository){
+class GetRomanceMangaUseCase(private val repository: MangaRepository){
     operator fun invoke(): Flow<StateListWrapper<MangaLight>>{
         return flow {
             emit(StateListWrapper.loading())
 
-            val state = when (val res = repository.getManga(order = "random", pageNum = 0, pageSize = 12, status = null, genres = null)) {
+            val state = when (val res = repository.getManga(order = null, pageNum = 0, pageSize = 12, status = null, genres = null)) {
                 is Resource.Success -> {
                     val data = res.data?.data.orEmpty()
 

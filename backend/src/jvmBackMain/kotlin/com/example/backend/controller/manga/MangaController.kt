@@ -1,10 +1,10 @@
 package com.example.backend.controller.manga
 
+import com.example.backend.models.ServiceResponse
 import com.example.backend.service.manga.MangaService
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.backend.models.ServiceResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -47,12 +47,20 @@ class MangaController {
     fun getManga(
         @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
         @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
-        @RequestParam(name = "genre", required = false) genre: List<String>?,
+        @RequestParam(name = "genres", required = false) genres: List<String>?,
+        @RequestParam(name = "genre", required = false) genre: String?,
         @Schema(name = "status", required = false, description = "Must be one of: онгоинг, завершён, продолжается, заброшен") status: String?,
         @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", ) order: String?
     ): ServiceResponse<MangaLight>? {
         return try {
-            mangaService.getAllManga(pageNum, pageSize, order, genre, status)
+            mangaService.getAllManga(
+                pageNum = pageNum,
+                pageSize = pageSize,
+                genre = genre,
+                genres = genres,
+                status = status,
+                order = order
+            )
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         }

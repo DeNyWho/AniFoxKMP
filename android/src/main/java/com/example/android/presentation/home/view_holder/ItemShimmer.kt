@@ -19,7 +19,7 @@ fun ItemShimmer(
         modifier = Modifier
             .shimmer(shimmerInstance)
             .width(160.dp)
-            .padding(12.dp, 0.dp)
+            .padding(start = 8.dp, top = 12.dp, bottom = 8.dp, end = 0.dp)
     ) {
         Box(
             modifier = Modifier

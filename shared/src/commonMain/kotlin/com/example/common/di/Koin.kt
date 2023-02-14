@@ -16,11 +16,11 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) =
+fun initKoin(enableNetworkLogs: Boolean = true, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
         modules(
-            commonModule(enableNetworkLogs = enableNetworkLogs),
+            commonModule(enableNetworkLogs = true),
             platformModule(),
             networkModule,
             useCaseModule
@@ -46,7 +46,7 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
     if (enableNetworkLogs) {
         install(Logging) {
             logger = Logger.DEFAULT
-            level = LogLevel.INFO
+            level = LogLevel.ALL
         }
         install(HttpTimeout){
             requestTimeoutMillis = 300000

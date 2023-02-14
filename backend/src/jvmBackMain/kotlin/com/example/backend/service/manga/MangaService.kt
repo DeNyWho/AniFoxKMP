@@ -31,9 +31,9 @@ import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.*
+import org.springframework.data.jpa.domain.JpaSort
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.net.URL
@@ -127,15 +127,16 @@ class MangaService: MangaRepositoryImpl {
         pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
         pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
         order: String?,
-        genre: List<String>?,
+        genres: List<String>?,
+        genre: String?,
         status: String?
     ): ServiceResponse<MangaLight> {
-
         val sort = when (order) {
             "popular" -> Sort.by(
                 Sort.Order(Sort.Direction.DESC, "views"),
                 Sort.Order(Sort.Direction.DESC, "countRate")
             )
+            "random" -> JpaSort.unsafe("random()")
 
             "views" -> Sort.by(
                 Sort.Order(Sort.Direction.DESC, "views")
@@ -147,95 +148,19 @@ class MangaService: MangaRepositoryImpl {
         val pageable: Pageable =
             if (sort != null) PageRequest.of(pageNum, pageSize, sort) else PageRequest.of(pageNum, pageSize)
 
-        return when (order) {
-            "random" -> if (genre != null && status != null) {
-                val b = mutableListOf<MangaGenre>()
-                genre.forEach {
-                    b.add(mangaGenreRepository.findById(it).get())
-                }
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByGenresAndStatusInRandom(
-                            pageable = pageable,
-                            genres = b,
-                            status = status
-                        )
-                    )
-                )
-            } else if (genre != null) {
-                val b = mutableListOf<MangaGenre>()
-                genre.forEach {
-                    b.add(mangaGenreRepository.findById(it).get())
-                }
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByGenresInRandom(
-                            pageable = pageable,
-                            genres = b
-                        )
-                    )
-                )
-            } else if (status != null) {
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByStatusRandom(
-                            pageable = pageable,
-                            status = status
-                        )
-                    )
-                )
-            } else {
-                mangaLightSuccess(listToMangaLight(mangaRepository.findMangaTableByRandom(pageable = pageable)))
-            }
+        val g = if(genre != null) {
+            mangaGenreRepository.findById(genre).get()
+        } else null
 
-            null -> if (genre != null && status != null) {
-                val b = mutableListOf<MangaGenre>()
-                genre.forEach {
-                    b.add(mangaGenreRepository.findById(it).get())
-                }
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByGenresAndStatusIn(
-                            pageable = pageable,
-                            genres = b,
-                            status = status
-                        )
-                    )
-                )
-            } else if(genre != null) {
-                val b = mutableListOf<MangaGenre>()
-                genre.forEach {
-                    b.add(mangaGenreRepository.findById(it).get())
-                }
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByGenresIn(
-                            pageable = pageable,
-                            genres = b
-                        )
-                    )
-                )
-            }  else if(status != null) {
-                mangaLightSuccess(
-                    listToMangaLight(
-                        mangaRepository.findMangaTableByStatus(
-                            pageable = pageable,
-                            status = status
-                        )
-                    )
-                )
-            } else {
-                mangaLightSuccess(listToMangaLight(mangaRepository.findAll()))
+        val b = mutableListOf<MangaGenre>()
+        if(genres?.isNotEmpty() == true){
+            genres.forEach {
+                b.add(mangaGenreRepository.findById(it).get())
             }
-
-            else -> {
-                return ServiceResponse(
-                    data = null,
-                    message = "Something went wrong",
-                    status = HttpStatus.BAD_REQUEST
-                )
-            }
+            println(b)
+            return(mangaLightSuccess(listToMangaLight(mangaRepository.findMangaWithGenre(pageable = pageable, status = status, genres = b))))
         }
+        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, genre = g, status = status)))
     }
 
     override fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight> {
@@ -942,16 +867,24 @@ class MangaService: MangaRepositoryImpl {
         convertedImg.graphics.drawImage(image, 0, 0, null)
         val ww = removeAlphaChannel(convertedImg)
         val outputStream = ByteArrayOutputStream()
+        val bOutputStream = ByteArrayOutputStream()
 
+        ImageIO.write(ww, "jpg", bOutputStream)
+        println("WTF = ${bOutputStream.toByteArray().size}")
         val imageWriters: Iterator<ImageWriter> =
             ImageIO.getImageWritersByFormatName("jpg")
         val imageOutputStream: ImageOutputStream = ImageIO.createImageOutputStream(outputStream)
         val imageWriter: ImageWriter = imageWriters.next()
         imageWriter.output = imageOutputStream
         val imageWriteParam: ImageWriteParam = imageWriter.defaultWriteParam
-
         imageWriteParam.compressionMode = ImageWriteParam.MODE_EXPLICIT
-        imageWriteParam.compressionQuality = 0.5f
+        when(bOutputStream.toByteArray().size){
+            in 300000..400000 -> imageWriteParam.compressionQuality = 0.3f
+            in 200000..300000 -> imageWriteParam.compressionQuality = 0.5f
+            in 100000..200000 -> imageWriteParam.compressionQuality = 0.6f
+            in 0..100000 -> imageWriteParam.compressionQuality = 0.7f
+            else -> imageWriteParam.compressionQuality = 0.09f
+        }
 
         imageWriter.write(null, IIOImage(ww, null, null), imageWriteParam)
         val imageBytes = outputStream.toByteArray()

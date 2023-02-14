@@ -8,7 +8,6 @@ import com.example.common.models.response.ServiceResponse
 import com.example.common.network.MangaApi
 import com.example.common.util.Endpoints
 import io.ktor.client.*
-import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import org.koin.core.component.KoinComponent
@@ -31,7 +30,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
                 parameter("pageSize", pageSize)
                 parameter("order", order)
                 parameter("status", status)
-                parameter("genres", genres)
+                parameter("genre", genres)
             }
         }
 

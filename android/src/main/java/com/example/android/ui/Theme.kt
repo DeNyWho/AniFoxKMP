@@ -26,7 +26,7 @@ fun AniFoxTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
 
     MaterialTheme(
         typography = Typography,
-        shapes = Shapes,
+        shapes = Shapes.ThemeShapes,
         colors = colors,
         content = content
     )

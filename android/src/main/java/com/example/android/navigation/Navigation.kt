@@ -11,6 +11,7 @@ import com.example.android.presentation.home.HomeScreen
 import com.example.android.presentation.signIn.SignInScreen
 import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
+import com.example.common.core.enum.ContentType
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -59,7 +60,7 @@ fun Navigation(window: Window){
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
-                drawOverStatusBar = true,
+                drawOverStatusBar = false,
                 window = window
             )
 
@@ -67,4 +68,11 @@ fun Navigation(window: Window){
         }
 
     }
+}
+
+fun navigateToContentDetailsScreen(
+    malId: Int,
+    contentType: ContentType
+) {
+
 }

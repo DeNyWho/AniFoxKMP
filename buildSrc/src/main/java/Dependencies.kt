@@ -31,6 +31,7 @@ object Dependencies {
         const val mapStruct = "1.5.2.Final"
         const val common = "2.4"
         const val tomcat = "10.1.4"
+        const val twelveImageIO = "3.8.0"
 
         // Desktop Dependencies Version
         const val composeDesktop = "1.2.1"
@@ -145,6 +146,16 @@ object Dependencies {
             const val mail = "org.springframework.boot:spring-boot-starter-mail:${Versions.spring}"
             const val thymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.spring}"
             const val migration = "org.springframework.boot:spring-boot-properties-migrator:${Versions.spring}"
+        }
+
+        object ImageIO {
+            const val jpeg = "com.twelvemonkeys.imageio:imageio-jpeg:${Versions.twelveImageIO}"
+            const val tiff = "com.twelvemonkeys.imageio:imageio-tiff:${Versions.twelveImageIO}"
+            const val psd = "com.twelvemonkeys.imageio:imageio-psd:${Versions.twelveImageIO}"
+            const val bmp = "com.twelvemonkeys.imageio:imageio-bmp:${Versions.twelveImageIO}"
+            const val pdf = "com.twelvemonkeys.imageio:imageio-pdf:${Versions.twelveImageIO}"
+            const val hdr = "com.twelvemonkeys.imageio:imageio-hdr:${Versions.twelveImageIO}"
+            const val servlet = "com.twelvemonkeys.servlet:servlet:${Versions.twelveImageIO}"
         }
 
         const val scrapeIT = "it.skrape:skrapeit:"

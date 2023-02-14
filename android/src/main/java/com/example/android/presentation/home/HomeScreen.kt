@@ -12,24 +12,25 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = getViewModel(),
-    scrollState: LazyListState = rememberLazyListState(),
+    lazyColumnState: LazyListState = rememberLazyListState(),
     onContentClick: (String, Int) -> Unit = { type, id -> },
     modifier: Modifier = Modifier,
 ){
     val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarChannel = remember { Channel<String?>(Channel.CONFLATED) }
+
     LaunchedEffect(viewModel){
+        viewModel.getRomanceManga()
         viewModel.getRandomManga()
     }
-
-    val randomManga = viewModel.randomManga.value
-    println(randomManga)
-
 
     Scaffold(
         modifier = Modifier
@@ -40,8 +41,36 @@ fun HomeScreen(
         Column(Modifier.fillMaxWidth()) {
             HomeContentList(
                 navController = navController,
-                randomMangaState = randomManga
+                lazyColumnState = lazyColumnState,
+                randomMangaState = viewModel.randomManga.value,
+                romanceMangaState = viewModel.romanceManga.value
             )
+        }
+    }
+
+    LaunchedEffect(snackbarChannel) {
+        snackbarChannel.receiveAsFlow().collect { error ->
+
+            val result = if (error != null) {
+                snackbarHostState.showSnackbar(
+                    message = error,
+                    actionLabel = "Dismiss",
+                    duration = SnackbarDuration.Long
+                )
+            } else {
+                null
+            }
+
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+                    /* action has been performed */
+                }
+                SnackbarResult.Dismissed -> {
+                    /* dismissed, no action needed */
+                }
+
+                else -> {}
+            }
         }
     }
 
