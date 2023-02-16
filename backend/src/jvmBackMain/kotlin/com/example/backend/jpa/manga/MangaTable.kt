@@ -15,17 +15,17 @@ data class MangaTable(
     @Column(columnDefinition = "TEXT")
     var description: String = "",
     @ManyToMany(
-        fetch = FetchType.LAZY,
-        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.ALL]
     )
     @JoinTable(
         name = "manga_genres",
         joinColumns = [JoinColumn(name = "manga_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "genres_id", referencedColumnName = "id")],
-        schema = "manga"
+        schema = "manga",
     )
     var genres: MutableSet<MangaGenre> = mutableSetOf(),
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var types: MangaTypes = MangaTypes(),
     @OneToMany(
         fetch = FetchType.LAZY,

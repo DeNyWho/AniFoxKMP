@@ -14,16 +14,20 @@ interface MangaRepository: JpaRepository<MangaTable, String> {
     @Query("Select m From MangaTable m where m.url = :url")
     fun mangaByUrl(url: String): Optional<MangaTable>
 
-    @Query("select m from MangaTable m full join m.genres g where g in (:genres) and ((:status) is null or m.types.status = :status )" +
+    @Query("select m from MangaTable m join m.genres g where g in (:genres) and ((:status) is null or m.types.status = :status )" +
         " and(:status is null or m.types.status = :status)"
     )
     fun findMangaWithGenre(pageable: Pageable, @Param("genres") genres: List<MangaGenre>?, @Param("status") status: String?): List<MangaTable>
 
     @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
-        " and(:genre is null or :genre member of m.genres) " +
         " and(:status is null or m.types.status = :status)"
     )
-    fun findManga(pageable: Pageable, @Param("genre") genre: MangaGenre?, @Param("status") status: String?): List<MangaTable>
+    fun findMGenres(pageable: Pageable, @Param("status") status: String?): List<MangaTable>
+
+    @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
+        " and(:status is null or m.types.status = :status)"
+    )
+    fun findManga(pageable: Pageable, @Param("status") status: String?): List<MangaTable>
 
     fun findMangaTableByGenresIn(pageable: Pageable, @Param("genre") genres: List<MangaGenre>): List<MangaTable>
     @Query("select m from MangaTable m join m.genres g where g in (:genre) order by random()")

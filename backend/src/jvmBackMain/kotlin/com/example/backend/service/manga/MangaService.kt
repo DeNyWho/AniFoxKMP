@@ -3,6 +3,7 @@ package com.example.backend.service.manga
 import com.example.backend.jpa.manga.*
 import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
+import com.example.backend.models.PercentageList
 import com.example.backend.models.ServiceResponse
 import com.example.backend.repository.manga.MangaChaptersRepository
 import com.example.backend.repository.manga.MangaGenreRepository
@@ -24,6 +25,7 @@ import it.skrape.selects.DocElement
 import it.skrape.selects.eachHref
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
+import org.springframework.cache.annotation.Cacheable
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import kotlinx.serialization.json.Json
@@ -123,14 +125,16 @@ class MangaService: MangaRepositoryImpl {
         )
     }
 
+
+    @Cacheable("manga")
     override fun getAllManga(
         pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
         pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
         order: String?,
         genres: List<String>?,
-        genre: String?,
         status: String?
     ): ServiceResponse<MangaLight> {
+        println("Manga param = $pageNum | $pageSize | $order | ${genres?.size} | $status")
         val sort = when (order) {
             "popular" -> Sort.by(
                 Sort.Order(Sort.Direction.DESC, "views"),
@@ -144,23 +148,41 @@ class MangaService: MangaRepositoryImpl {
 
             else -> null
         }
-
-        val pageable: Pageable =
-            if (sort != null) PageRequest.of(pageNum, pageSize, sort) else PageRequest.of(pageNum, pageSize)
-
-        val g = if(genre != null) {
-            mangaGenreRepository.findById(genre).get()
-        } else null
+        val sm = Short.MAX_VALUE.toInt()
+        val pageable: Pageable = when {
+            genres?.isNotEmpty() == true && sort != null -> {
+                PageRequest.of(pageNum, sm, sort)
+            }
+            genres?.isNotEmpty() == true && sort == null -> {
+                PageRequest.of(pageNum, sm)
+            }
+            sort != null -> {
+                PageRequest.of(pageNum, pageSize, sort)
+            }
+            else -> PageRequest.of(pageNum, pageSize)
+        }
 
         val b = mutableListOf<MangaGenre>()
         if(genres?.isNotEmpty() == true){
             genres.forEach {
                 b.add(mangaGenreRepository.findById(it).get())
             }
-            println(b)
-            return(mangaLightSuccess(listToMangaLight(mangaRepository.findMangaWithGenre(pageable = pageable, status = status, genres = b))))
+            val t = mutableListOf<MangaTable>()
+            val maxPercent = mutableListOf<PercentageList>()
+            val temp = mangaRepository.findMGenres(pageable = pageable, status = status)
+            temp.forEachIndexed { index, manga ->
+                val firstSet = HashSet(manga.genres)
+                val secondSet = HashSet(b)
+                firstSet.retainAll(secondSet)
+                maxPercent.add(PercentageList(firstSet.size, index))
+            }
+            maxPercent.sortBy { it.size }
+            maxPercent.forEach {
+                t.add(temp[it.index])
+            }
+            return mangaLightSuccess(listToMangaLight(t))
         }
-        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, genre = g, status = status)))
+        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, status = status)))
     }
 
     override fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight> {
