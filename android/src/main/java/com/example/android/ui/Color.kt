@@ -17,6 +17,6 @@ val grey = Color(0xFFc4c4c4)
 val red = Color(0xFFF35353)
 
 val DarkBlueBackground = Color(0xFF20202A)
-val DarkGreyBackground = Color(0xFF2B2B2B)
+val darkGreyBackground = Color(0xFF2B2B2B)
 val OnDarkSurfaceLight = Color(0xFFFFFFFF)
-val OnDarkSurface = Color(0xFFBEBEBE)
+val onDarkSurface = Color(0xFFBEBEBE)

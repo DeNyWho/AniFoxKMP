@@ -3,6 +3,7 @@ package com.example.common.repository
 import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
+import com.example.common.models.GenreRequest
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.MangaApi
@@ -30,7 +31,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
                 parameter("pageSize", pageSize)
                 parameter("order", order)
                 parameter("status", status)
-                parameter("genre", genres)
+                parameter("genres", genres)
             }
         }
 

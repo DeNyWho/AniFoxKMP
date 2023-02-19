@@ -1,5 +1,6 @@
 package com.example.android.di
 
+import com.example.android.presentation.detail.DetailViewModel
 import com.example.android.presentation.home.HomeViewModel
 import com.example.android.presentation.signIn.SignInViewModel
 import com.example.android.presentation.signUp.SignUpViewModel
@@ -11,7 +12,6 @@ internal val appModule = module {
     viewModel { SplashViewModel() }
     viewModel { SignInViewModel() }
     viewModel { SignUpViewModel() }
-    viewModel {
-        HomeViewModel(get(), get())
-    }
+    viewModel { HomeViewModel(get(), get()) }
+    viewModel { DetailViewModel() }
 }

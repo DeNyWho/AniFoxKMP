@@ -1,7 +1,5 @@
 package com.example.backend.util
 
-import com.example.backend.jpa.manga.MangaGenre
-import java.util.ArrayList
 import kotlin.math.pow
 
 fun getAllCombinationsMangaGenre(elements: List<String>): List<List<String>> {

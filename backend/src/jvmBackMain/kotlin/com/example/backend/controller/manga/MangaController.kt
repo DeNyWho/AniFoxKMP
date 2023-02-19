@@ -56,6 +56,7 @@ class MangaController {
             mangaService.getAllManga(
                 pageNum = pageNum,
                 pageSize = pageSize,
+                genre = genre,
                 genres = genres,
                 status = status,
                 order = order

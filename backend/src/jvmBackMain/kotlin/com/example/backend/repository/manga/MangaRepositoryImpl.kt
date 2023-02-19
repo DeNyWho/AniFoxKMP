@@ -7,7 +7,6 @@ import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
-import org.springframework.cache.annotation.Cacheable
 
 interface MangaRepositoryImpl {
 
@@ -21,12 +20,12 @@ interface MangaRepositoryImpl {
 
     fun getMangaLinked(id: String): ServiceResponse<MangaLight>
     fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight>
-
     fun getAllManga(
         pageNum: Int,
         pageSize: Int,
         order: String?,
         genres: List<String>?,
+        genre: String?,
         status: String?
     ): ServiceResponse<MangaLight>
 }

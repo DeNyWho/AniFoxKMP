@@ -60,7 +60,7 @@ fun ScrollableHorizontalContent(
 			)
 		} else if (contentState.data.isNotEmpty()) {
 			items(
-				items = contentState.data.take(12), key =  {it.id}
+				items = contentState.data.take(11), key =  {it.id}
 			) {data ->
 				ItemVertical(
 					modifier = itemModifier,
@@ -73,7 +73,7 @@ fun ScrollableHorizontalContent(
 			showItemVerticalAnimeMoreWhenPastLimit(
 				modifier = itemModifier,
 				thumbnailHeight = thumbnailHeight,
-				size = contentState.data.size,
+				size = 13,
 				onClick = onIconClick
 			)
 		}

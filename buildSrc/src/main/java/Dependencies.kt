@@ -7,6 +7,7 @@ object Dependencies {
         const val gradle = "7.3.0"
         const val ktLint = "10.3.0"
         const val spring = "3.0.2"
+        const val parcelize = "0.8.0"
         const val springDep = "1.1.0"
 
         // KMM Dependencies Version
