@@ -35,6 +35,7 @@ fun ScrollableHorizontalContent(
 	contentArrangement: Arrangement.Horizontal,
 	textAlign: TextAlign = TextAlign.Start,
 	onIconClick: () -> Unit,
+	onItemClick: (String, String) -> Unit,
 //	onItemClick: (String, ContentType) -> Unit,
 ) {
 	if (contentState.isLoading) {
@@ -67,7 +68,7 @@ fun ScrollableHorizontalContent(
 					data = data,
 					thumbnailHeight = thumbnailHeight,
 					textAlign = textAlign,
-//					onClick = onItemClick
+					onClick = onItemClick
 				)
 			}
 			showItemVerticalAnimeMoreWhenPastLimit(

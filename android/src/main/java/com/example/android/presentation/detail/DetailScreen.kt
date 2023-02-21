@@ -1,23 +1,22 @@
 package com.example.android.presentation.detail
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.TargetBasedAnimation
-import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.android.composable.CenterCircularProgressIndicator
+import com.example.android.presentation.detail.composable.DetailScreenToolbar
+import com.example.android.ui.red
 import com.example.common.nav.ContentDetailsNavArgs
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import org.koin.androidx.compose.getViewModel
 
 private object ContentDetailsScreenSection {
     const val ContentDescription = "content_description_composable"
@@ -26,13 +25,40 @@ private object ContentDetailsScreenSection {
     const val ContentSimilar = "content_similar"
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun DetailScreen(
     navController: NavController,
-    viewModel: DetailViewModel,
+    viewModel: DetailViewModel = getViewModel(),
     navArgs: ContentDetailsNavArgs
 ) {
+    LaunchedEffect(viewModel){
+        viewModel.getDetailManga(navArgs.contentType.name, navArgs.id)
+    }
+    val toolbarScaffoldState = rememberCollapsingToolbarScaffoldState()
+    val detailsState by viewModel.detailManga
+
+    if(detailsState.isLoading){
+        CenterCircularProgressIndicator(
+            size = 40.dp,
+            color = red
+        )
+    } else {
+        CollapsingToolbarScaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background),
+            state = toolbarScaffoldState,
+            scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
+            toolbar = {
+                DetailScreenToolbar(
+                    detailState = detailsState,
+                    toolbarScaffoldState = toolbarScaffoldState
+                ) { navController.popBackStack() }
+            }
+        ) {
+
+        }
+    }
 
 }
 

@@ -55,7 +55,6 @@ fun ItemSmallCard(
             contentAlignment = Alignment.Center
         ) {
             if (painter.state is AsyncImagePainter.State.Loading) {
-                println("WTF")
                 CenterCircularProgressIndicator(
                     strokeWidth = 2.dp,
                     size = 15.dp,

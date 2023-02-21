@@ -60,7 +60,7 @@ object Dependencies {
         const val rating_bar = "1.1.1"
         const val leakCanary = "2.9.1"
         const val paging_compose = "1.0.0-alpha14"
-        const val oneBoneToolbar="2.3.4"
+        const val oneBoneToolbar="2.2.0"
         const val osmdroidAndroid = "6.1.10"
 
     }

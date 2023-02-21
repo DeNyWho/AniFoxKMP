@@ -29,25 +29,23 @@ fun ItemVertical(
   data: MangaLight,
   thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
   textAlign: TextAlign = TextAlign.Start,
+  onClick: (String, String) -> Unit,
 //  onClick: (String, ContentType) -> Unit
 ) {
   Column(
     modifier = modifier
       .clip(Shapes.Rounded12)
-//      .clickable { onClick(data.id, ContentType.Anime) }
+      .clickable { onClick(ContentType.Manga.name, data.id) }
   ) {
     val thumbnailModifier = Modifier
       .fillMaxWidth()
       .height(thumbnailHeight)
       .clip(Shapes.Rounded12)
     if (LocalInspectionMode.current) {
-
-      println("ZXC = zxzxczxcz")
       Box(modifier = thumbnailModifier
         .background(teal200)
       )
     } else {
-      println("ZXC = ${data.image}")
       SubcomposeAsyncImage(
         modifier = thumbnailModifier,
         model = data.image.replace("localhost", "192.168.0.44"),

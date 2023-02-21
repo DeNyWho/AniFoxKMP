@@ -18,7 +18,6 @@ suspend inline fun <reified T: Any, reified U: Any> safeApiCall(
     return try {
         val res: HttpResponse = client.request(request)
 
-        println("WTF")
         if (res.status.isSuccess()) {
             val body = res.body<T>()
             Resource.Success(body)

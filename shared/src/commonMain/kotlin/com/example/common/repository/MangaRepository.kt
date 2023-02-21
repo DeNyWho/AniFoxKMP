@@ -4,6 +4,7 @@ import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
 import com.example.common.models.GenreRequest
+import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.MangaApi
@@ -38,4 +39,18 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
         return safeApiCall<ServiceResponse<MangaLight>, GeneralError>(client, request)
     }
 
+    override suspend fun getMangaDetails(
+        id: String
+    ): Resource<ServiceResponse<MangaDetail>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTP
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.manga}$id"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<MangaDetail>, GeneralError>(client, request)
+    }
 }

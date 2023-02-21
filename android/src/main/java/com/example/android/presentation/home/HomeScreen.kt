@@ -12,6 +12,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.android.navigation.Screen
+import com.example.common.core.enum.ContentType
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
@@ -21,7 +23,6 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = getViewModel(),
     lazyColumnState: LazyListState = rememberLazyListState(),
-    onContentClick: (String, Int) -> Unit = { type, id -> },
     modifier: Modifier = Modifier,
 ){
     val snackbarHostState = remember { SnackbarHostState() }
@@ -43,7 +44,10 @@ fun HomeScreen(
                 navController = navController,
                 lazyColumnState = lazyColumnState,
                 randomMangaState = viewModel.randomManga.value,
-                romanceMangaState = viewModel.romanceManga.value
+                romanceMangaState = viewModel.romanceManga.value,
+                onContentClick =  { type, id ->
+                    navController.navigate("${Screen.Details.route}/$type/$id")
+                },
             )
         }
     }

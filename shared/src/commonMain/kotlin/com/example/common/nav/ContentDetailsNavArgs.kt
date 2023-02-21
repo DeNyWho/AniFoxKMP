@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContentDetailsNavArgs(
-    val malId: Int,
+    val id: String,
     val contentType: ContentType
 )
