@@ -45,5 +45,9 @@ val Typography = Typography(
         fontFamily = vietnamPro,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
-    )
+    ),
+    body1 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = Size.Text13
+    ),
 )

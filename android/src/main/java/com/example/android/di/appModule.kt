@@ -13,5 +13,5 @@ internal val appModule = module {
     viewModel { SignInViewModel() }
     viewModel { SignUpViewModel() }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { DetailViewModel( get()) }
+    viewModel { DetailViewModel( get(), get(), get()) }
 }

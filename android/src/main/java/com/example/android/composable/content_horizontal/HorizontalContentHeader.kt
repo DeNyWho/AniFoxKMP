@@ -3,6 +3,7 @@ package com.example.android.composable.content_horizontal
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -19,7 +20,7 @@ import com.example.android.ui.red
 object HorizontalContentHeaderConfig {
   val Default = Modifier
     .fillMaxWidth()
-    .padding(start = 18.dp, end = 12.dp, bottom = 4.dp)
+    .padding(start = 0.dp, end = 12.dp, bottom = 4.dp)
   val fillWidth = Modifier.fillMaxWidth()
 }
 
@@ -37,9 +38,9 @@ fun HorizontalContentHeader(
     Text(
       text = title,
       style = TextStyle(
-        color = red,
+        color = MaterialTheme.colors.primary,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
+        fontSize = 18.sp
       )
     )
 

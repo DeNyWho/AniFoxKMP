@@ -3,6 +3,7 @@ package com.example.android.presentation.home.item
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ fun ItemVertical(
 ) {
   Column(
     modifier = modifier
+      .height(thumbnailHeight + 40.dp)
       .clip(Shapes.Rounded12)
       .clickable { onClick(ContentType.Manga.name, data.id) }
   ) {
@@ -68,6 +70,7 @@ fun ItemVertical(
         .padding(top = 6.dp, bottom = 4.dp),
       maxLines = 2,
       overflow = TextOverflow.Ellipsis,
+      color = MaterialTheme.colors.primary,
 //      style = MyType.Body2.Normal.OnDarkSurfaceLight,
       textAlign = textAlign,
 //      onTextLayout = {

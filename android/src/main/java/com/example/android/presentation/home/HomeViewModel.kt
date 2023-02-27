@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper
 import com.example.common.usecase.manga.GetRandomMangaUseCase
-import com.example.common.usecase.manga.GetRomanceMangaUseCase
+import com.example.common.usecase.manga.GetMangaByGenreUseCase
+import com.example.common.util.Constants
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class HomeViewModel(
     private val getRandomMangaUseCase: GetRandomMangaUseCase,
-    private val getRomanceMangaUseCase: GetRomanceMangaUseCase
+    private val getMangaByGenreUseCase: GetMangaByGenreUseCase
 ): ViewModel() {
 
     private val _randomManga: MutableState<StateListWrapper<MangaLight>> =
@@ -31,7 +32,11 @@ class HomeViewModel(
     }
 
     fun getRomanceManga(){
-        getRomanceMangaUseCase.invoke().onEach {
+        getMangaByGenreUseCase.invoke(genres =listOf(
+            Constants.romance,
+            Constants.dramma,
+            Constants.sedze
+        )).onEach {
             _romanceManga.value = it
         }.launchIn(viewModelScope)
     }

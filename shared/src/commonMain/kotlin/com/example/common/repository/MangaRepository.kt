@@ -53,4 +53,38 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
 
         return safeApiCall<ServiceResponse<MangaDetail>, GeneralError>(client, request)
     }
+
+    override suspend fun getMangaLinked(
+        id: String
+    ): Resource<ServiceResponse<MangaLight>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTP
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.manga}$id${Endpoints.linked}"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<MangaLight>, GeneralError>(client, request)
+    }
+
+    override suspend fun getMangaSimilar(
+        id: String,
+        pageNum: Int,
+        pageSize: Int,
+    ): Resource<ServiceResponse<MangaLight>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTP
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.manga}$id${Endpoints.similar}"
+                parameter("pageNum", pageNum)
+                parameter("pageSize", pageSize)
+            }
+        }
+
+        return safeApiCall<ServiceResponse<MangaLight>, GeneralError>(client, request)
+    }
 }

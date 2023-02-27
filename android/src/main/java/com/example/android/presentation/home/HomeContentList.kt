@@ -38,8 +38,7 @@ fun HomeContentList(
                 contentState = romanceMangaState,
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-                onIconClick = {
-                },
+                onIconClick = {},
                 onItemClick = onContentClick
             )
         }
@@ -51,28 +50,13 @@ fun HomeContentList(
                 contentState = randomMangaState,
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-                onIconClick = {
-                },
+                onIconClick = {},
                 onItemClick = onContentClick
             )
         }
     }
 
 }
-
-
-
-private fun LazyListScope.showShimmerPlaceHolder(shimmerInstance: Shimmer, count: Int){
-    items(count){
-        ItemShimmer(shimmerInstance)
-    }
-}
-private fun LazyListScope.showShimmerHeaderPlaceHolder(shimmerInstance: Shimmer){
-        item {
-            ItemShimmerHeader(shimmerInstance)
-        }
-}
-
 
 
 

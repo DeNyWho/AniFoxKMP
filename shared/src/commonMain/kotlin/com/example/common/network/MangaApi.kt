@@ -12,4 +12,6 @@ expect val ApplicationDispatcher: CoroutineDispatcher
 interface MangaApi {
     suspend fun getManga(pageNum: Int, pageSize: Int, order: String?, status: String?, genres: List<String>?): Resource<ServiceResponse<MangaLight>>
     suspend fun getMangaDetails(id: String): Resource<ServiceResponse<MangaDetail>>
+    suspend fun getMangaLinked(id: String): Resource<ServiceResponse<MangaLight>>
+    suspend fun getMangaSimilar(id: String, pageNum: Int, pageSize: Int): Resource<ServiceResponse<MangaLight>>
 }

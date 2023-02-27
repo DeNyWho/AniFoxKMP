@@ -1,6 +1,7 @@
 package com.example.android.navigation
 
 import android.view.Window
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
@@ -65,7 +66,7 @@ fun Navigation(window: Window){
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
-                drawOverStatusBar = false,
+                drawOverStatusBar = true,
                 window = window
             )
             DetailScreen(
@@ -82,7 +83,7 @@ fun Navigation(window: Window){
         composable(Screen.Home.route){
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = Color.Transparent,
+                color = MaterialTheme.colors.background,
                 drawOverStatusBar = false,
                 window = window,
             )

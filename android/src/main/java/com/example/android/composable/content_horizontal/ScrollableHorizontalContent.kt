@@ -36,7 +36,7 @@ fun ScrollableHorizontalContent(
 	textAlign: TextAlign = TextAlign.Start,
 	onIconClick: () -> Unit,
 	onItemClick: (String, String) -> Unit,
-//	onItemClick: (String, ContentType) -> Unit,
+	limit: Int = 11
 ) {
 	if (contentState.isLoading) {
 		ContentListHeaderWithButtonShimmer(shimmerInstance = shimmer)
@@ -44,7 +44,7 @@ fun ScrollableHorizontalContent(
 		HorizontalContentHeader(
 			modifier = headerModifier,
 			title = headerTitle,
-			onButtonClick = onIconClick
+			onButtonClick = if(contentState.data.size > limit) onIconClick else null
 		)
 	}
 
@@ -61,7 +61,7 @@ fun ScrollableHorizontalContent(
 			)
 		} else if (contentState.data.isNotEmpty()) {
 			items(
-				items = contentState.data.take(11), key =  {it.id}
+				items = contentState.data, key =  {it.id}
 			) {data ->
 				ItemVertical(
 					modifier = itemModifier,
@@ -74,7 +74,7 @@ fun ScrollableHorizontalContent(
 			showItemVerticalAnimeMoreWhenPastLimit(
 				modifier = itemModifier,
 				thumbnailHeight = thumbnailHeight,
-				size = 13,
+				size = contentState.data.size,
 				onClick = onIconClick
 			)
 		}
