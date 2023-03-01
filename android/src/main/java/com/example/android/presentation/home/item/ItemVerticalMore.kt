@@ -52,7 +52,7 @@ fun ItemVerticalMore(
           .rotate(-90f)
       )
       Text(
-        text = "See more",
+        text = "Показать ещё",
         color = MaterialTheme.colors.primary
       )
     }

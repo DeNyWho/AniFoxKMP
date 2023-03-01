@@ -21,7 +21,13 @@ object HorizontalContentHeaderConfig {
   val Default = Modifier
     .fillMaxWidth()
     .padding(start = 0.dp, end = 12.dp, bottom = 4.dp)
+  val Home = Modifier
+    .fillMaxWidth()
+    .padding(start = 12.dp, end = 0.dp, bottom = 4.dp)
   val fillWidth = Modifier.fillMaxWidth()
+  val Detail = Modifier
+    .fillMaxWidth()
+    .padding(start = 0.dp, end = 0.dp, bottom = 4.dp)
 }
 
 @Composable
@@ -31,7 +37,8 @@ fun HorizontalContentHeader(
   onButtonClick: (() -> Unit)? = null
 ) {
   Row(
-    modifier = modifier.heightIn(min = 32.dp),
+    modifier = Modifier
+      .heightIn(min = 32.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
   ) {
@@ -43,9 +50,11 @@ fun HorizontalContentHeader(
         fontSize = 18.sp
       )
     )
+    Spacer(modifier = Modifier.weight(1f))
 
     if (onButtonClick != null) {
-      IconButton(onClick = onButtonClick) {
+      IconButton(onClick = onButtonClick
+      ) {
         Icon(
           imageVector = Icons.Default.ArrowForward,
           contentDescription = "See all",

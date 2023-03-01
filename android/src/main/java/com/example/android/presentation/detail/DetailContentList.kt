@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
 import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.navigation.Screen
@@ -55,10 +56,10 @@ fun DetailContentList(
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 onIconClick = {
                 },
+                headerModifier = HorizontalContentHeaderConfig.Detail,
                 onItemClick = onContentClick
             )
         }
-        println("ZXCF = $similarState")
         item(key = ContentDetailsScreenSection.ContentSimilar) {
             ScrollableHorizontalContent(
                 modifier = Modifier,
@@ -66,6 +67,7 @@ fun DetailContentList(
                 headerTitle = "Похожие",
                 contentState = similarState,
                 contentPadding = PaddingValues(horizontal = 0.dp),
+                headerModifier = HorizontalContentHeaderConfig.Detail,
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 onIconClick = {
                 },
