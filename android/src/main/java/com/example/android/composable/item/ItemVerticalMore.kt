@@ -1,4 +1,4 @@
-package com.example.android.presentation.home.item
+package com.example.android.composable.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -66,7 +66,6 @@ fun LazyListScope.showItemVerticalAnimeMoreWhenPastLimit(
   size: Int = 0,
   onClick: () -> Unit
 ) {
-  println("SIZING = $size")
   if (size > limit) {
     item {
       ItemVerticalMore(
@@ -77,15 +76,3 @@ fun LazyListScope.showItemVerticalAnimeMoreWhenPastLimit(
     }
   }
 }
-
-//@Preview
-//@Composable
-//fun Preview_ItemVerticalAnimeMore(
-//  @PreviewParameter(ItemVerticalAnimeMoreParameterProvider::class) state: ItemVerticalAnimeMoreState
-//) {
-//  ItemVerticalMore(
-//    modifier = state.modifier,
-//    thumbnailHeight = state.thumbnailHeight,
-//    onClick = { }
-//  )
-//}

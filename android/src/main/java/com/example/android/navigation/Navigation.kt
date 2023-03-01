@@ -12,6 +12,8 @@ import androidx.navigation.navArgument
 import com.example.android.common.OnDestinationChanged
 import com.example.android.presentation.detail.DetailScreen
 import com.example.android.presentation.home.HomeScreen
+import com.example.android.presentation.morePage.MorePageScreen
+import com.example.android.presentation.search.SearchScreen
 import com.example.android.presentation.signIn.SignInScreen
 import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
@@ -59,6 +61,17 @@ fun Navigation(window: Window){
 
             SignUpScreen(navController = navController)
         }
+
+        composable(Screen.MorePage.route){
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                color = MaterialTheme.colors.background,
+                drawOverStatusBar = true,
+                window = window
+            )
+
+            MorePageScreen(navController = navController)
+        }
         composable(
             "${Screen.Details.route}/{type}/{id}",
             arguments = detailsScreenArgs
@@ -79,7 +92,6 @@ fun Navigation(window: Window){
 
         }
 
-
         composable(Screen.Home.route){
             OnDestinationChanged(
                 systemUiController = systemUiController,
@@ -89,6 +101,19 @@ fun Navigation(window: Window){
             )
 
             HomeScreen(
+                navController = navController
+            )
+        }
+
+        composable(Screen.Search.route){
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                color = MaterialTheme.colors.background,
+                drawOverStatusBar = false,
+                window = window,
+            )
+
+            SearchScreen(
                 navController = navController
             )
         }

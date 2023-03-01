@@ -1,19 +1,24 @@
 package com.example.android.presentation.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.android.navigation.Screen
-import com.example.common.core.enum.ContentType
+import com.example.android.presentation.search.composable.SearchBoxField
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
@@ -40,14 +45,25 @@ fun HomeScreen(
         scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState)
     ) {
         Column(Modifier.fillMaxWidth()) {
+            SearchBoxField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable(
+                        onClick = { navController.navigate(Screen.Search.route)}
+                    ),
+                isEnabled = false
+            )
             HomeContentList(
                 navController = navController,
                 lazyColumnState = lazyColumnState,
                 randomMangaState = viewModel.randomManga.value,
                 romanceMangaState = viewModel.romanceManga.value,
-                onContentClick =  { type, id ->
+                onContentClick = { type, id ->
                     navController.navigate("${Screen.Details.route}/$type/$id")
                 },
+                onIconClick = { navController.navigate(Screen.MorePage.route) }
             )
         }
     }

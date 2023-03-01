@@ -20,7 +20,7 @@ import com.example.android.ui.red
 object HorizontalContentHeaderConfig {
   val Default = Modifier
     .fillMaxWidth()
-    .padding(start = 0.dp, end = 12.dp, bottom = 4.dp)
+    .padding(start = 16.dp, end = 12.dp, bottom = 4.dp)
   val Home = Modifier
     .fillMaxWidth()
     .padding(start = 12.dp, end = 0.dp, bottom = 4.dp)
@@ -37,7 +37,7 @@ fun HorizontalContentHeader(
   onButtonClick: (() -> Unit)? = null
 ) {
   Row(
-    modifier = Modifier
+    modifier = modifier
       .heightIn(min = 32.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween

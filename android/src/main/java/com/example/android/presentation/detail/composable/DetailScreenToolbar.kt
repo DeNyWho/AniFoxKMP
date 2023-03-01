@@ -66,7 +66,7 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp)
+            .height(280.dp)
             .parallax(0.5f)
             .graphicsLayer {
                 alpha = toolbarScaffoldState.toolbarState.progress
@@ -201,9 +201,6 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
             )
         }
     }
-
-
-
 }
 
 @Composable

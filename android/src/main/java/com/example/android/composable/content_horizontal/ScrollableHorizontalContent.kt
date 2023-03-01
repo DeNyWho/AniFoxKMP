@@ -13,9 +13,9 @@ import com.example.android.composable.shimmer.ContentListHeaderWithButtonShimmer
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
-import com.example.android.presentation.home.item.ItemVertical
-import com.example.android.presentation.home.item.ItemVerticalModifier
-import com.example.android.presentation.home.item.showItemVerticalAnimeMoreWhenPastLimit
+import com.example.android.composable.item.ItemVertical
+import com.example.android.composable.item.ItemVerticalModifier
+import com.example.android.composable.item.showItemVerticalAnimeMoreWhenPastLimit
 import com.example.common.core.enum.ContentType
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper

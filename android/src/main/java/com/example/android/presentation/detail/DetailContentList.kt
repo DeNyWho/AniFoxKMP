@@ -13,7 +13,7 @@ import com.example.android.composable.content_horizontal.ScrollableHorizontalCon
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.navigation.Screen
 import com.example.android.presentation.detail.composable.DetailDescription
-import com.example.android.presentation.home.item.ItemVerticalModifier
+import com.example.android.composable.item.ItemVerticalModifier
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper
@@ -52,7 +52,7 @@ fun DetailContentList(
                 shimmer = rememberShimmerCustomBounds(),
                 headerTitle = "Связанные",
                 contentState = linkedState,
-                contentPadding = PaddingValues(horizontal = 0.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 onIconClick = {
                 },
@@ -66,7 +66,7 @@ fun DetailContentList(
                 shimmer = rememberShimmerCustomBounds(),
                 headerTitle = "Похожие",
                 contentState = similarState,
-                contentPadding = PaddingValues(horizontal = 0.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp),
                 headerModifier = HorizontalContentHeaderConfig.Detail,
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 onIconClick = {

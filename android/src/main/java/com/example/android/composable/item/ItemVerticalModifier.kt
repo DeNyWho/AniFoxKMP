@@ -1,4 +1,4 @@
-package com.example.android.presentation.home.item
+package com.example.android.composable.item
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

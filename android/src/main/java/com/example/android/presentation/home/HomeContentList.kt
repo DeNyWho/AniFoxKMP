@@ -2,22 +2,18 @@ package com.example.android.presentation.home
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
 import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
-import com.example.android.presentation.home.item.ItemVerticalModifier
-import com.example.android.presentation.home.view_holder.ItemShimmer
-import com.example.android.presentation.home.view_holder.ItemShimmerHeader
-import com.example.common.core.enum.ContentType
+import com.example.android.composable.item.ItemVerticalModifier
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper
-import com.valentinilk.shimmer.Shimmer
 
 @Composable
 fun HomeContentList(
@@ -25,7 +21,8 @@ fun HomeContentList(
     randomMangaState: StateListWrapper<MangaLight>,
     lazyColumnState: LazyListState = rememberLazyListState(),
     romanceMangaState: StateListWrapper<MangaLight>,
-    onContentClick: (String, String) -> Unit
+    onContentClick: (String, String) -> Unit,
+    onIconClick: () -> Unit
 ) {
     LazyColumn (
         state = lazyColumnState
@@ -38,7 +35,8 @@ fun HomeContentList(
                 contentState = romanceMangaState,
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-                onIconClick = {},
+                headerModifier = HorizontalContentHeaderConfig.Home,
+                onIconClick = onIconClick,
                 onItemClick = onContentClick
             )
         }
@@ -50,7 +48,8 @@ fun HomeContentList(
                 contentState = randomMangaState,
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-                onIconClick = {},
+                headerModifier = HorizontalContentHeaderConfig.Home,
+                onIconClick = onIconClick,
                 onItemClick = onContentClick
             )
         }

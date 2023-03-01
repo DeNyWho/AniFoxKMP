@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.ui.blueLikeSky
 import com.example.android.ui.bluest
+import com.example.android.ui.darkGreyBackground
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.getViewModel
 
@@ -37,7 +39,7 @@ fun SplashScreen(
 @Composable
 fun splash(){
     val modifier = if (isSystemInDarkTheme()){
-        Modifier.background(Color.Black)
+        Modifier.background(MaterialTheme.colors.background)
     } else {
         Modifier.background(
             Brush.radialGradient (listOf(blueLikeSky, bluest), radius =  1800f)

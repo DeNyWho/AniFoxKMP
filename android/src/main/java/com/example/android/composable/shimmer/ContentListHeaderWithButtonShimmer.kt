@@ -20,7 +20,7 @@ fun ContentListHeaderWithButtonShimmer(
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(start = 0.dp, end = 0.dp, bottom = 4.dp)
+      .padding(start = 12.dp, end = 0.dp, bottom = 4.dp)
       .heightIn(min = 32.dp)
       .shimmer(shimmerInstance),
     horizontalArrangement = Arrangement.SpaceBetween,

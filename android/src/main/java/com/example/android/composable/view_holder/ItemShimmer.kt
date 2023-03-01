@@ -1,4 +1,4 @@
-package com.example.android.presentation.home.view_holder
+package com.example.android.composable.view_holder
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

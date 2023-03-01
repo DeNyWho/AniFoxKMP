@@ -11,16 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.android.presentation.home.item.ItemVerticalModifier
+import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.ui.grey
 import com.valentinilk.shimmer.Shimmer
 import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun ItemVerticalMangaShimmer(
-  modifier: Modifier,
-  shimmerInstance: Shimmer,
-  thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
+    modifier: Modifier,
+    shimmerInstance: Shimmer,
+    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
 ) {
   Column(
     modifier = modifier
@@ -63,10 +63,10 @@ fun ItemVerticalMangaShimmer(
 
 @OptIn(ExperimentalFoundationApi::class)
 fun LazyGridScope.showItemVerticalAnimeShimmer(
-  modifier: Modifier = ItemVerticalModifier.fillParentWidth,
-  shimmerInstance: Shimmer,
-  count: Int = 9,
-  thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault
+    modifier: Modifier = ItemVerticalModifier.fillParentWidth,
+    shimmerInstance: Shimmer,
+    count: Int = 9,
+    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault
 ) {
   items(count) {
     ItemVerticalMangaShimmer(
@@ -78,10 +78,10 @@ fun LazyGridScope.showItemVerticalAnimeShimmer(
 }
 
 fun LazyListScope.showItemVerticalAnimeShimmer(
-  modifier: Modifier = ItemVerticalModifier.Default,
-  shimmerInstance: Shimmer,
-  count: Int = 5,
-  thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault
+    modifier: Modifier = ItemVerticalModifier.Default,
+    shimmerInstance: Shimmer,
+    count: Int = 5,
+    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault
 ) {
   items(count) {
     ItemVerticalMangaShimmer(
