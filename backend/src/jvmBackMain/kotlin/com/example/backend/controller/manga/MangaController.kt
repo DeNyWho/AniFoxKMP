@@ -26,40 +26,40 @@ class MangaController {
     lateinit var mangaService: MangaService
 
 
-    @GetMapping("parser")
-    @Operation(summary = "Parse manga and add data to postgreSQL")
-    fun parseManga(): ServiceResponse<Long> {
-        return try {
-            val start = System.currentTimeMillis()
-            mangaService.addDataToDB()
-
-            val finish = System.currentTimeMillis()
-            val elapsed = finish - start
-            println("Time execution $elapsed")
-            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
-        } catch (e: ChangeSetPersister.NotFoundException) {
-            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
-        }
-    }
+//    @GetMapping("parser")
+//    @Operation(summary = "Parse manga and add data to postgreSQL")
+//    fun parseManga(): ServiceResponse<Long> {
+//        return try {
+//            val start = System.currentTimeMillis()
+//            mangaService.addDataToDB()
+//
+//            val finish = System.currentTimeMillis()
+//            val elapsed = finish - start
+//            println("Time execution $elapsed")
+//            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
+//        } catch (e: ChangeSetPersister.NotFoundException) {
+//            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+//        }
+//    }
 
     @GetMapping()
     @Operation(summary = "get all manga")
     fun getManga(
         @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
         @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
-        @RequestParam(name = "genres", required = false) genres: List<String>?,
-        @RequestParam(name = "genre", required = false) genre: String?,
+        @RequestParam genres: List<String>?,
         @Schema(name = "status", required = false, description = "Must be one of: онгоинг, завершён, продолжается, заброшен") status: String?,
-        @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", ) order: String?
+        @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", ) order: String?,
+        @Schema(name = "searchQuery", required = false) searchQuery: String?
     ): ServiceResponse<MangaLight>? {
         return try {
             mangaService.getAllManga(
                 pageNum = pageNum,
                 pageSize = pageSize,
-                genre = genre,
                 genres = genres,
                 status = status,
-                order = order
+                order = order,
+                searchQuery = searchQuery
             )
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
@@ -80,21 +80,6 @@ class MangaController {
         }
     }
 
-    @GetMapping("search")
-    @Operation(summary = "manga search")
-    fun searchManga(
-        @RequestParam(name = "searchQuery") searchQuery: String,
-        @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
-        @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
-        response: HttpServletResponse
-    ): ServiceResponse<MangaLight> {
-        return try {
-            mangaService.findManga(searchQuery, pageNum, pageSize)
-        } catch (e: ChangeSetPersister.NotFoundException) {
-            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
-        }
-    }
-
     @GetMapping("{id}/linked")
     @Operation(summary = "get manga linked")
     fun getMangaLinked(
@@ -102,6 +87,21 @@ class MangaController {
     ): ServiceResponse<MangaLight> {
         return try {
             mangaService.getMangaLinked(id)
+        } catch (e: ChangeSetPersister.NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+        }
+    }
+
+    @GetMapping("{id}/similar")
+    @Operation(summary = "get manga similar")
+    fun getMangaSimilar(
+        @PathVariable(name = "id") id: String,
+        @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
+        @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
+        response: HttpServletResponse
+    ): ServiceResponse<MangaLight> {
+        return try {
+            mangaService.getSimilarManga(pageNum, pageSize, id)
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         }

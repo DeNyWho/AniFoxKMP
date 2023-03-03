@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -62,6 +63,7 @@ fun SearchBoxField (
                     .focusRequester(focusRequest),
                 value = searchQuery,
                 textStyle = TextStyle(
+                    color = MaterialTheme.colors.primary,
                     fontWeight = FontWeight.Medium,
                     fontSize = Size.Text14
                 ),

@@ -3,12 +3,14 @@ package com.example.backend.service.manga
 import com.example.backend.jpa.manga.*
 import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
+import com.example.backend.models.PercentageList
 import com.example.backend.models.ServiceResponse
 import com.example.backend.repository.manga.MangaChaptersRepository
 import com.example.backend.repository.manga.MangaGenreRepository
 import com.example.backend.repository.manga.MangaRepository
 import com.example.backend.repository.manga.MangaRepositoryImpl
 import com.example.backend.service.image.ImageService
+import com.example.backend.util.toPage
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
@@ -123,14 +125,53 @@ class MangaService: MangaRepositoryImpl {
         )
     }
 
+    override fun getSimilarManga(
+        pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
+        pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
+        id: String
+    ): ServiceResponse<MangaLight>{
+        println("Manga param = $pageNum | $pageSize | $id")
+        val v = mangaRepository.findById(id).get()
+        val b = mutableListOf<MangaGenre>()
+        v.genres.forEach {
+            if(b.size != 4) {
+                b.add(mangaGenreRepository.findById(it.id).get())
+            }
+        }
+        val t = mutableListOf<MangaTable>()
+        val maxPercent = mutableListOf<PercentageList>()
+        val temp = mangaRepository.findMGenres(pageable = PageRequest.of(pageNum, Short.MAX_VALUE.toInt()), status = null)
+        temp.forEachIndexed { index, manga ->
+            if(manga != v) {
+                val firstSet = HashSet(manga.genres)
+                val secondSet = HashSet(b)
+                firstSet.retainAll(secondSet)
+                maxPercent.add(PercentageList(firstSet.size, index))
+            }
+        }
+        maxPercent.sortByDescending { it.size }
+        maxPercent.forEach {
+            if(it.size == b.size || it.size > 2) t.add(temp[it.index])
+        }
+        val p = PageRequest.of(pageNum, pageSize)
+        return if(t.size > 0){
+            mangaLightSuccess(listToMangaLight(t.toPage(p).content))
+        } else {
+            mangaLightSuccess(listOf(MangaLight()))
+        }
+    }
+
+
     override fun getAllManga(
         pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
         pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
         order: String?,
         genres: List<String>?,
-        genre: String?,
-        status: String?
+        status: String?,
+        searchQuery: String?
     ): ServiceResponse<MangaLight> {
+        println("genres = $genres")
+        println("Manga param = $pageNum | $pageSize | $order | ${genres?.size} | $status")
         val sort = when (order) {
             "popular" -> Sort.by(
                 Sort.Order(Sort.Direction.DESC, "views"),
@@ -144,52 +185,46 @@ class MangaService: MangaRepositoryImpl {
 
             else -> null
         }
-
-        val pageable: Pageable =
-            if (sort != null) PageRequest.of(pageNum, pageSize, sort) else PageRequest.of(pageNum, pageSize)
-
-        val g = if(genre != null) {
-            mangaGenreRepository.findById(genre).get()
-        } else null
+        val sm = Short.MAX_VALUE.toInt()
+        val pageable: Pageable = when {
+            genres?.isNotEmpty() == true && sort != null -> {
+                PageRequest.of(pageNum, sm, sort)
+            }
+            genres?.isNotEmpty() == true && sort == null -> {
+                PageRequest.of(pageNum, sm)
+            }
+            sort != null -> {
+                PageRequest.of(pageNum, pageSize, sort)
+            }
+            else -> PageRequest.of(pageNum, pageSize)
+        }
 
         val b = mutableListOf<MangaGenre>()
         if(genres?.isNotEmpty() == true){
-            genres.forEach {
+            genres.map { it.replace("[","").replace("]","") }.forEach {
                 b.add(mangaGenreRepository.findById(it).get())
             }
-            println(b)
-            return(mangaLightSuccess(listToMangaLight(mangaRepository.findMangaWithGenre(pageable = pageable, status = status, genres = b))))
-        }
-        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, genre = g, status = status)))
-    }
-
-    override fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight> {
-        return try {
-            val pageable: Pageable = PageRequest.of(pageNum, pageSize)
-            val light = mutableListOf<MangaLight>()
-
-            mangaRepository.findByTitleSearch(pageable, searchQuery).forEach { search ->
-                light.add(
-                    MangaLight(
-                        id = search.id,
-                        title = search.title,
-                        image = search.image
-                    )
-                )
+            val t = mutableListOf<MangaTable>()
+            val maxPercent = mutableListOf<PercentageList>()
+            val temp = mangaRepository.findMGenres(pageable = pageable, status = status)
+            temp.forEachIndexed { index, manga ->
+                val firstSet = HashSet(manga.genres)
+                val secondSet = HashSet(b)
+                firstSet.retainAll(secondSet)
+                maxPercent.add(PercentageList(firstSet.size, index))
             }
-
-            ServiceResponse(
-                data = light,
-                message = "Success",
-                status = HttpStatus.OK
-            )
-        } catch (e: Exception) {
-            ServiceResponse(
-                data = null,
-                message = e.message.toString(),
-                status = HttpStatus.BAD_REQUEST
-            )
+            maxPercent.sortByDescending { it.size }
+            maxPercent.forEach {
+                if(it.size > 0) t.add(temp[it.index])
+            }
+            val p = PageRequest.of(pageNum, pageSize)
+            return if(t.size > 0){
+                mangaLightSuccess(listToMangaLight(t.toPage(p).content))
+            } else {
+                mangaLightSuccess(listOf(MangaLight()))
+            }
         }
+        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, status = status, searchQuery = searchQuery)))
     }
 
     override fun getMangaChapters(id: String, pageNum: Int, pageSize: Int): ServiceResponse<ChaptersLight> {
@@ -249,14 +284,14 @@ class MangaService: MangaRepositoryImpl {
                     message = "Success",
                     status = HttpStatus.OK
                 )
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 ServiceResponse(
                     data = null,
                     message = e.message.toString(),
                     status = HttpStatus.BAD_REQUEST
                 )
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             ServiceResponse(
                 data = null,
                 message = "Manga with id = $id not found",
@@ -285,14 +320,14 @@ class MangaService: MangaRepositoryImpl {
                     message = "Success",
                     status = HttpStatus.OK
                 )
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 ServiceResponse(
                     data = null,
                     message = e.message.toString(),
                     status = HttpStatus.BAD_REQUEST
                 )
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             ServiceResponse(
                 data = null,
                 message = "Manga with id = $id not found",
@@ -335,14 +370,14 @@ class MangaService: MangaRepositoryImpl {
                     message = "Success",
                     status = HttpStatus.OK
                 )
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 ServiceResponse(
                     data = null,
                     message = e.message.toString(),
                     status = HttpStatus.BAD_REQUEST
                 )
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             ServiceResponse(
                 data = null,
                 message = "Manga with id = $id not found",
@@ -387,7 +422,7 @@ class MangaService: MangaRepositoryImpl {
                     }
                 }
                 pagesAvailable = true
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 pagesAvailable = false
             }
         }
@@ -429,7 +464,7 @@ class MangaService: MangaRepositoryImpl {
                                         findAll { return@findAll eachText }.distinct().joinToString().split(" ")
                                     val tempYear = try {
                                         tempTypes[1].toInt()
-                                    } catch (e: Exception) {
+                                    } catch (e: Throwable) {
                                         null
                                     }
                                     val tempStatusList =
@@ -448,7 +483,7 @@ class MangaService: MangaRepositoryImpl {
                                         } else if (tempTypes[3] in tempStatusList && tempTypes.size > 3) {
                                             tempTypes[3]
                                         } else ""
-                                    } catch (e: Exception) {
+                                    } catch (e: Throwable) {
                                         ""
                                     }
                                     val tempLimitationList = listOf("16+", "18+")
@@ -460,7 +495,7 @@ class MangaService: MangaRepositoryImpl {
                                         } else if (tempTypes[3] in tempLimitationList && tempTypes.size > 3) {
                                             tempTypes[3]
                                         } else ""
-                                    } catch (e: Exception) {
+                                    } catch (e: Throwable) {
                                         ""
                                     }
 
@@ -492,7 +527,7 @@ class MangaService: MangaRepositoryImpl {
                                                 )
                                             }
                                         }
-                                    } catch (e: Exception) {
+                                    } catch (e: Throwable) {
                                         return@a
                                     }
                                 }
@@ -534,7 +569,6 @@ class MangaService: MangaRepositoryImpl {
                                     }
 
                                     val f = sequence {
-                                        val id = UUID.randomUUID().toString()
                                         val first = tempChapterTitle.iterator()
                                         val second = tempChapterUrl.iterator()
                                         val third = tempChapterData.iterator()
@@ -626,7 +660,7 @@ class MangaService: MangaRepositoryImpl {
                     }
 
                     pagesBoolean = true
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     println("ERROR = ${e.cause}")
                     pagesBoolean = false
                 }
@@ -673,7 +707,7 @@ class MangaService: MangaRepositoryImpl {
                                     findAll { return@findAll eachText }.distinct().joinToString().split(" ")
                                 val tempYear = try {
                                     tempTypes[1].toInt()
-                                } catch (e: Exception) {
+                                } catch (e: Throwable) {
                                     null
                                 }
                                 val tempStatusList =
@@ -686,7 +720,7 @@ class MangaService: MangaRepositoryImpl {
                                     } else if (tempTypes[3] in tempStatusList && tempTypes.size > 3) {
                                         tempTypes[3]
                                     } else ""
-                                } catch (e: Exception) {
+                                } catch (e: Throwable) {
                                     ""
                                 }
                                 val tempLimitationList = listOf("16+", "18+")
@@ -698,7 +732,7 @@ class MangaService: MangaRepositoryImpl {
                                     } else if (tempTypes[3] in tempLimitationList && tempTypes.size > 3) {
                                         tempTypes[3]
                                     } else ""
-                                } catch (e: Exception) {
+                                } catch (e: Throwable) {
                                     ""
                                 }
 
@@ -759,7 +793,6 @@ class MangaService: MangaRepositoryImpl {
                             }
 
                             val f = sequence {
-                                val id = UUID.randomUUID().toString()
                                 val first = tempChapterTitle.iterator()
                                 val second = tempChapterUrl.iterator()
                                 val third = tempChapterData.iterator()
@@ -853,7 +886,7 @@ class MangaService: MangaRepositoryImpl {
                 mangaRepository.save(manga)
 
                 pagesBooleanLinked = true
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 println("ERROR = ${e.message}")
                 pagesBooleanLinked = false
             }

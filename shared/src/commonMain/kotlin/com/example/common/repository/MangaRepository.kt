@@ -20,7 +20,8 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
         pageSize: Int,
         order: String?,
         status: String?,
-        genres: List<String>?
+        genres: List<String>?,
+        searchQuery: String?
     ): Resource<ServiceResponse<MangaLight>> {
         val request = HttpRequestBuilder().apply {
             method = HttpMethod.Get
@@ -33,6 +34,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
                 parameter("order", order)
                 parameter("status", status)
                 parameter("genres", genres)
+                parameter("searchQuery", searchQuery)
             }
         }
 

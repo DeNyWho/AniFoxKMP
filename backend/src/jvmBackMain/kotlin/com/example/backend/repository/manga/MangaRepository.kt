@@ -14,32 +14,19 @@ interface MangaRepository: JpaRepository<MangaTable, String> {
     @Query("Select m From MangaTable m where m.url = :url")
     fun mangaByUrl(url: String): Optional<MangaTable>
 
-    @Query("select m from MangaTable m full join m.genres g where g in (:genres) and ((:status) is null or m.types.status = :status )" +
-        " and(:status is null or m.types.status = :status)"
+    @Query("select m from MangaTable m join m.genres g where g in (:genres) and ((:status) is null or m.types.status = :status )" +
+            " and(:status is null or m.types.status = :status)"
     )
     fun findMangaWithGenre(pageable: Pageable, @Param("genres") genres: List<MangaGenre>?, @Param("status") status: String?): List<MangaTable>
 
     @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
-        " and(:genre is null or :genre member of m.genres) " +
-        " and(:status is null or m.types.status = :status)"
+            " and(:status is null or m.types.status = :status)"
     )
-    fun findManga(pageable: Pageable, @Param("genre") genre: MangaGenre?, @Param("status") status: String?): List<MangaTable>
+    fun findMGenres(pageable: Pageable, @Param("status") status: String?): List<MangaTable>
 
-    fun findMangaTableByGenresIn(pageable: Pageable, @Param("genre") genres: List<MangaGenre>): List<MangaTable>
-    @Query("select m from MangaTable m join m.genres g where g in (:genre) order by random()")
-    fun findMangaTableByGenresInRandom(pageable: Pageable, @Param("genre") genres: List<MangaGenre>): List<MangaTable>
-    @Query("select m from MangaTable m join m.genres g where g in (:genre) and m.types.status = :status order by random()")
-    fun findMangaTableByGenresAndStatusInRandom(pageable: Pageable, @Param("genre") genres: List<MangaGenre>, @Param("status") status: String): List<MangaTable>
-    @Query("select m from MangaTable m join m.genres g where g in (:genre) and m.types.status = :status")
-    fun findMangaTableByGenresAndStatusIn(pageable: Pageable, @Param("genre") genres: List<MangaGenre>, @Param("status") status: String): List<MangaTable>
-    @Query("select m from MangaTable m where m.types.status = :status order by random()")
-    fun findMangaTableByStatusRandom(pageable: Pageable, @Param("status") status: String): List<MangaTable>
-    @Query("select m from MangaTable m where m.types.status = :status")
-    fun findMangaTableByStatus(pageable: Pageable, @Param("status") status: String): List<MangaTable>
-    @Query("select m from MangaTable m order by random()")
-    fun findMangaTableByRandom(pageable: Pageable): List<MangaTable>
-
-    @Query("select m from MangaTable m where upper(m.title) like concat('%', upper(?1), '%')")
-    fun findByTitleSearch(pageable: Pageable, @Param("title") title: String): Page<MangaTable>
-
+    @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
+            " and(:status is null or m.types.status = :status)" +
+            " and(:searchQuery is null or upper(m.title) like concat('%', upper(:searchQuery), '%'))"
+    )
+    fun findManga(pageable: Pageable, @Param("status") status: String?, @Param("searchQuery") searchQuery: String?): List<MangaTable>
 }

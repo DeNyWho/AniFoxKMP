@@ -19,13 +19,15 @@ interface MangaRepositoryImpl {
     ): ServiceResponse<ChaptersLight>
 
     fun getMangaLinked(id: String): ServiceResponse<MangaLight>
-    fun findManga(searchQuery: String, pageNum: Int, pageSize: Int): ServiceResponse<MangaLight>
+
+    fun getSimilarManga(pageNum: Int, pageSize: Int, id: String): ServiceResponse<MangaLight>
+
     fun getAllManga(
         pageNum: Int,
         pageSize: Int,
         order: String?,
         genres: List<String>?,
-        genre: String?,
-        status: String?
+        status: String?,
+        searchQuery: String?
     ): ServiceResponse<MangaLight>
 }

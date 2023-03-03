@@ -8,13 +8,13 @@ import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper
 import com.example.common.usecase.manga.GetRandomMangaUseCase
 import com.example.common.usecase.manga.GetMangaByGenreUseCase
+import com.example.common.usecase.manga.GetMangaUseCase
 import com.example.common.util.Constants
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class HomeViewModel(
-    private val getRandomMangaUseCase: GetRandomMangaUseCase,
-    private val getMangaByGenreUseCase: GetMangaByGenreUseCase
+    private val getMangaUseCase: GetMangaUseCase,
 ): ViewModel() {
 
     private val _randomManga: MutableState<StateListWrapper<MangaLight>> =
@@ -25,18 +25,20 @@ class HomeViewModel(
         mutableStateOf(StateListWrapper.default())
     val romanceManga: MutableState<StateListWrapper<MangaLight>> = _romanceManga
 
-    fun getRandomManga(){
-        getRandomMangaUseCase.invoke().onEach {
+    fun getRandomManga() {
+        getMangaUseCase.invoke(order = "random").onEach {
             _randomManga.value = it
         }.launchIn(viewModelScope)
     }
 
-    fun getRomanceManga(){
-        getMangaByGenreUseCase.invoke(genres =listOf(
-            Constants.romance,
-            Constants.dramma,
-            Constants.sedze
-        )).onEach {
+    fun getRomanceManga() {
+        getMangaUseCase.invoke(
+            genres = listOf(
+                Constants.romance,
+                Constants.dramma,
+                Constants.sedze
+            )
+        ).onEach {
             _romanceManga.value = it
         }.launchIn(viewModelScope)
     }
