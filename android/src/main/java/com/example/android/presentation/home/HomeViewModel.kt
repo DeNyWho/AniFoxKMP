@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.presentation.data.StateListWrapper
-import com.example.common.usecase.manga.GetRandomMangaUseCase
-import com.example.common.usecase.manga.GetMangaByGenreUseCase
 import com.example.common.usecase.manga.GetMangaUseCase
 import com.example.common.util.Constants
 import kotlinx.coroutines.flow.launchIn
@@ -24,6 +22,27 @@ class HomeViewModel(
     private val _romanceManga: MutableState<StateListWrapper<MangaLight>> =
         mutableStateOf(StateListWrapper.default())
     val romanceManga: MutableState<StateListWrapper<MangaLight>> = _romanceManga
+
+    private val _ongoingManga: MutableState<StateListWrapper<MangaLight>> =
+        mutableStateOf(StateListWrapper.default())
+    val ongoingManga: MutableState<StateListWrapper<MangaLight>> = _ongoingManga
+
+    private val _finishManga: MutableState<StateListWrapper<MangaLight>> =
+        mutableStateOf(StateListWrapper.default())
+    val finishManga: MutableState<StateListWrapper<MangaLight>> = _finishManga
+
+
+    fun getOngoingManga() {
+        getMangaUseCase.invoke(status = "онгоинг").onEach {
+            _ongoingManga.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    fun getFinishManga() {
+        getMangaUseCase.invoke(status = "завершён").onEach {
+            _finishManga.value = it
+        }.launchIn(viewModelScope)
+    }
 
     fun getRandomManga() {
         getMangaUseCase.invoke(order = "random").onEach {

@@ -22,11 +22,39 @@ fun HomeContentList(
     lazyColumnState: LazyListState = rememberLazyListState(),
     romanceMangaState: StateListWrapper<MangaLight>,
     onContentClick: (String, String) -> Unit,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    onGoingMangaState: StateListWrapper<MangaLight>,
+    onFinalMangaState: StateListWrapper<MangaLight>
 ) {
     LazyColumn (
         state = lazyColumnState
     ) {
+        item(key = "ongoing_manga") {
+            ScrollableHorizontalContent(
+                modifier = Modifier,
+                shimmer = rememberShimmerCustomBounds(),
+                headerTitle = "Выходит сейчас",
+                contentState = onGoingMangaState,
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
+                headerModifier = HorizontalContentHeaderConfig.Home,
+                onIconClick = onIconClick,
+                onItemClick = onContentClick
+            )
+        }
+        item(key = "finish_manga") {
+            ScrollableHorizontalContent(
+                modifier = Modifier,
+                shimmer = rememberShimmerCustomBounds(),
+                headerTitle = "Завершено",
+                contentState = onFinalMangaState,
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
+                headerModifier = HorizontalContentHeaderConfig.Home,
+                onIconClick = onIconClick,
+                onItemClick = onContentClick
+            )
+        }
         item(key = "romance_manga") {
             ScrollableHorizontalContent(
                 modifier = Modifier,

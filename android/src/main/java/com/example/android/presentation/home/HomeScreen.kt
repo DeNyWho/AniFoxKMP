@@ -34,6 +34,8 @@ fun HomeScreen(
     val snackbarChannel = remember { Channel<String?>(Channel.CONFLATED) }
 
     LaunchedEffect(viewModel){
+        viewModel.getOngoingManga()
+        viewModel.getFinishManga()
         viewModel.getRomanceManga()
         viewModel.getRandomManga()
     }
@@ -58,6 +60,8 @@ fun HomeScreen(
             HomeContentList(
                 navController = navController,
                 lazyColumnState = lazyColumnState,
+                onGoingMangaState = viewModel.ongoingManga.value,
+                onFinalMangaState = viewModel.finishManga.value,
                 randomMangaState = viewModel.randomManga.value,
                 romanceMangaState = viewModel.romanceManga.value,
                 onContentClick = { type, id ->

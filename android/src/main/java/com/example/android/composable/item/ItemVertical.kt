@@ -50,7 +50,7 @@ fun ItemVertical(
     } else {
       SubcomposeAsyncImage(
         modifier = thumbnailModifier,
-        model = data.image.replace("localhost", "192.168.0.44"),
+        model = data.image,
         contentDescription = "Content thumbnail",
         contentScale = ContentScale.Crop,
         loading = {

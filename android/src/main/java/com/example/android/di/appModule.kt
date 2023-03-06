@@ -17,5 +17,5 @@ internal val appModule = module {
     viewModel { HomeViewModel(get())}
     viewModel { DetailViewModel( get(), get(), get()) }
     viewModel { MorePageViewModel() }
-    viewModel { SearchViewModel() }
+    viewModel { SearchViewModel( get()) }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.example.android.ui.blackestBack
 import com.example.android.ui.grey
 import com.example.android.ui.onDarkSurface
 import com.example.common.models.mangaResponse.detail.MangaDetail
@@ -69,7 +70,7 @@ fun DetailDescription(
                     Text(
                         text = data.replace("&quot;",34.toChar().toString()),
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colors.onPrimary,
                         textAlign = TextAlign.Justify
                     )
                     Icon(
@@ -84,7 +85,7 @@ fun DetailDescription(
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colors.onPrimary,
                         textAlign = TextAlign.Justify
                     )
                     Box(
@@ -112,7 +113,7 @@ fun DetailDescription(
         Text(
             text = data.replace("&quot;",34.toChar().toString()),
             style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colors.onPrimary,
             textAlign = TextAlign.Justify
         )
     }
