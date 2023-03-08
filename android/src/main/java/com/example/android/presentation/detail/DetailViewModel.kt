@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.presentation.data.StateListWrapper
+import com.example.common.domain.common.StateListWrapper
 import com.example.common.usecase.manga.GetDetailsUseCase
 import com.example.common.usecase.manga.GetLinkedUseCase
 import com.example.common.usecase.manga.GetSimilarMangaUseCase

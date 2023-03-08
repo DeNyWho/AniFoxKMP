@@ -39,6 +39,8 @@ kotlin {
                     implementation(shimmer)
                 }
                 with(Dependencies.Android.AndroidXAnDCompose) {
+                    implementation(pagingRuntime)
+                    implementation(pagingCompose)
                     implementation(androidCore)
                     implementation(composeUI)
                     implementation(icons)

@@ -1,4 +1,4 @@
-package com.example.common.repository
+package com.example.common.data.repository
 
 import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall

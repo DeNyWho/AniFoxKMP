@@ -1,6 +1,7 @@
 package com.example.common.di
 
-import com.example.common.repository.MangaRepository
+import com.example.common.data.paging.MangaPagingSource
+import com.example.common.data.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -42,6 +43,13 @@ fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
 fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetworkLogs: Boolean) = HttpClient(httpClientEngine) {
     install(ContentNegotiation) {
         json(json)
+    }
+    install(Logging) {
+        logger = Logger.DEFAULT
+        level = LogLevel.ALL
+    }
+    install(HttpTimeout){
+        requestTimeoutMillis = 300000
     }
     if (enableNetworkLogs) {
         install(Logging) {

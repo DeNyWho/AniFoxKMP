@@ -1,4 +1,4 @@
-package com.example.common.presentation.data
+package com.example.common.domain.common
 
 import com.example.common.core.exception.MyError
 import com.example.common.core.wrapper.Event
@@ -6,7 +6,7 @@ import com.example.common.core.wrapper.Event
 data class StateListWrapper<T>(
     val data: List<T> = listOf(),
     val isLoading: Boolean = false,
-    val error: Event<String?> = Event(null)
+    var error: Event<String?> = Event(null)
 ) {
     companion object {
         fun <T> loading(): StateListWrapper<T> {

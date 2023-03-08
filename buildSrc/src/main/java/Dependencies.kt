@@ -45,6 +45,8 @@ object Dependencies {
         const val material = "1.6.0"
         const val appCompat = "1.4.1"
         const val splash = "1.0.0"
+        const val pagingRunTime = "3.1.1"
+        const val pagingCompose = "1.0.0-alpha18"
         const val shimmer = "1.0.4"
         const val constraintLayout = "2.1.4"
         const val composeMat3 = "1.0.0-alpha13"
@@ -59,7 +61,6 @@ object Dependencies {
         const val coroutines = "1.5.2"
         const val rating_bar = "1.1.1"
         const val leakCanary = "2.9.1"
-        const val paging_compose = "1.0.0-alpha14"
         const val oneBoneToolbar="2.2.0"
         const val osmdroidAndroid = "6.1.10"
 
@@ -186,7 +187,8 @@ object Dependencies {
         }
 
         object AndroidXAnDCompose {
-
+            const val pagingRuntime = "androidx.paging:paging-runtime:${Versions.pagingRunTime}"
+            const val pagingCompose = "androidx.paging:paging-compose:${Versions.pagingCompose}"
             const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
             const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"

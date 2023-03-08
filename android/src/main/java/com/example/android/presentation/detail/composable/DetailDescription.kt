@@ -24,11 +24,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.android.ui.blackestBack
 import com.example.android.ui.grey
 import com.example.android.ui.onDarkSurface
 import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.presentation.data.StateListWrapper
+import com.example.common.domain.common.StateListWrapper
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

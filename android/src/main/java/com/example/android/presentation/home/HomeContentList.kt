@@ -13,7 +13,7 @@ import com.example.android.composable.content_horizontal.ScrollableHorizontalCon
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.presentation.data.StateListWrapper
+import com.example.common.domain.common.StateListWrapper
 
 @Composable
 fun HomeContentList(

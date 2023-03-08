@@ -1,9 +1,10 @@
 package com.example.android.presentation.search
 
-import android.view.SearchEvent
+import com.example.common.domain.common.SearchEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
@@ -12,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.android.common.isScrolledToTheEnd
+import com.example.android.navigation.Screen
 import com.example.android.presentation.search.composable.SearchBoxField
 import com.example.common.core.enum.ContentType
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +28,7 @@ fun SearchScreen(
     val selectedType = rememberSaveable { mutableStateOf(ContentType.Manga) }
     val searchQuery = rememberSaveable { mutableStateOf("") }
 
-    val listState = rememberLazyListState()
+    val listState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { (FocusRequester()) }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -47,8 +50,24 @@ fun SearchScreen(
                 onSearchQueryCleared = { searchQuery.value = "" },
                 onSearchQueryChanged = {
                     searchQuery.value = it
+                    viewModel.onSearchEvent(
+                        SearchEvent.SearchFirstPage(searchQuery.value)
+                    )
                 }
             )
+            SearchContentList(
+                listState = listState,
+                state = viewModel.contentSearch.value,
+                onItemClick = { type, id ->
+                    navController.navigate("${Screen.Details.route}/$type/$id")
+                },
+            )
+            if (listState.isScrolledToTheEnd()) {
+                viewModel.onSearchEvent(
+                    SearchEvent.SearchNextPage(searchQuery.value)
+                )
+            }
+
         }
     }
 

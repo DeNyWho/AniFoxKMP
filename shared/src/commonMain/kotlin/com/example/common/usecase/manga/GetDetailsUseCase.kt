@@ -5,8 +5,8 @@ import com.example.common.core.exception.MyError
 import com.example.common.core.wrapper.Event
 import com.example.common.core.wrapper.Resource
 import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.presentation.data.StateListWrapper
-import com.example.common.repository.MangaRepository
+import com.example.common.domain.common.StateListWrapper
+import com.example.common.data.repository.MangaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,4 +1,4 @@
-package com.example.common.presentation.data
+package com.example.common.domain.common
 
 data class StateWrapper<T>(
     val data: T? = null,

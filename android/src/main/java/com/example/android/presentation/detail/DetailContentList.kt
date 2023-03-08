@@ -11,12 +11,11 @@ import androidx.compose.ui.unit.dp
 import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
 import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
-import com.example.android.navigation.Screen
 import com.example.android.presentation.detail.composable.DetailDescription
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.presentation.data.StateListWrapper
+import com.example.common.domain.common.StateListWrapper
 
 private object ContentDetailsScreenSection {
     const val ContentDescription = "content_description"
