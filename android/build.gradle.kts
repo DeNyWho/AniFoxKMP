@@ -58,6 +58,7 @@ dependencies {
     with(Dependencies.Android.AndroidXAnDCompose) {
         implementation(pagingRuntime)
         implementation(pagingCompose)
+        implementation(pagingCommon)
         implementation(androidCore)
         implementation(composeUI)
         implementation(icons)

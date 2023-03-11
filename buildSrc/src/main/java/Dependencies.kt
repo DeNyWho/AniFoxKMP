@@ -47,6 +47,7 @@ object Dependencies {
         const val splash = "1.0.0"
         const val pagingRunTime = "3.1.1"
         const val pagingCompose = "1.0.0-alpha18"
+        const val pagingCommon = "3.2.0-alpha03"
         const val shimmer = "1.0.4"
         const val constraintLayout = "2.1.4"
         const val composeMat3 = "1.0.0-alpha13"
@@ -189,6 +190,7 @@ object Dependencies {
         object AndroidXAnDCompose {
             const val pagingRuntime = "androidx.paging:paging-runtime:${Versions.pagingRunTime}"
             const val pagingCompose = "androidx.paging:paging-compose:${Versions.pagingCompose}"
+            const val pagingCommon = "androidx.paging:paging-common:${Versions.pagingCommon}"
             const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
             const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"

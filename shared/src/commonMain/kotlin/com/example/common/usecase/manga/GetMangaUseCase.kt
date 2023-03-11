@@ -14,7 +14,7 @@ class GetMangaUseCase(private val repository: MangaRepository) {
     operator fun invoke(
         order: String? = null,
         pageNum: Int = 0,
-        pageSize: Int = 12,
+        pageSize: Int = 24,
         status: String? = null,
         genres: List<String>? = null,
         searchQuery: String? = null
@@ -30,8 +30,8 @@ class GetMangaUseCase(private val repository: MangaRepository) {
                 searchQuery = searchQuery
             )) {
                 is Resource.Success -> {
-                    println(res.data)
                     val data = res.data?.data.orEmpty()
+                    println(StateListWrapper(data.take(2)))
                     StateListWrapper(data)
                 }
 
@@ -41,6 +41,7 @@ class GetMangaUseCase(private val repository: MangaRepository) {
 
                 is Resource.Loading -> StateListWrapper.loading()
             }
+
             emit(state)
         }.flowOn(Dispatchers.IO)
     }
