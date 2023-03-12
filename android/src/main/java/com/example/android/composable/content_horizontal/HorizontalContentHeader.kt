@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android.ui.grey
-import com.example.android.ui.red
 
 object HorizontalContentHeaderConfig {
   val Default = Modifier

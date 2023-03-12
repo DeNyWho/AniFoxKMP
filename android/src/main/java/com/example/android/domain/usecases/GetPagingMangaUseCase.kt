@@ -1,18 +1,12 @@
-package com.example.common.usecase.manga
+package com.example.android.domain.usecases
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.common.core.wrapper.Event
-import com.example.common.core.wrapper.Resource
-import com.example.common.data.paging.MangaPagingSource
+import com.example.android.data.repository.MangaPagingSource
 import com.example.common.data.repository.MangaRepository
-import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.mangaResponse.light.MangaLight
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class GetPagingMangaUseCase(private val repository: MangaRepository) {
     operator fun invoke(
@@ -24,7 +18,7 @@ class GetPagingMangaUseCase(private val repository: MangaRepository) {
         searchQuery: String? = null
     ): Flow<PagingData<MangaLight>> {
         return Pager(
-            config = PagingConfig(pageSize = pageSize),
+            config = PagingConfig(pageSize = pageSize, prefetchDistance = 1, enablePlaceholders = false, initialLoadSize = pageSize),
             pagingSourceFactory = {
                 MangaPagingSource(repository = repository, query = searchQuery, order = order, status = status, genres = genres)
             }

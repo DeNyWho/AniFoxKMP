@@ -3,12 +3,12 @@ package com.example.common.data.repository
 import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
-import com.example.common.models.GenreRequest
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.MangaApi
 import com.example.common.util.Endpoints
+import com.example.common.util.Endpoints.BASE_URL
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -27,14 +27,14 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
             method = HttpMethod.Get
             url {
                 protocol = URLProtocol.HTTP
-                host = Endpoints.BASE_URL
+                host = BASE_URL
                 encodedPath = Endpoints.manga
                 parameter("pageNum", pageNum)
                 parameter("pageSize", pageSize)
-                parameter("order", order)
-                parameter("status", status)
-                parameter("genres", genres)
-                parameter("searchQuery", searchQuery)
+                if(order != null) parameter("order", order)
+                if(status != null) if(status.length > 4) parameter("status", status)
+                if(genres!= null) if(genres.isNotEmpty()) parameter("genres", genres)
+                if(searchQuery!= null) if(searchQuery.length > 1) parameter("searchQuery", searchQuery)
             }
         }
 

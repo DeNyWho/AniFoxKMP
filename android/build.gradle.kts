@@ -53,11 +53,11 @@ android {
 
 dependencies {
     implementation(project(BuildModules.shared))
-
     implementation(Dependencies.MultiPlatform.composeRuntime)
     with(Dependencies.Android.AndroidXAnDCompose) {
         implementation(pagingRuntime)
         implementation(pagingCompose)
+        implementation(viewPager)
         implementation(pagingCommon)
         implementation(androidCore)
         implementation(composeUI)

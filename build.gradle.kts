@@ -3,6 +3,8 @@ buildscript {
         google()
         mavenCentral()
         maven(Dependencies.MultiPlatform.gradleMaven)
+        maven { url = uri("https://plugins.gradle.org/m2/") }
+        google()
         gradlePluginPortal()
     }
 
@@ -16,6 +18,7 @@ buildscript {
 
 plugins {
     id(Dependencies.Plugins.ktLint) version Dependencies.Versions.ktLint
+
 }
 
 allprojects {

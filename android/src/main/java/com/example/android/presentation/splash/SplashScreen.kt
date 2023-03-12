@@ -13,9 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +22,6 @@ import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.ui.blueLikeSky
 import com.example.android.ui.bluest
-import com.example.android.ui.darkGreyBackground
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.getViewModel
 

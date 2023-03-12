@@ -19,17 +19,18 @@ import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
 import com.example.common.core.enum.ContentType
 import com.example.common.nav.ContentDetailsNavArgs
+import com.example.common.nav.ContentMoreNavArgs
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun Navigation(window: Window){
+fun Navigation(window: Window) {
 
     val systemUiController = rememberSystemUiController()
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
 
-        composable(Screen.Splash.route){
+        composable(Screen.Splash.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
@@ -40,7 +41,7 @@ fun Navigation(window: Window){
             SplashScreen(navController = navController)
         }
 
-        composable(Screen.SignIn.route){
+        composable(Screen.SignIn.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
@@ -51,7 +52,7 @@ fun Navigation(window: Window){
             SignInScreen(navController = navController)
         }
 
-        composable(Screen.SignUp.route){
+        composable(Screen.SignUp.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = Color.Transparent,
@@ -61,8 +62,10 @@ fun Navigation(window: Window){
 
             SignUpScreen(navController = navController)
         }
-
-        composable(Screen.MorePage.route){
+        composable(
+            "${Screen.MorePage.route}/{type}/{order}/{status}/{genres}",
+            arguments = moreScreenArgs
+        ) { backStack ->
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = MaterialTheme.colors.background,
@@ -70,7 +73,15 @@ fun Navigation(window: Window){
                 window = window
             )
 
-            MorePageScreen(navController = navController)
+            MorePageScreen(
+                navController = navController,
+                navArgs = ContentMoreNavArgs(
+                    contentType = ContentType.valueOf(backStack.arguments?.getString("type")!!),
+                    order = backStack.arguments?.getString("order"),
+                    status = backStack.arguments?.getString("status"),
+                    genres = backStack.arguments?.getString("genres")
+                )
+            )
         }
         composable(
             "${Screen.Details.route}/{type}/{id}",
@@ -92,7 +103,7 @@ fun Navigation(window: Window){
 
         }
 
-        composable(Screen.Home.route){
+        composable(Screen.Home.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = MaterialTheme.colors.background,
@@ -105,7 +116,7 @@ fun Navigation(window: Window){
             )
         }
 
-        composable(Screen.Search.route){
+        composable(Screen.Search.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
                 color = MaterialTheme.colors.background,
@@ -129,5 +140,24 @@ private val detailsScreenArgs = listOf(
     navArgument(name = "id") {
         type = NavType.StringType
         nullable = false
+    }
+)
+
+private val moreScreenArgs = listOf(
+    navArgument(name = "type") {
+        type = NavType.StringType
+        nullable = false
+    },
+    navArgument(name = "order") {
+        type = NavType.StringType
+        nullable = true
+    },
+    navArgument(name = "status") {
+        type = NavType.StringType
+        nullable = true
+    },
+    navArgument(name = "genres") {
+        type = NavType.StringType
+        nullable = true
     }
 )

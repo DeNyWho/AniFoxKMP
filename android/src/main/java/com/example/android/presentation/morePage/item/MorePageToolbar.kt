@@ -1,36 +1,31 @@
 package com.example.android.presentation.morePage.item
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.onebone.toolbar.CollapsingToolbarScaffoldState
-import me.onebone.toolbar.CollapsingToolbarScope
-import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 @Composable
-fun CollapsingToolbarScope.MorePageToolbar(
+fun MorePageToolbar(
     title: String = "title",
-    toolbarScaffoldState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
     onArrowClick: () -> Boolean,
 ){
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .parallax(0.5f)
-            .graphicsLayer {
-                alpha = toolbarScaffoldState.toolbarState.progress
-            }
+            .height(96.dp),
+        verticalArrangement = Arrangement.Center
     ) {
         Box (
             modifier = Modifier.height(75.dp).fillMaxWidth()
@@ -57,11 +52,6 @@ fun CollapsingToolbarScope.MorePageToolbar(
                 textAlign = TextAlign.Center,
             )
         }
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colors.primary,
-            thickness = 1.dp
-        )
 
     }
 

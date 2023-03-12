@@ -1,5 +1,6 @@
 package com.example.android.presentation.home
 
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.android.navigation.Screen
 import com.example.android.presentation.search.composable.SearchBoxField
+import com.example.common.core.enum.ContentType
+import com.example.common.nav.ContentMoreNavArgs
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
@@ -58,7 +61,6 @@ fun HomeScreen(
                 isEnabled = false
             )
             HomeContentList(
-                navController = navController,
                 lazyColumnState = lazyColumnState,
                 onGoingMangaState = viewModel.ongoingManga.value,
                 onFinalMangaState = viewModel.finishManga.value,
@@ -67,7 +69,9 @@ fun HomeScreen(
                 onContentClick = { type, id ->
                     navController.navigate("${Screen.Details.route}/$type/$id")
                 },
-                onIconClick = { navController.navigate(Screen.MorePage.route) }
+                onHeaderClick = { type: String, order: String?, status: String?, genres: List<String>? ->
+                    navController.navigate("${Screen.MorePage.route}/$type/$order/$status/${genres?.joinToString(",")}")
+                }
             )
         }
     }
@@ -97,5 +101,4 @@ fun HomeScreen(
             }
         }
     }
-
 }

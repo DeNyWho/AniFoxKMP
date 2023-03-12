@@ -2,9 +2,9 @@ package com.example.backend.repository.manga
 
 import com.example.backend.jpa.manga.MangaTable
 import com.example.backend.models.ServiceResponse
-import com.example.common.models.mangaResponse.chapters.ChaptersLight
-import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.backend.models.mangaResponse.chapters.ChaptersLight
+import com.example.backend.models.mangaResponse.detail.MangaDetail
+import com.example.backend.models.mangaResponse.light.MangaLight
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.ui.Shapes
 import com.example.android.ui.red
@@ -48,9 +50,23 @@ fun ItemVertical(
         .background(teal200)
       )
     } else {
+      val request = ImageRequest.Builder(LocalContext.current)
+        .data(data.image)
+        .size(200,100)
+//        .memoryCacheKey(data.image) // задаем ключ для кэширования в памяти
+//        .diskCacheKey(data.image) // задаем ключ для кэширования на диске
+//        .diskCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование на диске
+//        .memoryCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование в памяти
+//        .networkCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование в сети
+        .build()
+
+//      LaunchedEffect(key1 = request) {
+//        ImageLoaderSingleton.loadImage(request)
+//      }
+
       SubcomposeAsyncImage(
         modifier = thumbnailModifier,
-        model = data.image,
+        model = request,
         contentDescription = "Content thumbnail",
         contentScale = ContentScale.Crop,
         loading = {
@@ -71,28 +87,7 @@ fun ItemVertical(
       maxLines = 2,
       overflow = TextOverflow.Ellipsis,
       color = MaterialTheme.colors.primary,
-//      style = MyType.Body2.Normal.OnDarkSurfaceLight,
       textAlign = textAlign,
-//      onTextLayout = {
-//        titleLineCount = it.lineCount
-//      }
     )
-
-//    repeat(2 - titleLineCount) {
-//      Text(
-//        text = "",
-//        style = MyType.Body2.Bold.OnDarkSurface
-//      )
-//    }
-//
-//    Text(
-//      text = "${data.score}",
-//      modifier = Modifier.padding(bottom = 3.dp),
-//      style = TextStyle(
-//        color = MyColor.OnDarkSurface,
-//        fontSize = 13.sp,
-//        fontWeight = FontWeight.Normal
-//      )
-//    )
   }
 }

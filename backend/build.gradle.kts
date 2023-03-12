@@ -6,11 +6,43 @@ plugins {
 	id("io.spring.dependency-management")
 	kotlin("multiplatform")
 	kotlin("plugin.spring") version Dependencies.Versions.kotlin
+	id("com.github.johnrengelman.shadow") version "7.1.0"
 }
+tasks.withType<KotlinCompile> {
+	kotlinOptions.jvmTarget = "18"
+}
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+}
+tasks {
+	withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+		archiveFileName.set("app.jar")
+		archiveClassifier.set("")
+		manifest {
+			attributes["Main-Class"] = "com.example.backend.ApplicationKt"
+		}
+		configurations = listOf(project.configurations["runtimeClasspath"])
+		minimize()
+	}
+}
+
+//tasks {
+//	val shadowJar by getting(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
+//		archiveFileName.set("app.jar")
+//		archiveClassifier.set("")
+//		manifest {
+//			attributes["Main-Class"] = "com.example.backend.ApplicationKt"
+//		}
+//		from(sourceSets["jvmBackMain"].output)
+//		configurations = listOf(project.configurations["runtimeClasspath"])
+//		minimize()
+//	}
+//}
 
 repositories {
 	mavenCentral()
 }
+
 
 kotlin {
 	jvm("jvmBack") {
@@ -48,7 +80,6 @@ kotlin {
 					implementation(hdr)
 					implementation(servlet)
 				}
-				implementation(Dependencies.MultiPlatform.composeRuntime)
 				with(Dependencies.Spring){
 					implementation(logging)
 					implementation(skrapeIT)
@@ -61,7 +92,7 @@ kotlin {
 					implementation(commonsIO)
 					implementation(commonsIO)
 				}
-				implementation(project(":shared"))
+				implementation(project(BuildModules.shared))
 			}
 		}
 	}

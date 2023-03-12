@@ -4,7 +4,7 @@ object Dependencies {
 
         // Project Level Plugins
         const val kotlin = "1.7.20"
-        const val gradle = "7.3.0"
+        const val gradle = "7.4.0-beta02"
         const val ktLint = "10.3.0"
         const val spring = "3.0.2"
         const val parcelize = "0.8.0"
@@ -44,6 +44,7 @@ object Dependencies {
         const val runtime = "1.0.1"
         const val material = "1.6.0"
         const val appCompat = "1.4.1"
+        const val viewPager = "1.1.0-alpha01"
         const val splash = "1.0.0"
         const val pagingRunTime = "3.1.1"
         const val pagingCompose = "1.0.0-alpha18"
@@ -194,6 +195,8 @@ object Dependencies {
             const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
             const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+            const val viewPager = "androidx.viewpager2:viewpager2:${Versions.viewPager}"
+
             const val constraintLayout =
                 "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
             const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"

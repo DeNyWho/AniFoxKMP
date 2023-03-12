@@ -2,9 +2,9 @@ package com.example.common.usecase.manga
 
 import com.example.common.core.wrapper.Event
 import com.example.common.core.wrapper.Resource
-import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.domain.common.StateListWrapper
 import com.example.common.data.repository.MangaRepository
+import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.mangaResponse.light.MangaLight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

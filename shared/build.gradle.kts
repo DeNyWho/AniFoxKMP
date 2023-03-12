@@ -25,35 +25,8 @@ kotlin {
         }
     }
     sourceSets {
-//        val jvmBackMain by getting {
-//            dependencies {
-//                implementation("org.springframework.boot:spring-boot-starter")
-//                implementation("org.jetbrains.kotlin:kotlin-reflect")
-//                implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-//            }
-//        }
-
         val commonMain by getting {
             dependencies {
-                with(Dependencies.Android.UI){
-                    implementation(shimmer)
-                }
-                with(Dependencies.Android.AndroidXAnDCompose) {
-                    implementation(pagingRuntime)
-                    implementation(pagingCompose)
-                    implementation(androidCore)
-                    implementation(composeUI)
-                    implementation(icons)
-                    implementation(composeMaterial)
-                    implementation(composeTooling)
-                    implementation(composeRuntimeLive)
-                    implementation(composeUtil)
-                    implementation(composeActivity)
-                    implementation(lifecycleRuntime)
-                    implementation(composeNavigation)
-                    implementation(coil)
-                    implementation(oneBoneToolbar)
-                }
                 with(Dependencies.Ktor) {
                     implementation(clientCore)
                     implementation(clientJson)
@@ -73,6 +46,22 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Dependencies.Ktor.clientAndroid)
+                with(Dependencies.Android.AndroidXAnDCompose) {
+                    implementation(pagingRuntime)
+                    implementation(pagingCompose)
+                    implementation(androidCore)
+                    implementation(composeUI)
+                    implementation(icons)
+                    implementation(composeMaterial)
+                    implementation(composeTooling)
+                    implementation(composeRuntimeLive)
+                    implementation(composeUtil)
+                    implementation(composeActivity)
+                    implementation(lifecycleRuntime)
+                    implementation(composeNavigation)
+                    implementation(coil)
+                    implementation(oneBoneToolbar)
+                }
             }
         }
     }

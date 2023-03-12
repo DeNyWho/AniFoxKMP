@@ -1,7 +1,8 @@
 package com.example.android.presentation.search
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHostState
@@ -16,6 +17,9 @@ import com.example.android.navigation.Screen
 import com.example.android.presentation.search.composable.SearchBoxField
 import com.example.common.core.enum.ContentType
 import kotlinx.coroutines.channels.Channel
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -36,11 +40,11 @@ fun SearchScreen(
         focusRequester.requestFocus()
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+    val collapsingState = rememberCollapsingToolbarScaffoldState()
+
+    CollapsingToolbarScaffold(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background) ,
+        toolbar = {
             SearchBoxField(
                 modifier = Modifier.padding(12.dp),
                 searchQuery = searchQuery.value,
@@ -51,15 +55,17 @@ fun SearchScreen(
                     viewModel.search(it)
                 }
             )
-            SearchContentList(
-                listState = listState,
-                searchResults = viewModel.searchedManga.collectAsLazyPagingItems(),
-                onItemClick = { type, id ->
-                    navController.navigate("${Screen.Details.route}/$type/$id")
-                },
-            )
-
-        }
+        },
+        state = collapsingState,
+        scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed
+    ) {
+        SearchContentList(
+            listState = listState,
+            searchResults = viewModel.searchedManga.collectAsLazyPagingItems(),
+            onItemClick = { type, id ->
+                navController.navigate("${Screen.Details.route}/$type/$id")
+            },
+        )
     }
 
 

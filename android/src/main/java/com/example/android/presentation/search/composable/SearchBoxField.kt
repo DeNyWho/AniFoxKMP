@@ -1,13 +1,9 @@
 package com.example.android.presentation.search.composable
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -28,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.example.android.R
 import com.example.android.composable.textFields.CustomTextField
 import com.example.android.ui.Size
-import com.example.android.ui.blackestBack
-import com.example.android.ui.grey
 import com.example.android.ui.red
 
 @Composable

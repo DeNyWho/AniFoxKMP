@@ -9,33 +9,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import coil.annotation.ExperimentalCoilApi
+import com.example.android.composable.item.ItemVertical
+import com.example.android.composable.item.ItemVerticalModifier
+import com.example.android.composable.item.showItemVerticalAnimeMoreWhenPastLimit
 import com.example.android.composable.shimmer.ContentListHeaderWithButtonShimmer
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
-import com.example.android.composable.item.ItemVertical
-import com.example.android.composable.item.ItemVerticalModifier
-import com.example.android.composable.item.showItemVerticalAnimeMoreWhenPastLimit
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.Shimmer
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ScrollableHorizontalContent(
-    modifier: Modifier,
-    headerModifier: Modifier = HorizontalContentHeaderConfig.Default,
-    itemModifier: Modifier = ItemVerticalModifier.Default,
-    shimmer: Shimmer = rememberShimmerCustomBounds(),
-    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
-    headerTitle: String,
-    contentState: StateListWrapper<MangaLight>,
-    contentPadding: PaddingValues,
-    contentArrangement: Arrangement.Horizontal,
-    textAlign: TextAlign = TextAlign.Start,
-    onIconClick: () -> Unit,
-    onItemClick: (String, String) -> Unit,
-    limit: Int = 11
+	modifier: Modifier,
+	headerModifier: Modifier = HorizontalContentHeaderConfig.Default,
+	itemModifier: Modifier = ItemVerticalModifier.Default,
+	shimmer: Shimmer = rememberShimmerCustomBounds(),
+	thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
+	headerTitle: String,
+	contentState: StateListWrapper<MangaLight>,
+	contentPadding: PaddingValues,
+	contentArrangement: Arrangement.Horizontal,
+	textAlign: TextAlign = TextAlign.Start,
+	onIconClick: () -> Unit,
+	onItemClick: (String, String) -> Unit,
+	limit: Int = 11
 ) {
 	if (contentState.isLoading) {
 		ContentListHeaderWithButtonShimmer(shimmerInstance = shimmer)

@@ -1,13 +1,12 @@
 package com.example.common.di
 
-import com.example.common.data.paging.MangaPagingSource
+//import com.example.common.data.paging.MangaPagingSource
 import com.example.common.data.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.cache.*
-import io.ktor.client.plugins.cache.storage.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
@@ -18,8 +17,6 @@ import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import java.nio.file.Files
-import java.nio.file.Paths
 
 fun initKoin(enableNetworkLogs: Boolean = true, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
@@ -51,7 +48,7 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
     install(HttpCache)
     install(Logging) {
         logger = Logger.DEFAULT
-        level = LogLevel.ALL
+        level = LogLevel.INFO
     }
     install(HttpTimeout){
         requestTimeoutMillis = 300000

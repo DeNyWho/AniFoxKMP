@@ -7,26 +7,26 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
 import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
-import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.item.ItemVerticalModifier
-import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.android.composable.shimmer.rememberShimmerCustomBounds
+import com.example.common.core.enum.ContentType
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.common.util.Constants
 
 @Composable
 fun HomeContentList(
-    navController: NavController,
     randomMangaState: StateListWrapper<MangaLight>,
     lazyColumnState: LazyListState = rememberLazyListState(),
     romanceMangaState: StateListWrapper<MangaLight>,
     onContentClick: (String, String) -> Unit,
-    onIconClick: () -> Unit,
     onGoingMangaState: StateListWrapper<MangaLight>,
-    onFinalMangaState: StateListWrapper<MangaLight>
+    onFinalMangaState: StateListWrapper<MangaLight>,
+    onHeaderClick: (String, String?, String?, List<String>?) -> Unit,
 ) {
-    LazyColumn (
+    LazyColumn(
         state = lazyColumnState
     ) {
         item(key = "ongoing_manga") {
@@ -38,7 +38,9 @@ fun HomeContentList(
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
-                onIconClick = onIconClick,
+                onIconClick = {
+                    onHeaderClick(ContentType.Manga.name, null, null, null)
+                },
                 onItemClick = onContentClick
             )
         }
@@ -51,7 +53,9 @@ fun HomeContentList(
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
-                onIconClick = onIconClick,
+                onIconClick = {
+                    onHeaderClick(ContentType.Manga.name, null, "завершён", null)
+                },
                 onItemClick = onContentClick
             )
         }
@@ -64,7 +68,15 @@ fun HomeContentList(
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
-                onIconClick = onIconClick,
+                onIconClick = {
+                    onHeaderClick(
+                        ContentType.Manga.name, null, null, listOf(
+                            Constants.romance,
+                            Constants.dramma,
+                            Constants.sedze
+                        )
+                    )
+                },
                 onItemClick = onContentClick
             )
         }
@@ -77,12 +89,13 @@ fun HomeContentList(
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
-                onIconClick = onIconClick,
+                onIconClick = {
+                    onHeaderClick(ContentType.Manga.name, "random", null, null)
+                },
                 onItemClick = onContentClick
             )
         }
     }
-
 }
 
 
