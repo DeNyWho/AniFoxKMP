@@ -7,11 +7,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.android.composable.content_horizontal.GridHorizontalContent
 import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
 import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.common.core.enum.ContentType
+import com.example.common.core.enum.TypesOfMoreScreen
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.util.Constants
@@ -24,7 +26,7 @@ fun HomeContentList(
     onContentClick: (String, String) -> Unit,
     onGoingMangaState: StateListWrapper<MangaLight>,
     onFinalMangaState: StateListWrapper<MangaLight>,
-    onHeaderClick: (String, String?, String?, List<String>?) -> Unit,
+    onHeaderClick: (String, String, String?, String?, List<String>?) -> Unit,
 ) {
     LazyColumn(
         state = lazyColumnState
@@ -39,7 +41,7 @@ fun HomeContentList(
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
                 onIconClick = {
-                    onHeaderClick(ContentType.Manga.name, null, null, null)
+                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Manga.name, null, null, null)
                 },
                 onItemClick = onContentClick
             )
@@ -54,7 +56,7 @@ fun HomeContentList(
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerModifier = HorizontalContentHeaderConfig.Home,
                 onIconClick = {
-                    onHeaderClick(ContentType.Manga.name, null, "завершён", null)
+                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Manga.name, null, "завершён", null)
                 },
                 onItemClick = onContentClick
             )
@@ -70,7 +72,7 @@ fun HomeContentList(
                 headerModifier = HorizontalContentHeaderConfig.Home,
                 onIconClick = {
                     onHeaderClick(
-                        ContentType.Manga.name, null, null, listOf(
+                        TypesOfMoreScreen.Default.name, ContentType.Manga.name, null, null, listOf(
                             Constants.romance,
                             Constants.dramma,
                             Constants.sedze
@@ -81,16 +83,15 @@ fun HomeContentList(
             )
         }
         item(key = "random_manga") {
-            ScrollableHorizontalContent(
+            GridHorizontalContent(
                 modifier = Modifier,
                 shimmer = rememberShimmerCustomBounds(),
                 headerTitle = "Рандом",
                 contentState = randomMangaState,
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
+                contentPadding = PaddingValues(12.dp),
                 headerModifier = HorizontalContentHeaderConfig.Home,
                 onIconClick = {
-                    onHeaderClick(ContentType.Manga.name, "random", null, null)
+
                 },
                 onItemClick = onContentClick
             )

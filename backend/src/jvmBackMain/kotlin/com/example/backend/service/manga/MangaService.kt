@@ -5,17 +5,15 @@ import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
 import com.example.backend.models.PercentageList
 import com.example.backend.models.ServiceResponse
-import com.example.backend.repository.manga.MangaChaptersRepository
-import com.example.backend.repository.manga.MangaGenreRepository
-import com.example.backend.repository.manga.MangaRepository
-import com.example.backend.repository.manga.MangaRepositoryImpl
+import com.example.common.models.mangaResponse.chapters.ChaptersLight
+import com.example.common.models.mangaResponse.chapters.ChapterSingle
+import com.example.common.models.mangaResponse.detail.MangaDetail
+import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.common.models.mangaResponse.detail.GenresDetail
+import com.example.common.models.mangaResponse.detail.TypesDetail
+import com.example.backend.repository.manga.*
 import com.example.backend.service.image.ImageService
 import com.example.backend.util.toPage
-import com.example.common.models.mangaResponse.chapters.ChaptersLight
-import com.example.common.models.mangaResponse.detail.GenresDetail
-import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.models.mangaResponse.detail.TypesDetail
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.google.gson.Gson
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
@@ -24,6 +22,7 @@ import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import it.skrape.selects.DocElement
 import it.skrape.selects.eachHref
+import it.skrape.selects.eachSrc
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
 import jakarta.validation.constraints.Max
@@ -63,6 +62,9 @@ class MangaService: MangaRepositoryImpl {
 
     @Autowired
     lateinit var mangaChaptersRepository: MangaChaptersRepository
+
+    @Autowired
+    lateinit var mangaChapterPageRepository: MangaChapterPageRepository
 
     @Autowired
     lateinit var mangaGenreRepository: MangaGenreRepository
@@ -125,6 +127,43 @@ class MangaService: MangaRepositoryImpl {
         )
     }
 
+    fun parsePage(urlChapter: String): List<String> {
+        var b = 0
+        skrape(HttpFetcher) {
+            request {
+                url = urlChapter
+            }
+            response {
+                document.span {
+                    withClass = "dropdown-toggle"
+                    val a = findLast { return@findLast text}
+                    b = a.replace("[","").replace("]","").replace(" ","") .split("/")[1].toInt()
+                }
+            }
+        }
+
+        val chapterImages = mutableListOf<String>()
+
+        var page = 1
+        while(page != b) {
+            skrape(HttpFetcher) {
+                request {
+                    userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36"
+                    url = "$urlChapter?page=$page"
+                    headers = mapOf("Referer" to mangaSmall)
+                }
+                response {
+                    document.img {
+                        withClass = "reader-viewer-img"
+                        chapterImages.add("https:${findAll { return@findAll eachSrc }[0]}")
+                    }
+                }
+            }
+            page++
+        }
+        return if(chapterImages.size > 0) chapterImages else emptyList()
+    }
+
     override fun getSimilarManga(
         pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
         pageSize: @Min(value = 1.toLong()) @Max(value = 500.toLong()) Int,
@@ -170,6 +209,8 @@ class MangaService: MangaRepositoryImpl {
         status: String?,
         searchQuery: String?
     ): ServiceResponse<MangaLight> {
+        val actualStatus = status?.ifEmpty { null }
+        val actualSearch = searchQuery?.ifEmpty { null }
         println("genres = $genres")
         println("Manga param = $pageNum | $pageSize | $order | ${genres?.size} | $status")
         val sort = when (order) {
@@ -206,7 +247,7 @@ class MangaService: MangaRepositoryImpl {
             }
             val t = mutableListOf<MangaTable>()
             val maxPercent = mutableListOf<PercentageList>()
-            val temp = mangaRepository.findMGenres(pageable = pageable, status = status)
+            val temp = mangaRepository.findMGenres(pageable = pageable, status = actualStatus)
             temp.forEachIndexed { index, manga ->
                 val firstSet = HashSet(manga.genres)
                 val secondSet = HashSet(b)
@@ -221,10 +262,39 @@ class MangaService: MangaRepositoryImpl {
             return if(t.size > 0){
                 mangaLightSuccess(listToMangaLight(t.toPage(p).content))
             } else {
-                mangaLightSuccess(listOf(MangaLight()))
+                mangaLightSuccess(emptyList())
             }
         }
-        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, status = status, searchQuery = searchQuery)))
+        return mangaLightSuccess(listToMangaLight(mangaRepository.findManga(pageable = pageable, status = actualStatus, searchQuery = actualSearch)))
+    }
+
+    override fun getMangaChapter(mangaId: String, chapterId: String): ServiceResponse<ChapterSingle> {
+        return try {
+            val chapter = mangaChaptersRepository.findById(chapterId).get().mangaChaptersPage
+            try {
+                val chapterSingle = mutableListOf<String>()
+                chapter.forEach {
+                    chapterSingle.add(it.imagePageUrl)
+                }
+                ServiceResponse(
+                    data = listOf(ChapterSingle(chapterSingle)),
+                    message = "Success",
+                    status = HttpStatus.OK
+                )
+            } catch (e: Throwable) {
+                ServiceResponse(
+                    data = null,
+                    message = e.message.toString(),
+                    status = HttpStatus.BAD_REQUEST
+                )
+            }
+        } catch (e: Throwable) {
+            ServiceResponse(
+                data = null,
+                message = "Chapter with id = $chapterId not found",
+                status = HttpStatus.NOT_FOUND
+            )
+        }
     }
 
     override fun getMangaChapters(id: String, pageNum: Int, pageSize: Int): ServiceResponse<ChaptersLight> {
@@ -427,7 +497,7 @@ class MangaService: MangaRepositoryImpl {
             }
         }
 
-        mangaUrls.forEach loop@{
+        mangaUrls.forEach loop@ {
             pagesBoolean = false
             while (!pagesBoolean) {
                 try {
@@ -436,7 +506,7 @@ class MangaService: MangaRepositoryImpl {
                     val manga = MangaTable()
                     val prevManga = mangaRepository.mangaByUrl(mangaSmall + it)
 
-                    if (prevManga.isPresent && (prevManga.get().updateTime.plusDays(1).toLocalDate() != LocalDate.now())
+                    if (prevManga.isPresent && (prevManga.get().updateTime.plusDays(7).toLocalDate() != LocalDate.now())
                     ) {
                         return@loop
                     }
@@ -590,11 +660,23 @@ class MangaService: MangaRepositoryImpl {
                                     }.toMutableSet()
 
                                     f.forEach { chapter ->
+                                        val chaptersPages = parsePage("$mangaSmall/read/${chapter.urlCode}")
+                                        val temping = mutableListOf<MangaChaptersPage>()
+                                        chaptersPages.forEach { chapterPage ->
+                                            temping.add(
+                                                mangaChapterPageRepository.save(
+                                                    MangaChaptersPage(
+                                                        imagePageUrl = chapterPage
+                                                    )
+                                                )
+                                            )
+                                        }
                                         val z = mangaChaptersRepository.save(
                                             MangaChapters(
                                                 date = chapter.date,
                                                 urlCode = chapter.urlCode,
-                                                title = chapter.title
+                                                title = chapter.title,
+                                                mangaChaptersPage = temping.toMutableSet()
                                             )
                                         )
                                         manga.chapters.add(z)
@@ -664,6 +746,8 @@ class MangaService: MangaRepositoryImpl {
                     println("ERROR = ${e.cause}")
                     pagesBoolean = false
                 }
+
+                Thread.sleep(5000)
             }
         }
         return MangaTable()
@@ -679,7 +763,7 @@ class MangaService: MangaRepositoryImpl {
                 val gson = Gson()
                 val prevManga = mangaRepository.mangaByUrl(mangaSmall + urlLink)
 
-                if (prevManga.isPresent && (prevManga.get().updateTime.plusDays(1).toLocalDate() != LocalDate.now())
+                if (prevManga.isPresent && (prevManga.get().updateTime.plusDays(7).toLocalDate() != LocalDate.now())
                 ) {
                     return prevManga.get()
                 }
@@ -812,16 +896,29 @@ class MangaService: MangaRepositoryImpl {
                                 }
                             }.toMutableSet()
 
-                            f.forEach {
+                            f.forEach { chapter ->
+                                val chaptersPages = parsePage("$mangaSmall/read/${chapter.urlCode}")
+                                val temping = mutableListOf<MangaChaptersPage>()
+                                chaptersPages.forEach { chapterPage ->
+                                    temping.add(
+                                        mangaChapterPageRepository.save(
+                                            MangaChaptersPage(
+                                                imagePageUrl = chapterPage
+                                            )
+                                        )
+                                    )
+                                }
                                 val z = mangaChaptersRepository.save(
                                     MangaChapters(
-                                        date = it.date,
-                                        urlCode = it.urlCode,
-                                        title = it.title
+                                        date = chapter.date,
+                                        urlCode = chapter.urlCode,
+                                        title = chapter.title,
+                                        mangaChaptersPage = temping.toMutableSet()
                                     )
                                 )
                                 manga.chapters.add(z)
                             }
+
                             manga.chaptersCount = manga.chapters.size
                         }
                     }
@@ -891,6 +988,7 @@ class MangaService: MangaRepositoryImpl {
                 pagesBooleanLinked = false
             }
         }
+        Thread.sleep(5000)
         return mangaRepository.findById(manga.id).get()
     }
 

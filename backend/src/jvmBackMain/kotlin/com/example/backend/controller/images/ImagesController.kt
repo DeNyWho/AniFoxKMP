@@ -1,12 +1,16 @@
 package com.example.backend.controller.images
 
 import com.example.backend.jpa.common.Image
+import com.example.backend.models.ServiceResponse
 import com.example.backend.service.image.ImageService
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.crossstore.ChangeSetPersister
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
@@ -17,6 +21,18 @@ class ImageController {
 
     @Autowired
     lateinit var imageService: ImageService
+//
+//    @PostMapping("loadImage" ,consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+//    fun loadImage(
+//        @RequestBody file: MultipartFile,
+//        response: HttpServletResponse
+//    ): ServiceResponse<String> {
+//        return try {
+//            ServiceResponse(data = listOf(imageService.saveFile(file)), message = "Success", status = HttpStatus.OK)
+//        } catch (e: ChangeSetPersister.NotFoundException) {
+//            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+//        }
+//    }
 
     @GetMapping("{id}")
     fun getFile(@PathVariable id: String, response: HttpServletResponse) {

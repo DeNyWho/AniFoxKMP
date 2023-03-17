@@ -15,18 +15,18 @@ interface MangaRepository: JpaRepository<MangaTable, String> {
     fun mangaByUrl(url: String): Optional<MangaTable>
 
     @Query("select m from MangaTable m join m.genres g where g in (:genres) and ((:status) is null or m.types.status = :status )" +
-            " and(:status is null or m.types.status = :status)"
+        " and(:status is null or m.types.status = :status)"
     )
     fun findMangaWithGenre(pageable: Pageable, @Param("genres") genres: List<MangaGenre>?, @Param("status") status: String?): List<MangaTable>
 
     @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
-            " and(:status is null or m.types.status = :status)"
+        " and(:status is null or m.types.status = :status)"
     )
     fun findMGenres(pageable: Pageable, @Param("status") status: String?): List<MangaTable>
 
-    @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status )" +
-            " and(:status is null or m.types.status = :status)" +
-            " and(:searchQuery is null or upper(m.title) like concat('%', upper(:searchQuery), '%'))"
+    @Query("select m from MangaTable m where ((:status) is null or m.types.status = :status)" +
+        " and(:status is null or m.types.status = :status)" +
+        " and(:searchQuery is null or upper(m.title) like concat('%', upper(:searchQuery), '%'))"
     )
     fun findManga(pageable: Pageable, @Param("status") status: String?, @Param("searchQuery") searchQuery: String?): List<MangaTable>
 }

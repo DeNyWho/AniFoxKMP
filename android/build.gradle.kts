@@ -79,6 +79,7 @@ dependencies {
     }
     with(Dependencies.Android.UI){
         implementation(shimmer)
+        implementation(lottie)
     }
     with(Dependencies.Android.Koin) {
         implementation(koinAndroid)

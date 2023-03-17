@@ -1,6 +1,7 @@
 package com.example.android.presentation.detail
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -34,6 +35,7 @@ fun DetailContentList(
 ) {
     var isDescriptionExpanded by remember { mutableStateOf(false) }
     LazyColumn (
+        modifier = Modifier.fillMaxWidth(),
         state = lazyColumnState,
         contentPadding = PaddingValues(bottom = 32.dp, start = 16.dp, end = 16.dp),
         horizontalAlignment = Alignment.Start

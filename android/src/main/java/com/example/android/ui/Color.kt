@@ -15,6 +15,7 @@ val lighterGray = Color(0xFFf4f4f4)
 val orange = Color(0xFFf76743)
 val grey = Color(0xFFc4c4c4)
 val red = Color(0xFFF35353)
+val redLikeOrange = Color(0xFFF25D49)
 
 val DarkBlueBackground = Color(0xFF20202A)
 val darkGreyBackground = Color(0xFF2B2B2B)

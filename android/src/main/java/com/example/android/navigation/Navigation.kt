@@ -18,6 +18,7 @@ import com.example.android.presentation.signIn.SignInScreen
 import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
 import com.example.common.core.enum.ContentType
+import com.example.common.core.enum.TypesOfMoreScreen
 import com.example.common.nav.ContentDetailsNavArgs
 import com.example.common.nav.ContentMoreNavArgs
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -62,8 +63,9 @@ fun Navigation(window: Window) {
 
             SignUpScreen(navController = navController)
         }
+
         composable(
-            "${Screen.MorePage.route}/{type}/{order}/{status}/{genres}",
+            "${Screen.MorePage.route}/{typeOfScreen}/{type}/{order}/{status}/{genres}",
             arguments = moreScreenArgs
         ) { backStack ->
             OnDestinationChanged(
@@ -76,10 +78,11 @@ fun Navigation(window: Window) {
             MorePageScreen(
                 navController = navController,
                 navArgs = ContentMoreNavArgs(
+                    typeOfScreen = TypesOfMoreScreen.valueOf(backStack.arguments?.getString("typeOfScreen")!!),
                     contentType = ContentType.valueOf(backStack.arguments?.getString("type")!!),
                     order = backStack.arguments?.getString("order"),
                     status = backStack.arguments?.getString("status"),
-                    genres = backStack.arguments?.getString("genres")
+                    genres = backStack.arguments?.getString("genres"),
                 )
             )
         }
@@ -144,6 +147,10 @@ private val detailsScreenArgs = listOf(
 )
 
 private val moreScreenArgs = listOf(
+    navArgument(name = "typeOfScreen") {
+        type = NavType.StringType
+        nullable = false
+    },
     navArgument(name = "type") {
         type = NavType.StringType
         nullable = false

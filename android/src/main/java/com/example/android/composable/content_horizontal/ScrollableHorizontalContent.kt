@@ -2,6 +2,7 @@ package com.example.android.composable.content_horizontal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ import com.valentinilk.shimmer.Shimmer
 fun ScrollableHorizontalContent(
 	modifier: Modifier,
 	headerModifier: Modifier = HorizontalContentHeaderConfig.Default,
-	itemModifier: Modifier = ItemVerticalModifier.Default,
+	itemModifier: Modifier = Modifier.width(ItemVerticalModifier.Default),
 	shimmer: Shimmer = rememberShimmerCustomBounds(),
 	thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
 	headerTitle: String,

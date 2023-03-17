@@ -1,10 +1,11 @@
 package com.example.backend.controller.manga
 
 import com.example.backend.models.ServiceResponse
-import com.example.backend.service.manga.MangaService
+import com.example.common.models.mangaResponse.chapters.ChapterSingle
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.backend.service.manga.MangaService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -26,31 +27,31 @@ class MangaController {
     lateinit var mangaService: MangaService
 
 
-//    @GetMapping("parser")
-//    @Operation(summary = "Parse manga and add data to postgreSQL")
-//    fun parseManga(): ServiceResponse<Long> {
-//        return try {
-//            val start = System.currentTimeMillis()
-//            mangaService.addDataToDB()
-//
-//            val finish = System.currentTimeMillis()
-//            val elapsed = finish - start
-//            println("Time execution $elapsed")
-//            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
-//        } catch (e: ChangeSetPersister.NotFoundException) {
-//            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
-//        }
-//    }
+    @GetMapping("parser")
+    @Operation(summary = "Parse manga and add data to postgreSQL")
+    fun parseManga(): ServiceResponse<Long> {
+        return try {
+            val start = System.currentTimeMillis()
+            mangaService.addDataToDB()
+
+            val finish = System.currentTimeMillis()
+            val elapsed = finish - start
+            println("Time execution $elapsed")
+            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
+        } catch (e: ChangeSetPersister.NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+        }
+    }
 
     @GetMapping()
     @Operation(summary = "get all manga")
     fun getManga(
         @RequestParam(defaultValue = "0", name = "pageNum")  pageNum: @Min(0) @Max(500) Int,
         @RequestParam(defaultValue = "48", name = "pageSize") pageSize: @Min(1) @Max(500) Int,
-        @RequestParam genres: List<String>?,
-        @Schema(name = "status", required = false, description = "Must be one of: онгоинг, завершён, продолжается, заброшен") status: String?,
-        @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", ) order: String?,
-        @Schema(name = "searchQuery", required = false) searchQuery: String?
+        @RequestParam(required = false) genres: List<String>?,
+        @Schema(name = "status", required = false, description = "Must be one of: онгоинг, завершён, продолжается, заброшен", nullable = true) status: String?,
+        @Schema(name = "order", required = false, description = "Must be one of: random, popular, views", nullable = true) order: String?,
+        @Schema(name = "searchQuery", required = false, nullable = true) searchQuery: String?
     ): ServiceResponse<MangaLight>? {
         return try {
             mangaService.getAllManga(
@@ -75,6 +76,20 @@ class MangaController {
     ): ServiceResponse<ChaptersLight> {
         return try {
             mangaService.getMangaChapters(id, pageNum, pageSize)
+        } catch (e: ChangeSetPersister.NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+        }
+    }
+
+    @GetMapping("{mangaId}/chapters/{chapterId}")
+    @Operation(summary = "get manga chapters")
+    fun getMangaChaptersPages(
+        response: HttpServletResponse,
+        @PathVariable(name = "mangaId") mangaId: String,
+        @PathVariable(name = "chapterId") chapterId: String
+    ): ServiceResponse<ChapterSingle> {
+        return try {
+            mangaService.getMangaChapter(chapterId = chapterId, mangaId = mangaId)
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         }

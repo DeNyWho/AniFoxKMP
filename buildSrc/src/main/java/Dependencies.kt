@@ -50,6 +50,7 @@ object Dependencies {
         const val pagingCompose = "1.0.0-alpha18"
         const val pagingCommon = "3.2.0-alpha03"
         const val shimmer = "1.0.4"
+        const val lottie = "5.0.2"
         const val constraintLayout = "2.1.4"
         const val composeMat3 = "1.0.0-alpha13"
         const val compose_activity = "1.4.0"
@@ -245,6 +246,7 @@ object Dependencies {
 
         object UI {
             const val shimmer = "com.valentinilk.shimmer:compose-shimmer:${Versions.shimmer}"
+            const val lottie = "com.airbnb.android:lottie-compose:${Versions.lottie}"
         }
 
 

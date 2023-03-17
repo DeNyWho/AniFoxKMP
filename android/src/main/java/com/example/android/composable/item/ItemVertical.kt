@@ -21,6 +21,7 @@ import coil.request.ImageRequest
 import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.ui.Shapes
 import com.example.android.ui.red
+import com.example.android.ui.redLikeOrange
 import com.example.android.ui.teal200
 import com.example.common.core.enum.ContentType
 import com.example.common.models.mangaResponse.light.MangaLight
@@ -73,7 +74,7 @@ fun ItemVertical(
           CenterCircularProgressIndicator(
             strokeWidth = 2.dp,
             size = 20.dp,
-            color = red
+            color = redLikeOrange
           )
         }
       )

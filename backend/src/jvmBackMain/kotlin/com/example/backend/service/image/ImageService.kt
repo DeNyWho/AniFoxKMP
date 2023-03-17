@@ -5,6 +5,7 @@ import com.example.backend.repository.image.ImageRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
@@ -15,6 +16,16 @@ class ImageService {
 
     @Value("\${host_url}")
     lateinit var host: String
+
+    fun saveFile(file: MultipartFile): String {
+        val id = UUID.randomUUID().toString()
+        imageRepository.save(Image(
+            id = id,
+            image = file.bytes
+        ))
+        return "$host/images/$id"
+    }
+
 
     fun save(file: ByteArray): String {
         val id = UUID.randomUUID().toString()

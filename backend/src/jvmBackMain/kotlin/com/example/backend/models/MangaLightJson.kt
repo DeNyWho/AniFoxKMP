@@ -11,6 +11,6 @@ data class MangaLightJson(
     val description: String,
     @SerialName("url")
     val url: String,
-    @SerialName("image")
+    @SerialName("templates/image")
     val image: String,
 )

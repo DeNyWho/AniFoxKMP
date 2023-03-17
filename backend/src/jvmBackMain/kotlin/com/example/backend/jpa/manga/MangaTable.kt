@@ -15,20 +15,20 @@ data class MangaTable(
     @Column(columnDefinition = "TEXT")
     var description: String = "",
     @ManyToMany(
-        fetch = FetchType.LAZY,
-        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.ALL]
     )
     @JoinTable(
         name = "manga_genres",
         joinColumns = [JoinColumn(name = "manga_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "genres_id", referencedColumnName = "id")],
-        schema = "manga"
+        schema = "manga",
     )
     var genres: MutableSet<MangaGenre> = mutableSetOf(),
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     var types: MangaTypes = MangaTypes(),
     @OneToMany(
-        fetch = FetchType.LAZY,
+        fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(schema = "manga")
@@ -36,12 +36,12 @@ data class MangaTable(
     var chaptersCount: Int = 0,
     val views: Int = 0,
     @OneToMany(
-        fetch = FetchType.LAZY,
+        fetch = FetchType.EAGER,
         cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(schema = "manga")
     val rate: MutableSet<MangaRating> = mutableSetOf(),
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = true)
     @CollectionTable(name = "manga_linked", schema = "manga")
     var linked: MutableSet<String> = mutableSetOf(),

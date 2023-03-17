@@ -78,7 +78,7 @@ fun LazyGridScope.showItemVerticalAnimeShimmer(
 }
 
 fun LazyListScope.showItemVerticalAnimeShimmer(
-    modifier: Modifier = ItemVerticalModifier.Default,
+    modifier: Modifier = Modifier.width(ItemVerticalModifier.Default),
     shimmerInstance: Shimmer,
     count: Int = 5,
     thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault
