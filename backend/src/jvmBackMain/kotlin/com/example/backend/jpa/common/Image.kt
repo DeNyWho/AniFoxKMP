@@ -1,12 +1,14 @@
 package com.example.backend.jpa.common
 
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
 @Table(name = "image")
 data class Image(
     @Id
-    var id: String? = "",
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: UUID? = null,
 
     @Lob
     @Column(name = "image")

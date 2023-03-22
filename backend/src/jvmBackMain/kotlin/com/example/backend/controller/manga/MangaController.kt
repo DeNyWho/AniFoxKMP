@@ -27,21 +27,21 @@ class MangaController {
     lateinit var mangaService: MangaService
 
 
-    @GetMapping("parser")
-    @Operation(summary = "Parse manga and add data to postgreSQL")
-    fun parseManga(): ServiceResponse<Long> {
-        return try {
-            val start = System.currentTimeMillis()
-            mangaService.addDataToDB()
-
-            val finish = System.currentTimeMillis()
-            val elapsed = finish - start
-            println("Time execution $elapsed")
-            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
-        } catch (e: ChangeSetPersister.NotFoundException) {
-            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
-        }
-    }
+//    @GetMapping("parser")
+//    @Operation(summary = "Parse manga and add data to postgreSQL")
+//    fun parseManga(): ServiceResponse<Long> {
+//        return try {
+//            val start = System.currentTimeMillis()
+//            mangaService.addDataToDB()
+//
+//            val finish = System.currentTimeMillis()
+//            val elapsed = finish - start
+//            println("Time execution $elapsed")
+//            return ServiceResponse(data = listOf(elapsed), status = HttpStatus.OK)
+//        } catch (e: ChangeSetPersister.NotFoundException) {
+//            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+//        }
+//    }
 
     @GetMapping()
     @Operation(summary = "get all manga")

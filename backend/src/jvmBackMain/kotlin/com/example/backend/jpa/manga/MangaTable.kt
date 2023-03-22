@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "manga", schema = "manga")
-data class MangaTable(
+data class MangaTable (
     @Id
     val id: String = UUID.randomUUID().toString(),
     var title: String = "",
@@ -16,7 +16,7 @@ data class MangaTable(
     var description: String = "",
     @ManyToMany(
         fetch = FetchType.EAGER,
-        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.ALL]
+        cascade = [CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH]
     )
     @JoinTable(
         name = "manga_genres",
@@ -46,22 +46,29 @@ data class MangaTable(
     @CollectionTable(name = "manga_linked", schema = "manga")
     var linked: MutableSet<String> = mutableSetOf(),
     val updateTime: LocalDateTime = LocalDateTime.now()
-){
+) {
     fun addMangaLinked(linkedTemp: String): MangaTable{
         linked.add(linkedTemp)
         return this
     }
 
-    fun addMangaRating(rating: MangaRating){
+    fun addMangaRating(rating: MangaRating): MangaTable{
         rate.add(rating)
+        return this
     }
 
-    fun addMangaGenre(genreTemp: MangaGenre){
+    fun addMangaGenre(genreTemp: MangaGenre): MangaTable{
         genres.add(genreTemp)
+        return this
     }
 
-    fun addMangaChapters(chaptersTemp: List<MangaChapters>){
+    fun addMangaChapters(chaptersTemp: MangaChapters): MangaTable{
+        chapters.add(chaptersTemp)
+        return this
+    }
+
+    fun addMangaAllChapters(chaptersTemp: List<MangaChapters>): MangaTable{
         chapters.addAll(chaptersTemp)
+        return this
     }
-
 }

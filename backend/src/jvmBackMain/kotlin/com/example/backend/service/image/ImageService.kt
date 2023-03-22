@@ -18,27 +18,23 @@ class ImageService {
     lateinit var host: String
 
     fun saveFile(file: MultipartFile): String {
-        val id = UUID.randomUUID().toString()
-        imageRepository.save(Image(
-            id = id,
+        val image = imageRepository.save(Image(
             image = file.bytes
         ))
-        return "$host/images/$id"
+        return "$host/images/${image.id}"
     }
 
 
     fun save(file: ByteArray): String {
-        val id = UUID.randomUUID().toString()
-        imageRepository.save(
+        val image = imageRepository.save(
             Image(
-                id = id,
                 image = file
             )
         )
-        return "$host/images/$id"
+        return "$host/images/${image.id}"
     }
 
     fun getImage(id: String): Optional<Image> {
-        return imageRepository.findById(id)
+        return imageRepository.findById(UUID.fromString(id))
     }
 }
