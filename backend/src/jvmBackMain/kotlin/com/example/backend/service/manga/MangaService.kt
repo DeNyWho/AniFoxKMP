@@ -5,11 +5,11 @@ import com.example.backend.models.ChaptersHelper
 import com.example.backend.models.MangaLightJson
 import com.example.backend.models.PercentageList
 import com.example.backend.models.ServiceResponse
+import com.example.common.models.mangaResponse.detail.GenresDetail
+import com.example.common.models.mangaResponse.detail.TypesDetail
 import com.example.common.models.mangaResponse.chapters.ChapterSingle
 import com.example.common.models.mangaResponse.chapters.ChaptersLight
-import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.models.mangaResponse.detail.TypesDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.backend.repository.manga.*
 import com.example.backend.service.image.ImageService
@@ -196,7 +196,7 @@ class MangaService: MangaRepositoryImpl {
         val b = mutableListOf<MangaGenre>()
         v.genres.forEach {
             if(b.size != 4) {
-                b.add(mangaGenreRepository.findById(it.id!!.toString()).get())
+                b.add(mangaGenreRepository.findById(it.id.toString()).get())
             }
         }
         val t = mutableListOf<MangaTable>()
@@ -700,7 +700,7 @@ class MangaService: MangaRepositoryImpl {
                         }
                     }
 
-                    if (prevManga.isPresent) mangaRepository.deleteById(prevManga.get().id!!)
+                    if (prevManga.isPresent) mangaRepository.deleteById(prevManga.get().id)
 
                     skrape(HttpFetcher) {
                         request {
@@ -925,7 +925,7 @@ class MangaService: MangaRepositoryImpl {
                 }
 
                 if (prevManga.isPresent) {
-                    mangaRepository.deleteById(prevManga.get().id!!)
+                    mangaRepository.deleteById(prevManga.get().id)
                 }
 
                 mangaRepository.save(manga)
@@ -963,13 +963,13 @@ class MangaService: MangaRepositoryImpl {
                         tL.forEach { url ->
                             val temp = mangaRepository.mangaByUrl(mangaSmall + url)
                             if (temp.isPresent) {
-                                manga.addMangaLinked(linkedTemp = temp.get().id!!.toString())
+                                manga.addMangaLinked(linkedTemp = temp.get().id.toString())
                             } else {
                                 manga.addMangaLinked(
                                     linkedTemp = addLinkedManga(
                                         urlLink = url,
                                         prevUrlLink = urlLink
-                                    ).id!!.toString()
+                                    ).id.toString()
                                 )
                             }
                         }
@@ -988,7 +988,7 @@ class MangaService: MangaRepositoryImpl {
 //                pagesBooleanLinked = false
 //            }
         }
-        return mangaRepository.findById(manga.id!!).get()
+        return mangaRepository.findById(manga.id).get()
     }
 
 

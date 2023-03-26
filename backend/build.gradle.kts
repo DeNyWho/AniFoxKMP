@@ -8,39 +8,22 @@ plugins {
 	kotlin("plugin.spring") version Dependencies.Versions.kotlin
 	id("com.github.johnrengelman.shadow") version "7.1.0"
 }
-tasks.withType<KotlinCompile> {
-	kotlinOptions.jvmTarget = "18"
-}
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
-}
-tasks {
-	withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-		archiveFileName.set("app.jar")
-		archiveClassifier.set("")
-		manifest {
-			attributes["Main-Class"] = "com.example.backend.ApplicationKt"
-		}
-		configurations = listOf(project.configurations["runtimeClasspath"])
-		minimize()
-	}
+
+springBoot {
+	mainClass.set("com.example.backend.ApplicationKt")
 }
 
-//tasks {
-//	val shadowJar by getting(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
-//		archiveFileName.set("app.jar")
-//		archiveClassifier.set("")
-//		manifest {
-//			attributes["Main-Class"] = "com.example.backend.ApplicationKt"
-//		}
-//		from(sourceSets["jvmBackMain"].output)
-//		configurations = listOf(project.configurations["runtimeClasspath"])
-//		minimize()
-//	}
-//}
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
+	google()
 	mavenCentral()
+	gradlePluginPortal()
+	maven(Dependencies.MultiPlatform.composeMaven)
+	maven(Dependencies.MultiPlatform.gradleMaven)
+	maven(Dependencies.MultiPlatform.jitpack)
 }
 
 
@@ -55,6 +38,14 @@ kotlin {
 	sourceSets {
 		val jvmBackMain by getting {
 			dependencies {
+				with(Dependencies.Ktor){
+					implementation(clientCore)
+					implementation(clientJava)
+					implementation(clientLogging)
+					implementation(clientJson)
+					implementation(json)
+					implementation(contentNegotiation)
+				}
 				with(Dependencies.MultiPlatform){
 					implementation(kotlinxSerializationJson)
 				}
@@ -98,10 +89,6 @@ kotlin {
 	}
 }
 
-springBoot {
-	mainClass.set("com.example.backend.ApplicationKt")
-}
-
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -109,7 +96,7 @@ tasks.withType<KotlinCompile> {
 	}
 	kotlinOptions.jvmTarget = "18"
 }
-
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+

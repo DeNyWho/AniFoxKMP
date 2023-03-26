@@ -9,20 +9,22 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalSerializationApi::class)
-@Serializer(forClass = LocalDate::class)
-object LocalDateSerializer : KSerializer<LocalDate> {
-    private val dtf: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+@Serializer(forClass = LocalDateTime::class)
+object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+    private val dtf: DateTimeFormatter = DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC)
 
-    override fun serialize(encoder: Encoder, value: LocalDate) {
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
         encoder.encodeString(value.format(dtf))
     }
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LocalDateTime", PrimitiveKind.STRING)
 
 
-    override fun deserialize(decoder: Decoder): LocalDate {
-        return LocalDate.parse(decoder.decodeString(), dtf)
+    override fun deserialize(decoder: Decoder): LocalDateTime {
+        return LocalDateTime.parse(decoder.decodeString(), dtf)
     }
 }
