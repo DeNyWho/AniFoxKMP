@@ -5,7 +5,6 @@ import com.example.backend.util.LocalDateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.io.Serial
 import java.time.LocalDate
 
 @Serializable
@@ -18,6 +17,8 @@ data class MaterialData(
     val animeStatus: String = "",
     @SerialName("year")
     val year: Int = 0,
+    @SerialName("anime_kind")
+    val animeType: String = "",
     @SerialName("anime_description")
     val description: String = "",
     @SerialName("poster_url")
@@ -32,6 +33,8 @@ data class MaterialData(
     val shikimoriRating: Double = 0.0,
     @SerialName("shikimori_votes")
     val shikimoriVotes: Int = 0,
+    @SerialName("released_at")
+    val releasedAt: LocalDate = LocalDate.now(),
     @SerialName("aired_at")
     val airedAt: LocalDate = LocalDate.now(),
     @SerialName("rating_mpaa")
@@ -42,4 +45,5 @@ data class MaterialData(
     val episodesAired: Int = 0,
     @SerialName("minimal_age")
     val minimalAge: Int = 0,
+
 )

@@ -14,7 +14,7 @@ data class AnimeTable (
     val type: String = "",
     val link: String = "",
     val title: String = "",
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "anime_otherTitles", schema = "anime")
     val otherTitles: MutableList<String> = mutableListOf(),
     val year: Int = 0,
@@ -23,6 +23,7 @@ data class AnimeTable (
     val shikimoriId: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val airedAt: LocalDate = LocalDate.now(),
+    val releasedAt: LocalDate = LocalDate.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
     @OneToMany(
         fetch = FetchType.EAGER,
@@ -39,7 +40,7 @@ data class AnimeTable (
     @Column(columnDefinition = "TEXT")
     val description: String = "",
     val posterUrl: String = "",
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "anime_screenshots", schema = "anime")
     val screenshots: MutableList<String> = mutableListOf(),
     @ManyToMany(
@@ -68,6 +69,7 @@ data class AnimeTable (
     val shikimoriVotes: Int = 0,
     val ratingMpa: String = "",
     val minimalAge: Int = 0,
+    val season: String = ""
 ) {
     fun addAnimeGenre(genre: AnimeGenreTable): AnimeTable {
         genres.add(genre)

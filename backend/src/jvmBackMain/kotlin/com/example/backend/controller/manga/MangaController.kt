@@ -1,10 +1,10 @@
 package com.example.backend.controller.manga
 
 import com.example.backend.models.ServiceResponse
-import com.example.common.models.mangaResponse.chapters.ChapterSingle
-import com.example.common.models.mangaResponse.chapters.ChaptersLight
-import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.models.mangaResponse.light.MangaLight
+import com.example.backend.models.mangaResponse.chapters.ChapterSingle
+import com.example.backend.models.mangaResponse.chapters.ChaptersLight
+import com.example.backend.models.mangaResponse.detail.MangaDetail
+import com.example.backend.models.mangaResponse.light.MangaLight
 import com.example.backend.service.manga.MangaService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema

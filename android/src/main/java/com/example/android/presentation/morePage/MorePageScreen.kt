@@ -2,21 +2,17 @@ package com.example.android.presentation.morePage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.android.navigation.Screen
 import com.example.android.presentation.morePage.item.MorePageToolbar
 import com.example.android.presentation.search.SearchContentList
-import com.example.android.presentation.search.composable.SearchBoxField
 import com.example.common.core.enum.ContentType
 import com.example.common.nav.ContentMoreNavArgs
 import kotlinx.coroutines.channels.Channel

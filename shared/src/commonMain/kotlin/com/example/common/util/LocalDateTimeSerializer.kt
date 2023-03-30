@@ -1,4 +1,4 @@
-package com.example.backend.util
+package com.example.common.util
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

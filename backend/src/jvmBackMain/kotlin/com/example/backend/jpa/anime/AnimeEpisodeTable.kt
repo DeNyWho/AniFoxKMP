@@ -20,12 +20,12 @@ data class AnimeEpisodeTable(
         inverseJoinColumns = [JoinColumn(name = "translation_id", referencedColumnName = "id")],
         schema = "anime",
     )
-    var translation: MutableSet<TranslationTable> = mutableSetOf(),
+    var translation: MutableSet<AnimeTranslationTable> = mutableSetOf(),
     @ElementCollection
     @CollectionTable(name = "episode_screenshots", schema = "anime")
     val screenshots: MutableList<String> = mutableListOf()
 ) {
-    fun addTranslationToEpisode(translations: List<TranslationTable>): AnimeEpisodeTable {
+    fun addTranslationToEpisode(translations: List<AnimeTranslationTable>): AnimeEpisodeTable {
         translation.addAll(translations)
         return this
     }

@@ -8,7 +8,7 @@ import kotlinx.serialization.UseSerializers
 import java.time.LocalDateTime
 
 @Serializable
-data class AnimeParser(
+data class AnimeTemp(
     @SerialName("id")
     val id: String = "",
     @SerialName("type")
@@ -25,10 +25,8 @@ data class AnimeParser(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @SerialName("updated_at")
     val updatedAt: LocalDateTime = LocalDateTime.now(),
-    @SerialName("seasons")
-    val seasons: Map<String, Season>,
     @SerialName("material_data")
-    var materialData: MaterialData = MaterialData(),
+    val materialData: MaterialData = MaterialData(),
     @SerialName("screenshots")
     val screenshots: List<String> = listOf()
 )

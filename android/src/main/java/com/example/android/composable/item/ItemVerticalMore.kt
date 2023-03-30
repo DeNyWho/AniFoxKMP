@@ -12,15 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.android.ui.Icons
 import com.example.android.ui.Shapes
-import com.example.android.ui.darkGreyBackground
-import com.example.android.ui.onDarkSurface
 
 @Composable
 fun ItemVerticalMore(

@@ -12,7 +12,6 @@ plugins {
 springBoot {
 	mainClass.set("com.example.backend.ApplicationKt")
 }
-
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17

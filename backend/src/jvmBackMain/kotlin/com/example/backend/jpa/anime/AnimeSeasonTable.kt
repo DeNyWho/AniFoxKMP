@@ -1,7 +1,7 @@
 package com.example.backend.jpa.anime
 
 import jakarta.persistence.*
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table (name = "season", schema = "anime")
