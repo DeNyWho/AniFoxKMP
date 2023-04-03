@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.android.domain.usecases.GetPagingMangaUseCase
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.light.MangaLight
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ class MorePageViewModel (
     private val getPagingMangaUseCase: GetPagingMangaUseCase
 ): ViewModel(){
 
-    private val _searchedManga = MutableStateFlow<PagingData<MangaLight>>(PagingData.empty())
+    private val _searchedManga = MutableStateFlow<PagingData<ContentLight>>(PagingData.empty())
     val searchedManga = _searchedManga
 
     fun search(order: String? = null, status: String? = null, genres: List<String>? = null) {

@@ -3,6 +3,8 @@ package com.example.android.navigation
 import android.view.Window
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,6 +14,7 @@ import androidx.navigation.navArgument
 import com.example.android.common.OnDestinationChanged
 import com.example.android.presentation.detail.DetailScreen
 import com.example.android.presentation.home.HomeScreen
+import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.morePage.MorePageScreen
 import com.example.android.presentation.search.SearchScreen
 import com.example.android.presentation.signIn.SignInScreen
@@ -28,6 +31,7 @@ fun Navigation(window: Window) {
 
     val systemUiController = rememberSystemUiController()
     val navController = rememberNavController()
+    val selectedTab = remember { mutableStateOf(BottomNavTabs.Home) }
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
 
@@ -117,6 +121,22 @@ fun Navigation(window: Window) {
             HomeScreen(
                 navController = navController
             )
+            NavScreen(selectedTab = selectedTab, navController = navController)
+
+        }
+
+        composable(Screen.Manga.route) {
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                color = MaterialTheme.colors.background,
+                drawOverStatusBar = false,
+                window = window,
+            )
+
+            MangaScreen(
+                navController = navController
+            )
+
         }
 
         composable(Screen.Search.route) {

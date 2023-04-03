@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.android.data.repository.MangaPagingSource
 import com.example.common.data.repository.MangaRepository
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.light.MangaLight
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +17,7 @@ class GetPagingMangaUseCase(private val repository: MangaRepository) {
         status: String? = null,
         genres: List<String>? = null,
         searchQuery: String? = null
-    ): Flow<PagingData<MangaLight>> {
+    ): Flow<PagingData<ContentLight>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize, prefetchDistance = 1, enablePlaceholders = false, initialLoadSize = pageSize),
             pagingSourceFactory = {

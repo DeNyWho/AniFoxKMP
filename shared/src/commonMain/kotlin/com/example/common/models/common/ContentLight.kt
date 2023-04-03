@@ -1,13 +1,11 @@
-package com.example.common.models.animeResponse.light
+package com.example.common.models.common
 
 import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
-import com.example.common.models.common.ContentLight
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-data class AnimeLight(
+data class ContentLight(
     val id: String = "",
     var title: String = "",
     var image: String = "",
@@ -21,20 +19,3 @@ data class AnimeLight(
     val ratingMpa: String = "",
     val minimalAge: Int = 0
 )
-
-fun AnimeLight.toContentLight(): ContentLight {
-    return ContentLight(
-        id = id,
-        title = title,
-        image = image,
-        type = type,
-        studio = studio,
-        season = season,
-        year = year,
-        episodesCount = episodesCount,
-        genres = genres,
-        status = status,
-        ratingMpa = ratingMpa,
-        minimalAge = minimalAge
-    )
-}

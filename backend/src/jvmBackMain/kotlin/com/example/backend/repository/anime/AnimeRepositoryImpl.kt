@@ -21,7 +21,8 @@ interface AnimeRepositoryImpl {
         searchQuery: String?,
         ratingMpa: String?,
         season: String?,
-        minimalAge: Int?
+        minimalAge: Int?,
+        type: String?
     ): ServiceResponse<AnimeLight>
 
     fun getAnimeGenres(): ServiceResponse<AnimeGenreTable>

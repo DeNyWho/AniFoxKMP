@@ -3,6 +3,7 @@ package com.example.common.models.animeResponse.detail
 
 import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
+import com.example.common.models.common.ContentDetail
 import com.example.common.util.LocalDateSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -28,3 +29,22 @@ data class AnimeDetail(
     val ratingMpa: String = "",
     val minimalAge: Int = 0
 )
+
+fun AnimeDetail.toContentDetail(): ContentDetail {
+    return ContentDetail(
+        id = id,
+        title = title,
+        image = image,
+        studio = studio,
+        season = season,
+        otherTitles = otherTitles,
+        year = year,
+        releasedAt = releasedAt,
+        airedAt = airedAt,
+        type = type,
+        episodesCount = episodesCount,
+        episodesCountAired = episodesCountAired,
+        status = status,
+        ratingMpa = ratingMpa
+    )
+}

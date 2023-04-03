@@ -42,6 +42,7 @@ class AnimeController {
         @Schema(name = "season", required = false, nullable = true, description = "Must be one of: Winter | Spring | Summer | Fall") season: String?,
         @Schema(name = "ratingMpa", required = false, nullable = true, description = "Must be one of: PG | PG-13 | R | R+ | G") ratingMpa: String?,
         @Schema(name = "minimalAge", required = false, nullable = true, description = "Must be one of: 18 | 16 | 12 | 6 | 0") minimalAge: Int?,
+        @Schema(name = "type", required = false, nullable = true, description = "Must be on of: movie | ona | ova | music | special | tv") type: String?
     ): ServiceResponse<AnimeLight>? {
         return try {
             animeService.getAnime(
@@ -53,7 +54,8 @@ class AnimeController {
                 searchQuery = searchQuery,
                 season = season,
                 ratingMpa = ratingMpa,
-                minimalAge = minimalAge
+                minimalAge = minimalAge,
+                type = type
             )
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)

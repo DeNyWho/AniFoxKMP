@@ -18,6 +18,7 @@ import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.Shimmer
 
@@ -30,7 +31,7 @@ fun ScrollableHorizontalContent(
 	shimmer: Shimmer = rememberShimmerCustomBounds(),
 	thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
 	headerTitle: String,
-	contentState: StateListWrapper<MangaLight>,
+	contentState: StateListWrapper<ContentLight>,
 	contentPadding: PaddingValues,
 	contentArrangement: Arrangement.Horizontal,
 	textAlign: TextAlign = TextAlign.Start,

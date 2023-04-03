@@ -1,5 +1,6 @@
 package com.example.common.models.mangaResponse.detail
 
+import com.example.common.models.common.ContentDetail
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,3 +15,17 @@ data class MangaDetail(
     var chaptersCount: Int = 0,
     val views: Int = 0
 )
+
+fun MangaDetail.toContentDetail(): ContentDetail {
+    return ContentDetail(
+        id = id,
+        title = title,
+        image = image,
+        url = url,
+        description = description,
+        genres = genres,
+        types = types,
+        chaptersCount = chaptersCount,
+        views = views
+    )
+}

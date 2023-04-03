@@ -15,6 +15,8 @@ import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.presentation.detail.composable.DetailDescription
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.common.ContentDetail
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
 
@@ -29,9 +31,9 @@ private object ContentDetailsScreenSection {
 fun DetailContentList(
     lazyColumnState: LazyListState = rememberLazyListState(),
     onContentClick: (String, String) -> Unit,
-    detailsState: StateListWrapper<MangaDetail>,
-    similarState: StateListWrapper<MangaLight>,
-    linkedState: StateListWrapper<MangaLight>
+    detailsState: StateListWrapper<ContentDetail>,
+    similarState: StateListWrapper<ContentLight>,
+    linkedState: StateListWrapper<ContentLight>
 ) {
     var isDescriptionExpanded by remember { mutableStateOf(false) }
     LazyColumn (

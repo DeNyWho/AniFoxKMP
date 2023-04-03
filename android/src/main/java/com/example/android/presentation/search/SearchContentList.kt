@@ -14,6 +14,7 @@ import com.example.android.composable.item.ItemVertical
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.util.calculateGridCount
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
@@ -21,7 +22,7 @@ import com.valentinilk.shimmer.rememberShimmer
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun SearchContentList(
-    searchResults: LazyPagingItems<MangaLight>,
+    searchResults: LazyPagingItems<ContentLight>,
     onItemClick: (String, String) -> Unit,
     listState: LazyGridState
 ) {

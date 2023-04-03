@@ -66,7 +66,8 @@ class AnimeService: AnimeRepositoryImpl {
         searchQuery: String?,
         ratingMpa: String?,
         season: String?,
-        minimalAge: Int?
+        minimalAge: Int?,
+        type: String?
     ): ServiceResponse<AnimeLight> {
         val actualStatus = status?.ifEmpty { null }
         val actualSearch = searchQuery?.ifEmpty { null }
@@ -320,7 +321,6 @@ class AnimeService: AnimeRepositoryImpl {
                 }
                 anime.materialData = animeTemp.result[0].materialData
                 val fr = animeTemp.result[0]
-                if (anime.materialData.episodesAired == 0) return@Loop
                 if (!anime.materialData.title.contains("Атака Титанов") && !anime.materialData.title.contains("Атака титанов")) {
                     val tempingAnime = animeRepository.findByTitle(anime.materialData.title)
                     println(tempingAnime.isPresent)
@@ -334,7 +334,7 @@ class AnimeService: AnimeRepositoryImpl {
                                     AnimeGenreTable(id = temp.id, genre = temp.genre)
                                 )
                             } else {
-                                if (genre == "яой" || genre == "эротика" || genre == "хентай") {
+                                if (genre == "яой" || genre == "эротика" || genre == "хентай" || genre == "Яой" || genre == "Хентай" || genre == "Эротика") {
                                     return@Loop
                                 }
                                 animeGenreRepository.save(

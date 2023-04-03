@@ -1,6 +1,7 @@
 package com.example.common.di
 
 //import com.example.common.data.paging.MangaPagingSource
+import com.example.common.data.repository.AnimeRepository
 import com.example.common.data.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
@@ -36,6 +37,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
 
     single { MangaRepository(get()) }
+    single { AnimeRepository(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

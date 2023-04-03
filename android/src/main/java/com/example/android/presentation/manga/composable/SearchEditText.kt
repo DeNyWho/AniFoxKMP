@@ -1,4 +1,4 @@
-package com.example.android.presentation.home.composable
+package com.example.android.presentation.manga.composable
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text

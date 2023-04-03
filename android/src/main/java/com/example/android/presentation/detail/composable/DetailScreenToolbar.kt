@@ -33,6 +33,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.ui.*
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.common.ContentDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
 import me.onebone.toolbar.CollapsingToolbarScope
@@ -41,7 +42,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun CollapsingToolbarScope.DetailScreenToolbar(
-    detailState: StateListWrapper<MangaDetail> = StateListWrapper(listOf(MangaDetail())),
+    detailState: StateListWrapper<ContentDetail> = StateListWrapper(listOf(ContentDetail())),
     toolbarScaffoldState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
     onArrowClick: () -> Boolean,
 ){
@@ -201,10 +202,10 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
 
 @Composable
 private fun resolveHeaderIconAndStatus(
-    data: MangaDetail
+    data: ContentDetail
 ): Pair<ImageVector, String> {
     return if (
-        data.types.type == "онгоинг"
+        data.types.type == "ongoing"
     ) {
         Pair(
             ImageVector.vectorResource(id =  Icons.Outlined.Clock4),

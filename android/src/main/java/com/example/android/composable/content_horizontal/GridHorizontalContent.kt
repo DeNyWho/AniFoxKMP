@@ -17,6 +17,7 @@ import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.android.util.calculateGridCount
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.models.common.ContentLight
 import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.Shimmer
 
@@ -29,7 +30,7 @@ fun GridHorizontalContent(
     shimmer: Shimmer = rememberShimmerCustomBounds(),
     thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightGrid,
     headerTitle: String,
-    contentState: StateListWrapper<MangaLight>,
+    contentState: StateListWrapper<ContentLight>,
     contentPadding: PaddingValues,
     textAlign: TextAlign = TextAlign.Start,
     onIconClick: () -> Unit,
@@ -55,13 +56,13 @@ fun GridHorizontalContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (contentState.isLoading) {
-            showItemVerticalAnimeShimmer(
+            showItemVerticalAnimeShimmer (
                 modifier = itemModifier,
                 shimmerInstance = shimmer,
                 thumbnailHeight = thumbnailHeight
             )
         } else if (contentState.data.isNotEmpty()) {
-            items(contentState.data.take(limit).size){ index ->
+            items(contentState.data.take(limit).size) { index ->
                 ItemVertical(
                     modifier = itemModifier,
                     data = contentState.data[index],

@@ -1,17 +1,18 @@
 package com.example.android.composable.shimmer
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.android.composable.item.ItemVerticalModifier
+import com.example.android.ui.Shapes
 import com.example.android.ui.grey
 import com.valentinilk.shimmer.Shimmer
 import com.valentinilk.shimmer.shimmer
@@ -26,14 +27,18 @@ fun ItemVerticalMangaShimmer(
     modifier = modifier
       .shimmer(shimmerInstance)
   ) {
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(thumbnailHeight)
-        .clip(RoundedCornerShape(12.dp))
-        .background(color = grey)
-    )
-
+    Card (
+      elevation = 2.dp,
+      shape = Shapes.Rounded12
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(thumbnailHeight)
+          .clip(RoundedCornerShape(12.dp))
+          .background(color = grey)
+      )
+    }
     Box(
       modifier = Modifier
         .fillMaxWidth()
@@ -61,7 +66,6 @@ fun ItemVerticalMangaShimmer(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 fun LazyGridScope.showItemVerticalAnimeShimmer(
     modifier: Modifier = ItemVerticalModifier.fillParentWidth,
     shimmerInstance: Shimmer,
