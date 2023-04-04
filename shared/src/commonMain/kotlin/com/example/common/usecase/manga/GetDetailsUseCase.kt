@@ -9,14 +9,9 @@ import com.example.common.data.repository.MangaRepository
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.detail.toContentDetail
-import com.example.common.models.animeResponse.light.AnimeLight
-import com.example.common.models.animeResponse.light.toContentLight
 import com.example.common.models.common.ContentDetail
 import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.detail.toContentDetail
-import com.example.common.models.mangaResponse.light.MangaLight
-import com.example.common.models.mangaResponse.light.toContentLight
-import com.example.common.models.response.ServiceResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

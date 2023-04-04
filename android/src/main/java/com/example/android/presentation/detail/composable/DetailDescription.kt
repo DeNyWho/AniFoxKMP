@@ -28,7 +28,6 @@ import com.example.android.ui.grey
 import com.example.android.ui.onDarkSurface
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentDetail
-import com.example.common.models.mangaResponse.detail.MangaDetail
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

@@ -19,7 +19,6 @@ import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.Shimmer
 
 @OptIn(ExperimentalCoilApi::class)

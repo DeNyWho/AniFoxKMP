@@ -17,8 +17,6 @@ import com.example.android.presentation.detail.composable.DetailDescription
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentDetail
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.detail.MangaDetail
-import com.example.common.models.mangaResponse.light.MangaLight
 
 private object ContentDetailsScreenSection {
     const val ContentDescription = "content_description"

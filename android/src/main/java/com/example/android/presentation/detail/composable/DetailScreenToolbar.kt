@@ -34,7 +34,6 @@ import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.ui.*
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentDetail
-import com.example.common.models.mangaResponse.detail.MangaDetail
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
 import me.onebone.toolbar.CollapsingToolbarScope
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState

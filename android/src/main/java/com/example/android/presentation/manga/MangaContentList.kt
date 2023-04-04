@@ -16,7 +16,6 @@ import com.example.common.core.enum.ContentType
 import com.example.common.core.enum.TypesOfMoreScreen
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.util.Constants
 
 @Composable

@@ -16,7 +16,8 @@ interface AnimeApi {
         season: String?,
         ratingMpa: String?,
         minimalAge: String?,
-        type: String?
+        type: String?,
+        year: Int?
     ): Resource<ServiceResponse<AnimeLight>>
 
     suspend fun getAnimeDetails(id: String): Resource<ServiceResponse<AnimeDetail>>

@@ -1,6 +1,5 @@
 package com.example.common.models.common
 
-import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
 import com.example.common.models.mangaResponse.detail.GenresDetail
 import com.example.common.models.mangaResponse.detail.TypesDetail

@@ -4,9 +4,9 @@ import com.example.backend.jpa.anime.AnimeGenreTable
 import com.example.backend.jpa.anime.AnimeStudiosTable
 import com.example.backend.jpa.anime.AnimeTranslationTable
 import com.example.backend.models.ServiceResponse
+import com.example.backend.service.anime.AnimeService
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.light.AnimeLight
-import com.example.backend.service.anime.AnimeService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema

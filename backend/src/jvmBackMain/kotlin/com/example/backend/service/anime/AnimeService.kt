@@ -4,11 +4,11 @@ import com.example.backend.jpa.anime.*
 import com.example.backend.models.ServiceResponse
 import com.example.backend.models.animeParser.AnimeResponse
 import com.example.backend.models.animeParser.AnimeTempResponse
-import com.example.common.models.animeResponse.detail.AnimeDetail
-import com.example.common.models.animeResponse.light.AnimeLight
 import com.example.backend.repository.anime.*
 import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
+import com.example.common.models.animeResponse.detail.AnimeDetail
+import com.example.common.models.animeResponse.light.AnimeLight
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -29,7 +29,6 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.JpaSort
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 
 @Service

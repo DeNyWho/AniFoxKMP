@@ -5,7 +5,6 @@ import com.example.common.core.wrapper.Resource
 import com.example.common.data.repository.MangaRepository
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.example.common.models.mangaResponse.light.toContentLight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

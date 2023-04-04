@@ -32,5 +32,5 @@ internal val appModule = module {
         ImageLoader.Builder(androidContext())
             .build()
     }
-    single {ImageLoaderSingleton() }
+    single { ImageLoaderSingleton() }
 }

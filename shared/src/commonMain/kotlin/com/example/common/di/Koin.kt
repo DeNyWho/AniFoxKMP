@@ -50,7 +50,7 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
     install(HttpCache)
     install(Logging) {
         logger = Logger.DEFAULT
-        level = LogLevel.INFO
+        level = LogLevel.ALL
     }
     install(HttpTimeout){
         requestTimeoutMillis = 300000

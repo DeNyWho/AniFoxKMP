@@ -25,7 +25,8 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
         season: String?,
         ratingMpa: String?,
         minimalAge: String?,
-        type: String?
+        type: String?,
+        year: Int?
     ): Resource<ServiceResponse<AnimeLight>> {
         val request = HttpRequestBuilder().apply {
             method = HttpMethod.Get
@@ -39,6 +40,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
                 if(season != null) parameter("season", season)
                 if(ratingMpa != null) parameter("ratingMpa", ratingMpa)
                 if(minimalAge != null) parameter("minimalAge", minimalAge)
+                if(year != null) parameter("year", year)
                 if(type != null) parameter("type", type)
                 if(status != null) if(status.length > 4) parameter("status", status)
                 if(genres!= null) if(genres.isNotEmpty()) parameter("genres", genres)

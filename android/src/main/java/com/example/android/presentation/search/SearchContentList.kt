@@ -15,7 +15,6 @@ import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.util.calculateGridCount
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 

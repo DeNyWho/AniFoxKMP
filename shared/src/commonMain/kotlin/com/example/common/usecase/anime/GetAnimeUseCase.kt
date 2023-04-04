@@ -22,8 +22,10 @@ class GetAnimeUseCase(private val repository: AnimeRepository) {
         pageSize: Int = 24,
         status: String? = null,
         genres: List<String>? = null,
-        searchQuery: String? = null
+        searchQuery: String? = null,
+        year: Int? = null
     ): Flow<StateListWrapper<ContentLight>> {
+        println("WAFl = $season | $year")
         return flow {
             emit(StateListWrapper.loading())
             val state = when (val res = repository.getAnime(
@@ -36,7 +38,8 @@ class GetAnimeUseCase(private val repository: AnimeRepository) {
                 minimalAge = minimalAge,
                 ratingMpa = ratingMpa,
                 season = season,
-                type = type
+                type = type,
+                year = year
             )) {
                 is Resource.Success -> {
                     val data = res.data?.data?.map {

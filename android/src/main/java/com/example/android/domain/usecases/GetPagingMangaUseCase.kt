@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import com.example.android.data.repository.MangaPagingSource
 import com.example.common.data.repository.MangaRepository
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import kotlinx.coroutines.flow.Flow
 
 class GetPagingMangaUseCase(private val repository: MangaRepository) {

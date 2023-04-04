@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.android.domain.usecases.GetPagingMangaUseCase
 import com.example.common.models.common.ContentLight
-import com.example.common.models.mangaResponse.light.MangaLight
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
