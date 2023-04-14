@@ -36,7 +36,7 @@ data class AnimeTable (
         schema = "anime"
     )
     val seasons: MutableSet<AnimeSeasonTable> = mutableSetOf(),
-    val status: String = "",
+    var status: String = "",
     @Column(columnDefinition = "TEXT")
     val description: String = "",
     val posterUrl: String = "",

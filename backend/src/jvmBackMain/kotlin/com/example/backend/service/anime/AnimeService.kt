@@ -1,14 +1,13 @@
 package com.example.backend.service.anime
 
+//import com.example.backend.elasticRepository.AnimeElasticRepository
 import com.example.backend.jpa.anime.*
 import com.example.backend.models.ServiceResponse
 import com.example.backend.models.animeParser.AnimeResponse
 import com.example.backend.models.animeParser.AnimeTempResponse
+import com.example.backend.models.animeResponse.detail.AnimeDetail
+import com.example.backend.models.animeResponse.light.AnimeLight
 import com.example.backend.repository.anime.*
-import com.example.common.models.animeResponse.common.AnimeGenres
-import com.example.common.models.animeResponse.common.AnimeStudios
-import com.example.common.models.animeResponse.detail.AnimeDetail
-import com.example.common.models.animeResponse.light.AnimeLight
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -17,6 +16,12 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.CriteriaQuery
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.criteria.Root
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import kotlinx.coroutines.*
@@ -29,6 +34,8 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.JpaSort
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Service
@@ -55,6 +62,9 @@ class AnimeService: AnimeRepositoryImpl {
     @Autowired
     lateinit var animeRepository: AnimeRepository
 
+//    @Autowired
+//    lateinit var animeElasticRepository: AnimeElasticRepository
+
 
     override fun getAnime(
         pageNum: @Min(value = 0.toLong()) @Max(value = 500.toLong()) Int,
@@ -66,11 +76,13 @@ class AnimeService: AnimeRepositoryImpl {
         ratingMpa: String?,
         season: String?,
         minimalAge: Int?,
-        type: String?
+        type: String?,
+        year: List<Int>?,
+        translations: List<String>?
     ): ServiceResponse<AnimeLight> {
         val actualStatus = status?.ifEmpty { null }
         val actualSearch = searchQuery?.ifEmpty { null }
-        println("Anime param = $pageNum | $pageSize | $order | ${genres?.size} | $status")
+        println("Anime param = $pageNum | $pageSize | $order | ${genres?.size} | $status | ${year?.size} | ${translations?.size}")
         val sort = when (order) {
             "popular" -> Sort.by(
                 Sort.Order(Sort.Direction.DESC, "views"),
@@ -90,18 +102,93 @@ class AnimeService: AnimeRepositoryImpl {
             }
             else -> PageRequest.of(pageNum, pageSize)
         }
+        println("PAGEABLE = ${pageable.pageSize} | ${pageable.pageNumber}")
         return animeLightSuccess(
             listToAnimeLight(
-                animeRepository.findAnime(
+                findAnime(
                     pageable = pageable,
                     status = actualStatus,
                     searchQuery = actualSearch,
                     ratingMpa = ratingMpa,
                     season = season,
-                    minimalAge = minimalAge
+                    minimalAge = minimalAge,
+                    type = type,
+                    year = year,
+                    genres = genres,
+                    translationIds = translations
                 )
             )
         )
+    }
+
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
+    fun findAnime(
+        pageable: Pageable,
+        status: String?,
+        searchQuery: String?,
+        ratingMpa: String?,
+        season: String?,
+        minimalAge: Int?,
+        type: String?,
+        year: List<Int>?,
+        genres: List<String>?,
+        translationIds: List<String>?
+    ): List<AnimeTable> {
+        val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
+        val criteriaQuery: CriteriaQuery<AnimeTable> = criteriaBuilder.createQuery(AnimeTable::class.java)
+        val root: Root<AnimeTable> = criteriaQuery.from(AnimeTable::class.java)
+        criteriaQuery.select(root)
+
+        val predicates: MutableList<Predicate> = mutableListOf()
+        if (!status.isNullOrEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get<String>("status"), status))
+        }
+        if (!ratingMpa.isNullOrEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get<String>("ratingMpa"), ratingMpa))
+        }
+        if (!season.isNullOrEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get<String>("season"), season))
+        }
+        if (!type.isNullOrEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get<String>("type"), type))
+        }
+        if (minimalAge != null) {
+            predicates.add(criteriaBuilder.equal(root.get<Int>("minimalAge"), minimalAge))
+        }
+        if (!year.isNullOrEmpty()) {
+            predicates.add(root.get<Int>("year").`in`(year))
+        }
+        if (!genres.isNullOrEmpty()) {
+            val genresJoin = root.join<AnimeTable, AnimeGenreTable>("genres")
+            val genrePredicates = mutableListOf<Predicate>()
+            for (genre in genres) {
+                genrePredicates.add(criteriaBuilder.equal(genresJoin.get<String>("id"), genre))
+            }
+            predicates.add(criteriaBuilder.or(*genrePredicates.toTypedArray()))
+        }
+        if (!searchQuery.isNullOrEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get<String>("title"), searchQuery))
+        }
+        if (!translationIds.isNullOrEmpty()) {
+            val episodesJoin = root.join<AnimeTable, AnimeSeasonTable>("seasons").join<AnimeSeasonTable, AnimeEpisodeTable>("episodes")
+            val translationsJoin = episodesJoin.join<AnimeEpisodeTable, AnimeTranslationTable>("translation")
+            val translationIdsPredicate = criteriaBuilder.isTrue(
+                translationsJoin.get<AnimeTranslationTable>("id").`in`(translationIds)
+            )
+            predicates.add(translationIdsPredicate)
+        }
+
+        if (predicates.isNotEmpty()) {
+            criteriaQuery.where(*predicates.toTypedArray())
+        }
+
+        val query = entityManager.createQuery(criteriaQuery)
+        query.firstResult = pageable.pageNumber * pageable.pageSize
+        query.maxResults = pageable.pageSize + 1
+
+        return query.resultList
     }
 
     override fun getAnimeById(id: String): ServiceResponse<AnimeDetail> {
@@ -210,21 +297,17 @@ class AnimeService: AnimeRepositoryImpl {
             id = anime.id,
             title = anime.title,
             image = anime.posterUrl,
-            studio = anime.studios.map { studio ->
-                AnimeStudios(id = studio.id, studio = studio.studio)
-            },
+            studio = anime.studios.toList(),
             season = anime.season,
             description = anime.description,
-            otherTitles = anime.otherTitles,
+            otherTitles = anime.otherTitles.distinct(),
             year = anime.year,
             releasedAt = anime.releasedAt,
             airedAt = anime.airedAt,
             type = anime.type,
             episodesCount = anime.episodesCount,
             episodesCountAired = anime.episodesAires,
-            genres = anime.genres.map { genre ->
-                AnimeGenres(id = genre.id, genre = genre.genre)
-            },
+            genres = anime.genres.toList(),
             status = anime.status,
             ratingMpa = anime.ratingMpa,
             minimalAge = anime.minimalAge
@@ -241,13 +324,9 @@ class AnimeService: AnimeRepositoryImpl {
                     id = it.id,
                     title = it.title,
                     image = it.posterUrl,
-                    studio = it.studios.map { studio ->
-                        AnimeStudios(id = studio.id, studio = studio.studio)
-                    },
+                    studio = it.studios.toList(),
                     season = it.season,
-                    genres = it.genres.map { genre ->
-                        AnimeGenres(id = genre.id, genre = genre.genre)
-                    },
+                    genres = it.genres.toList(),
                     episodesCount = it.episodesCount,
                     status = it.status,
                     ratingMpa = it.ratingMpa,
@@ -282,7 +361,7 @@ class AnimeService: AnimeRepositoryImpl {
                 }
                 url {
                     protocol = URLProtocol.HTTPS
-
+                    host = "kodikapi.com/list"
                 }
                 parameter("token", animeToken)
                 parameter("limit", 100)
@@ -310,7 +389,7 @@ class AnimeService: AnimeRepositoryImpl {
                         }
                         url {
                             protocol = URLProtocol.HTTPS
-
+                            host = "kodikapi.com/search"
                         }
                         parameter("token", animeToken)
                         parameter("with_material_data", true)
@@ -321,166 +400,175 @@ class AnimeService: AnimeRepositoryImpl {
                 anime.materialData = animeTemp.result[0].materialData
                 val fr = animeTemp.result[0]
                 if (!anime.materialData.title.contains("Атака Титанов") && !anime.materialData.title.contains("Атака титанов")) {
-                    val tempingAnime = animeRepository.findByTitle(anime.materialData.title)
-                    println(tempingAnime.isPresent)
-                    if (!tempingAnime.isPresent) {
-                        val g = mutableListOf<AnimeGenreTable>()
-                        anime.materialData.genres.forEach { genre ->
-                            val genreIs = animeGenreRepository.findByGenre(genre).isPresent
-                            if (genreIs) {
-                                val temp = animeGenreRepository.findByGenre(genre).get()
-                                g.add(
-                                    AnimeGenreTable(id = temp.id, genre = temp.genre)
-                                )
-                            } else {
-                                if (genre == "яой" || genre == "эротика" || genre == "хентай" || genre == "Яой" || genre == "Хентай" || genre == "Эротика") {
-                                    return@Loop
-                                }
-                                animeGenreRepository.save(
-                                    AnimeGenreTable(genre = genre)
-                                )
-                                g.add(
-                                    animeGenreRepository.findByGenre(genre = genre).get()
-                                )
-                            }
-                        }
-                        val st = mutableListOf<AnimeStudiosTable>()
-                        anime.materialData.animeStudios.forEach { studio ->
-                            val studioIs = animeStudiosRepository.findByStudio(studio).isPresent
-                            if (studioIs) {
-                                val temp = animeStudiosRepository.findByStudio(studio).get()
-                                st.add(
-                                    AnimeStudiosTable(id = temp.id, studio = temp.studio)
-                                )
-                            } else {
-                                animeStudiosRepository.save(
-                                    AnimeStudiosTable(studio = studio)
-                                )
-                                st.add(
-                                    animeStudiosRepository.findByStudio(studio = studio).get()
-                                )
-                            }
-                        }
-                        val translationIs = animeTranslationRepository.findById(anime.translation.id).isPresent
-                        val t = if (translationIs) {
-                            val temp = animeTranslationRepository.findById(anime.translation.id).get()
-                            AnimeTranslationTable(id = temp.id, title = temp.title, voice = temp.voice)
-                        } else {
-                            animeTranslationRepository.save(
-                                AnimeTranslationTable(
-                                    id = anime.translation.id,
-                                    title = anime.translation.title,
-                                    voice = anime.translation.voice
-                                )
-                            )
-                            animeTranslationRepository.findById(anime.translation.id).get()
-                        }
-                        val se = mutableListOf<AnimeSeasonTable>()
-                        anime.seasons.forEach { season ->
-                            val episodes = ArrayList<AnimeEpisodeTable>()
-                            season.value.episodes.values.forEach { ep ->
-                                val temp = animeEpisodeRepository.save(
-                                    AnimeEpisodeTable(
-                                        link = ep.link,
-                                        screenshots = ep.screenshots.toMutableList()
+                    println("WAFL = ${anime.materialData.title}")
+                        val tempingAnime = animeRepository.findByTitle(anime.materialData.title)
+                        println(tempingAnime.isPresent)
+                        if (!tempingAnime.isPresent) {
+                            val g = mutableListOf<AnimeGenreTable>()
+                            anime.materialData.genres.forEach { genre ->
+                                val genreIs = animeGenreRepository.findByGenre(genre).isPresent
+                                if (genreIs) {
+                                    val temp = animeGenreRepository.findByGenre(genre).get()
+                                    g.add(
+                                        AnimeGenreTable(id = temp.id, genre = temp.genre)
                                     )
-                                )
-                                temp.addTranslationToEpisode(listOf(t))
-                                episodes.add(temp)
-                            }
-                            val tempSeason = animeSeasonRepository.save(
-                                AnimeSeasonTable(
-                                    link = season.value.link,
-                                    season = season.key
-                                )
-                            )
-                            tempSeason.addEpisodes(episodes)
-                            se.add(tempSeason)
-                        }
-
-                        val a = AnimeTable(
-                            title = anime.materialData.title,
-                            otherTitles = anime.materialData.otherTitles.toMutableList(),
-                            status = anime.materialData.animeStatus,
-                            description = anime.materialData.description,
-                            year = anime.materialData.year,
-                            createdAt = anime.createdAt,
-                            link = anime.link,
-                            airedAt = anime.materialData.airedAt,
-                            releasedAt = anime.materialData.releasedAt,
-                            episodesCount = anime.materialData.episodesTotal,
-                            episodesAires = anime.materialData.episodesAired,
-                            posterUrl = fr.materialData.poster,
-                            type = anime.materialData.animeType,
-                            updatedAt = anime.updatedAt,
-                            minimalAge = anime.materialData.minimalAge,
-                            screenshots = anime.screenshots.toMutableList(),
-                            ratingMpa = when (anime.materialData.ratingMpa) {
-                                "PG" -> "PG"
-                                "Rx" -> "R+"
-                                "R+" -> "R+"
-                                "PG-13" -> "PG-13"
-                                "pg" -> "PG"
-                                "R" -> "R"
-                                "pg13" -> "PG-13"
-                                "G" -> "G"
-                                else -> ""
-                            },
-                            shikimoriId = anime.shikimoriId,
-                            shikimoriRating = anime.materialData.shikimoriRating,
-                            shikimoriVotes = anime.materialData.shikimoriVotes,
-                            season = when (anime.materialData.airedAt.month.value) {
-                                12, 1, 2 -> "Winter"
-                                3, 4, 5 -> "Spring"
-                                6, 7, 8 -> "Summer"
-                                else -> "Fall"
-                            }
-                        )
-                        a.addAllAnimeGenre(g)
-                        a.addAllAnimeStudios(st)
-                        a.addSeason(se)
-                        animeRepository.save(a)
-                    } else {
-                        val a = animeRepository.findByTitle(anime.materialData.title).get()
-                        val translationIs = animeTranslationRepository.findById(anime.translation.id).isPresent
-                        val t = if (translationIs) {
-                            val temp = animeTranslationRepository.findById(anime.translation.id).get()
-                            AnimeTranslationTable(id = temp.id, title = temp.title, voice = temp.voice)
-                        } else {
-                            animeTranslationRepository.save(
-                                AnimeTranslationTable(
-                                    id = anime.translation.id,
-                                    title = anime.translation.title,
-                                    voice = anime.translation.voice
-                                )
-                            )
-                            animeTranslationRepository.findById(anime.translation.id).get()
-                        }
-                        anime.seasons.forEach { season ->
-                            val episodes = ArrayList<AnimeEpisodeTable>()
-                            season.value.episodes.values.forEach season@{ ep ->
-                                if (animeEpisodeRepository.findByEpisodeLink(ep.link).isPresent) {
-                                    return@season
                                 } else {
-                                    val temp = animeEpisodeRepository.save(
-                                        AnimeEpisodeTable(
-                                            link = ep.link,
-                                            screenshots = ep.screenshots.toMutableList(),
-                                        )
+                                    if (genre == "яой" || genre == "эротика" || genre == "хентай" || genre == "Яой" || genre == "Хентай" || genre == "Эротика") {
+                                        return@Loop
+                                    }
+                                    animeGenreRepository.save(
+                                        AnimeGenreTable(genre = genre)
                                     )
-                                    temp.addTranslationToEpisode(
-                                        translations = listOf(t)
+                                    g.add(
+                                        animeGenreRepository.findByGenre(genre = genre).get()
                                     )
-                                    episodes.add(temp)
                                 }
                             }
-                            if (episodes.size > 0) {
-                                a.seasons.forEach {
-                                    it.addEpisodes(episodes)
+                            val st = mutableListOf<AnimeStudiosTable>()
+                            anime.materialData.animeStudios.forEach { studio ->
+                                val studioIs = animeStudiosRepository.findByStudio(studio).isPresent
+                                if (studioIs) {
+                                    val temp = animeStudiosRepository.findByStudio(studio).get()
+                                    st.add(
+                                        AnimeStudiosTable(id = temp.id, studio = temp.studio)
+                                    )
+                                } else {
+                                    animeStudiosRepository.save(
+                                        AnimeStudiosTable(studio = studio)
+                                    )
+                                    st.add(
+                                        animeStudiosRepository.findByStudio(studio = studio).get()
+                                    )
                                 }
+                            }
+                            val translationIs = animeTranslationRepository.findById(anime.translation.id).isPresent
+                            val t = if (translationIs) {
+                                val temp = animeTranslationRepository.findById(anime.translation.id).get()
+                                AnimeTranslationTable(id = temp.id, title = temp.title, voice = temp.voice)
+                            } else {
+                                animeTranslationRepository.save(
+                                    AnimeTranslationTable(
+                                        id = anime.translation.id,
+                                        title = anime.translation.title,
+                                        voice = anime.translation.voice
+                                    )
+                                )
+                                animeTranslationRepository.findById(anime.translation.id).get()
+                            }
+                            val se = mutableListOf<AnimeSeasonTable>()
+                            anime.seasons.forEach { season ->
+                                val episodes = ArrayList<AnimeEpisodeTable>()
+                                season.value.episodes.values.forEach waf@{ ep ->
+                                    if (animeEpisodeRepository.findByEpisodeLink(ep.link).isPresent) {
+                                        return@waf
+                                    } else {
+                                        val temp = animeEpisodeRepository.save(
+                                            AnimeEpisodeTable(
+                                                link = ep.link,
+                                                screenshots = ep.screenshots.toMutableList()
+                                            )
+                                        )
+                                        temp.addTranslationToEpisode(listOf(t))
+                                        episodes.add(temp)
+                                    }
+                                }
+                                val tempSeason = animeSeasonRepository.save(
+                                    AnimeSeasonTable(
+                                        link = season.value.link,
+                                        season = season.key
+                                    )
+                                )
+                                tempSeason.addEpisodes(episodes)
+                                se.add(tempSeason)
+                            }
+
+                            val a = AnimeTable(
+                                title = anime.materialData.title,
+                                otherTitles = anime.materialData.otherTitles.toMutableList(),
+                                status = anime.materialData.animeStatus,
+                                description = anime.materialData.description,
+                                year = anime.materialData.year,
+                                createdAt = anime.createdAt,
+                                link = anime.link,
+                                airedAt = anime.materialData.airedAt,
+                                releasedAt = anime.materialData.releasedAt,
+                                episodesCount = anime.materialData.episodesTotal,
+                                episodesAires = anime.materialData.episodesAired,
+                                posterUrl = fr.materialData.poster,
+                                type = anime.materialData.animeType,
+                                updatedAt = anime.updatedAt,
+                                minimalAge = anime.materialData.minimalAge,
+                                screenshots = anime.screenshots.toMutableList(),
+                                ratingMpa = when (anime.materialData.ratingMpa) {
+                                    "PG" -> "PG"
+                                    "Rx" -> "R+"
+                                    "R+" -> "R+"
+                                    "PG-13" -> "PG-13"
+                                    "pg" -> "PG"
+                                    "R" -> "R"
+                                    "pg13" -> "PG-13"
+                                    "G" -> "G"
+                                    else -> ""
+                                },
+                                shikimoriId = anime.shikimoriId,
+                                shikimoriRating = anime.materialData.shikimoriRating,
+                                shikimoriVotes = anime.materialData.shikimoriVotes,
+                                season = when (anime.materialData.airedAt.month.value) {
+                                    12, 1, 2 -> "Winter"
+                                    3, 4, 5 -> "Spring"
+                                    6, 7, 8 -> "Summer"
+                                    else -> "Fall"
+                                }
+                            )
+                            a.addAllAnimeGenre(g)
+                            a.addAllAnimeStudios(st)
+                            a.addSeason(se)
+                            animeRepository.save(a)
+                        } else {
+                            val a = animeRepository.findByTitle(anime.materialData.title).get()
+                            val translationIs = animeTranslationRepository.findById(anime.translation.id).isPresent
+                            val t = if (translationIs) {
+                                val temp = animeTranslationRepository.findById(anime.translation.id).get()
+                                AnimeTranslationTable(id = temp.id, title = temp.title, voice = temp.voice)
+                            } else {
+                                animeTranslationRepository.save(
+                                    AnimeTranslationTable(
+                                        id = anime.translation.id,
+                                        title = anime.translation.title,
+                                        voice = anime.translation.voice
+                                    )
+                                )
+                                animeTranslationRepository.findById(anime.translation.id).get()
+                            }
+                            anime.seasons.forEach { season ->
+                                val episodes = ArrayList<AnimeEpisodeTable>()
+                                season.value.episodes.values.forEach season@{ ep ->
+                                    if (animeEpisodeRepository.findByEpisodeLink(ep.link).isPresent) {
+                                        return@season
+                                    } else {
+                                        val temp = animeEpisodeRepository.save(
+                                            AnimeEpisodeTable(
+                                                link = ep.link,
+                                                screenshots = ep.screenshots.toMutableList()
+                                            )
+                                        )
+                                        temp!!.addTranslationToEpisode(
+                                            translations = listOf(t)
+                                        )
+                                        episodes.add(temp)
+                                    }
+                                }
+                                if (episodes.size > 0) {
+                                    a.seasons.forEach {
+                                        it.addEpisodes(episodes)
+                                    }
+                                }
+                            }
+                            if (a.status != anime.materialData.animeStatus) {
+                                a.status = anime.materialData.animeStatus
+                                animeRepository.save(a)
                             }
                         }
-                    }
                 }
             }
             if (ar.nextPage != null) {

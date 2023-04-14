@@ -4,8 +4,8 @@ import com.example.backend.jpa.anime.AnimeGenreTable
 import com.example.backend.jpa.anime.AnimeStudiosTable
 import com.example.backend.jpa.anime.AnimeTranslationTable
 import com.example.backend.models.ServiceResponse
-import com.example.common.models.animeResponse.detail.AnimeDetail
-import com.example.common.models.animeResponse.light.AnimeLight
+import com.example.backend.models.animeResponse.detail.AnimeDetail
+import com.example.backend.models.animeResponse.light.AnimeLight
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -22,7 +22,9 @@ interface AnimeRepositoryImpl {
         ratingMpa: String?,
         season: String?,
         minimalAge: Int?,
-        type: String?
+        type: String?,
+        year: List<Int>?,
+        translations: List<String>?
     ): ServiceResponse<AnimeLight>
 
     fun getAnimeGenres(): ServiceResponse<AnimeGenreTable>
