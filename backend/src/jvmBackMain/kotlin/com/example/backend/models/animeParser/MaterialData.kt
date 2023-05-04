@@ -11,6 +11,8 @@ import java.time.LocalDate
 data class MaterialData(
     @SerialName("anime_title")
     val title: String = "",
+    @SerialName("title_en")
+    val titleEn: String = "",
     @SerialName("other_titles")
     val otherTitles: List<String> = listOf(),
     @SerialName("anime_status")

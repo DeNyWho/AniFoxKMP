@@ -11,7 +11,7 @@ import java.time.LocalDate
 
 @Serializable
 data class AnimeDetail(
-    val id: String = "",
+    val url: String = "",
     var title: String = "",
     var image: String = "",
     val studio: List<AnimeStudiosTable> = listOf(),
@@ -19,6 +19,7 @@ data class AnimeDetail(
     val description: String = "",
     val otherTitles: List<String> = listOf(),
     val year: Int = 0,
+    val linkPlayer: String = "",
     val releasedAt: LocalDate = LocalDate.now(),
     val airedAt: LocalDate = LocalDate.now(),
     val type: String = "",
@@ -27,5 +28,5 @@ data class AnimeDetail(
     val genres: List<AnimeGenreTable> = listOf(),
     val status: String = "",
     val ratingMpa: String = "",
-    val minimalAge: Int = 0
+    val minimalAge: Int = 0,
 )

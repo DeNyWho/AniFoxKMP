@@ -7,6 +7,8 @@ build/
 !**/src/test/**/.gradle/
 !**/src/test/**/build/
 local.properties
+app.tar
+config/*
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

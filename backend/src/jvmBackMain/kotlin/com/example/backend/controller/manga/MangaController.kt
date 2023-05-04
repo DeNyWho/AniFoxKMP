@@ -9,13 +9,13 @@ import com.example.backend.service.manga.MangaService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.servlet.http.HttpServletResponse
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletResponse
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 @RestController
 @CrossOrigin("*")

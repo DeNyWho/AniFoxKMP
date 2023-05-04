@@ -6,7 +6,7 @@ object Dependencies {
         const val kotlin = "1.7.20"
         const val gradle = "7.4.0-beta02"
         const val ktLint = "10.3.0"
-        const val spring = "3.0.2"
+        const val spring = "2.7.11"
         const val parcelize = "0.8.0"
         const val springDep = "1.1.0"
 
@@ -21,18 +21,29 @@ object Dependencies {
         const val nativeCoroutine = "0.13.2"
 
         // Backend Dependencies Version
-        const val swagger = "2.0.2"
+        const val swagger = "1.7.0"
         const val skrapeIT = "1.3.0-alpha.1"
         const val gson = "2.9.0"
         const val springLogging = "2.1.23"
-        const val jjwt = "0.9.1"
         const val jjwtApi = "0.10.6"
         const val uniRest = "1.4.9"
         const val guava = "31.1-jre"
         const val mapStruct = "1.5.2.Final"
         const val common = "2.4"
+        const val commonText = "1.9"
         const val tomcat = "10.1.4"
         const val twelveImageIO = "3.8.0"
+        const val jwt = "1.1.1.RELEASE"
+        const val javaxCache = "1.1.1"
+        const val ehcache = "3.8.0"
+        const val springConf = "5.7.8"
+        const val springAutoConfig = "2.1.0.RELEASE"
+        const val jjwt = "0.11.2"
+        const val springWeb = "5.3.27"
+        const val keycloak = "20.0.0"
+        const val javax = "4.0.1"
+        const val jakarta = "5.0.0"
+        const val hibernate = "5.6.7.Final"
 
         // Desktop Dependencies Version
         const val composeDesktop = "1.2.1"
@@ -134,23 +145,52 @@ object Dependencies {
         const val skrapeIT = "it.skrape:skrapeit:${Versions.skrapeIT}"
         const val jackson = "com.fasterxml.jackson.module:jackson-module-kotlin"
         const val gson = "com.google.code.gson:gson:${Versions.gson}"
-        const val jjwt = "io.jsonwebtoken:jjwt:${Versions.jjwt}"
-        const val jjwtApi = "io.jsonwebtoken:jjwt-api:${Versions.jjwtApi}"
         const val uniRest = "com.mashape.unirest:unirest-java:${Versions.uniRest}"
-        const val tomcat = "org.apache.tomcat.embed:tomcat-embed-core:${Versions.tomcat}"
+        //        const val tomcat = "org.apache.tomcat.embed:tomcat-embed-core:${Versions.tomcat}"
+        const val tomcat = "org.springframework.boot:spring-boot-starter-tomcat"
         const val guava = "com.google.guava:guava:${Versions.guava}"
-        const val mapStruct = "org.mapstruct:mapstruct:${Versions.mapStruct}"
         const val commonsIO = "commons-io:commons-io:${Versions.common}"
+        const val commonsText = "org.apache.commons:commons-text:${Versions.commonText}"
+        const val javax = "javax.servlet:javax.servlet-api:${Versions.javax}"
+        const val jakarta = "jakarta.servlet:jakarta.servlet-api:${Versions.jakarta}"
+        const val hibernate = "org.hibernate:hibernate-entitymanager:${Versions.hibernate}"
 
         object Defaults {
             const val postgreSQLRun = "org.postgresql:postgresql"
             const val starterValidation = "org.springframework.boot:spring-boot-starter-validation"
             const val actuator = "org.springframework.boot:spring-boot-starter-actuator:${Versions.spring}"
-            const val web = "org.springframework.boot:spring-boot-starter-web:${Versions.spring}"
+            const val web = "org.springframework.boot:spring-boot-starter-web"
             const val dataJpa = "org.springframework.boot:spring-boot-starter-data-jpa:${Versions.spring}"
-            const val mail = "org.springframework.boot:spring-boot-starter-mail:${Versions.spring}"
+            const val mail = "org.springframework.boot:spring-boot-starter-mail"
             const val thymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.spring}"
             const val migration = "org.springframework.boot:spring-boot-properties-migrator:${Versions.spring}"
+            const val jwt = "org.springframework.security:spring-security-jwt:${Versions.jwt}"
+            const val cache = "org.springframework.boot:spring-boot-starter-cache"
+            const val security = "org.springframework.boot:spring-boot-starter-security"
+            const val validation = "org.springframework.boot:spring-boot-starter-validation"
+            const val webSpr = "org.springframework:spring-web:${Versions.springWeb}"
+            const val springCore = "org.springframework:spring-core:${Versions.springWeb}"
+        }
+
+        object KeyCloak {
+            const val keycloakAdminClient = "org.keycloak:keycloak-admin-client:${Versions.keycloak}"
+            const val keycloakSpring = "org.keycloak:keycloak-spring-boot-starter:${Versions.keycloak}"
+        }
+
+        object Cache {
+            const val ehcache = "org.ehcache:ehcache:${Versions.ehcache}"
+            const val javaxCache = "javax.cache:cache-api:${Versions.javaxCache}"
+        }
+
+        object Oauth {
+            const val securityConf = "org.springframework.security:spring-security-config:${Versions.springConf}"
+            const val securityOauthCore = "org.springframework.security:spring-security-oauth2-core:${Versions.springConf}"
+            const val securityOauthClient = "org.springframework.security:spring-security-oauth2-client:${Versions.springConf}"
+            const val securityOauthAutoConfigure = "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:${Versions.springAutoConfig}"
+            const val web = "org.springframework.security:spring-security-web:${Versions.springConf}"
+            const val jjwtApi = "io.jsonwebtoken:jjwt-api:${Versions.jjwt}"
+            const val jjwtImpl = "io.jsonwebtoken:jjwt-impl:${Versions.jjwt}"
+            const val jjwtJackson = "io.jsonwebtoken:jjwt-jackson:${Versions.jjwt}"
         }
 
         object ImageIO {
@@ -166,7 +206,7 @@ object Dependencies {
         const val scrapeIT = "it.skrape:skrapeit:"
 
         object swagger {
-            const val swaggerMVC = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.swagger}"
+            const val swaggerMVC = "org.springdoc:springdoc-openapi-ui:${Versions.swagger}"
         }
     }
 

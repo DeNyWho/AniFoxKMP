@@ -1,14 +1,13 @@
 package com.example.backend.jpa.common
 
-import jakarta.persistence.*
 import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "image")
 data class Image(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID? = null,
+    val id: String? = UUID.randomUUID().toString(),
 
     @Lob
     @Column(name = "image")

@@ -25,8 +25,6 @@ import it.skrape.selects.eachHref
 import it.skrape.selects.eachSrc
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import kotlinx.serialization.json.Json
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,6 +44,8 @@ import javax.imageio.ImageIO
 import javax.imageio.ImageWriteParam
 import javax.imageio.ImageWriter
 import javax.imageio.stream.ImageOutputStream
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 
 @Service
@@ -129,8 +129,8 @@ class MangaService: MangaRepositoryImpl {
 
     fun parsePages(mangaId: String) {
         println("PARSER MANGA ID = $mangaId")
-        if(mangaRepository.findById(mangaId).isPresent) {
-            val manga = mangaRepository.findById(mangaId).get()
+        if(mangaRepository.findById(UUID.fromString(mangaId)).isPresent) {
+            val manga = mangaRepository.findById(UUID.fromString(mangaId)).get()
             manga.chapters.forEach chapterLoop@  { chapter ->
                 println("CHAPTER = $chapter")
                 if(chapter.mangaChaptersPage.size > 0 ) {
@@ -192,7 +192,7 @@ class MangaService: MangaRepositoryImpl {
         id: String
     ): ServiceResponse<MangaLight> {
         println("Manga param = $pageNum | $pageSize | $id")
-        val v = mangaRepository.findById(id).get()
+        val v = mangaRepository.findById(UUID.fromString(id)).get()
         val b = mutableListOf<MangaGenre>()
         v.genres.forEach {
             if(b.size != 4) {
@@ -321,7 +321,7 @@ class MangaService: MangaRepositoryImpl {
 
     override fun getMangaChapters(id: String, pageNum: Int, pageSize: Int): ServiceResponse<ChaptersLight> {
         return try {
-            val manga = mangaRepository.findById(id).get()
+            val manga = mangaRepository.findById(UUID.fromString(id)).get()
             try {
                 val temp = mutableListOf<Pair<ChaptersHelper, MangaChapters>>()
                 manga.chapters.forEach {
@@ -394,11 +394,11 @@ class MangaService: MangaRepositoryImpl {
 
     override fun getMangaLinked(id: String): ServiceResponse<MangaLight> {
         return try {
-            val manga = mangaRepository.findById(id).get()
+            val manga = mangaRepository.findById(UUID.fromString(id)).get()
             try {
                 val linkedLight = mutableListOf<MangaLight>()
                 manga.linked.forEach { linked ->
-                    val temp = mangaRepository.findById(linked).get()
+                    val temp = mangaRepository.findById(UUID.fromString(linked)).get()
                     linkedLight.add(
                         MangaLight(
                             id = temp.id.toString(),
@@ -430,7 +430,7 @@ class MangaService: MangaRepositoryImpl {
 
     override fun getMangaById(id: String): ServiceResponse<MangaDetail> {
         return try {
-            val manga = mangaRepository.findById(id).get()
+            val manga = mangaRepository.findById(UUID.fromString(id)).get()
             try {
                 val genresDetail = mutableListOf<GenresDetail>()
                 manga.genres.forEach { genre ->
@@ -736,13 +736,13 @@ class MangaService: MangaRepositoryImpl {
                             tL.forEach { url ->
                                 val temp = mangaRepository.mangaByUrl(mangaSmall + url)
                                 if (temp.isPresent) {
-                                    manga.addMangaLinked(linkedTemp = temp.get().id)
+                                    manga.addMangaLinked(linkedTemp = temp.get().id.toString())
                                 } else {
                                     manga.addMangaLinked(
                                         linkedTemp = addLinkedManga(
                                             urlLink = url,
                                             prevUrlLink = it
-                                        ).id
+                                        ).id.toString()
                                     )
                                 }
                             }

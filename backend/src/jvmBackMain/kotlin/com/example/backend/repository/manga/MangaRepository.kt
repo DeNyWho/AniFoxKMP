@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.*
 
-interface MangaRepository: JpaRepository<MangaTable, String> {
+interface MangaRepository: JpaRepository<MangaTable, UUID> {
 
     @Query("Select m From MangaTable m where m.url = :url")
     fun mangaByUrl(url: String): Optional<MangaTable>

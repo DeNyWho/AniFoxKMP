@@ -3,11 +3,11 @@ package com.example.backend.controller.images
 import com.example.backend.jpa.common.Image
 import com.example.backend.service.image.ImageService
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @CrossOrigin("*")

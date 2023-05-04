@@ -6,8 +6,8 @@ import com.example.backend.models.mangaResponse.chapters.ChapterSingle
 import com.example.backend.models.mangaResponse.chapters.ChaptersLight
 import com.example.backend.models.mangaResponse.detail.MangaDetail
 import com.example.backend.models.mangaResponse.light.MangaLight
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 interface MangaRepositoryImpl {
 

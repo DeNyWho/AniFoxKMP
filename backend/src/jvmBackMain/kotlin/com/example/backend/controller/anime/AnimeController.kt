@@ -6,18 +6,18 @@ import com.example.backend.jpa.anime.AnimeTranslationTable
 import com.example.backend.models.ServiceResponse
 import com.example.backend.models.animeResponse.detail.AnimeDetail
 import com.example.backend.models.animeResponse.light.AnimeLight
+import com.example.backend.models.animeResponse.media.AnimeMediaResponse
 import com.example.backend.service.anime.AnimeService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 
 @RestController
@@ -71,13 +71,37 @@ class AnimeController {
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{url}")
     @Operation(summary = "detail anime query")
     fun getAnimeDetails(
-        @PathVariable id: String
+        @PathVariable url: String
     ): ServiceResponse<AnimeDetail>? {
         return try {
-            animeService.getAnimeById(id)
+            animeService.getAnimeById(url)
+        } catch (e: ChangeSetPersister.NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+        }
+    }
+
+    @GetMapping("{url}/screenshots")
+    @Operation(summary = "anime screenshots")
+    fun getAnimeScreenshots(
+        @PathVariable url: String
+    ): ServiceResponse<String>? {
+        return try {
+            animeService.getAnimeScreenshotsById(url)
+        } catch (e: ChangeSetPersister.NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
+        }
+    }
+
+    @GetMapping("{url}/media")
+    @Operation(summary = "anime media")
+    fun getAnimeMedia(
+        @PathVariable url: String
+    ): ServiceResponse<AnimeMediaResponse>? {
+        return try {
+            animeService.getAnimeMediaById(url)
         } catch (e: ChangeSetPersister.NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         }

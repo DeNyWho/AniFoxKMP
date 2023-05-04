@@ -6,12 +6,13 @@ import com.example.backend.jpa.anime.AnimeTranslationTable
 import com.example.backend.models.ServiceResponse
 import com.example.backend.models.animeResponse.detail.AnimeDetail
 import com.example.backend.models.animeResponse.light.AnimeLight
+import com.example.backend.models.animeResponse.media.AnimeMediaResponse
 import org.springframework.stereotype.Repository
 
 @Repository
 interface AnimeRepositoryImpl {
 
-    fun addDataToDB()
+    fun addDataToDB(translationID: String)
     fun getAnime(
         pageNum: Int,
         pageSize: Int,
@@ -32,4 +33,6 @@ interface AnimeRepositoryImpl {
     fun getAnimeTranslations(): ServiceResponse<AnimeTranslationTable>
     fun getAnimeYears(): ServiceResponse<String>
     fun getAnimeById(id: String): ServiceResponse<AnimeDetail>
+    fun getAnimeScreenshotsById(id: String): ServiceResponse<String>
+    fun getAnimeMediaById(id: String): ServiceResponse<AnimeMediaResponse>
 }

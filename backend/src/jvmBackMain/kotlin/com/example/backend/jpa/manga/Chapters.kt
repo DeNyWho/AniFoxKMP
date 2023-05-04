@@ -1,9 +1,9 @@
 package com.example.backend.jpa.manga
 
-import jakarta.persistence.*
 import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDate
 import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "chapters", schema = "manga")

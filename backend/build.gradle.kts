@@ -12,6 +12,7 @@ plugins {
 springBoot {
 	mainClass.set("com.example.backend.ApplicationKt")
 }
+
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -24,8 +25,6 @@ repositories {
 	maven(Dependencies.MultiPlatform.gradleMaven)
 	maven(Dependencies.MultiPlatform.jitpack)
 }
-
-
 kotlin {
 	jvm("jvmBack") {
 		compilations.all {
@@ -37,7 +36,25 @@ kotlin {
 	sourceSets {
 		val jvmBackMain by getting {
 			dependencies {
-				with(Dependencies.Ktor){
+				with(Dependencies.Spring.KeyCloak) {
+					implementation(keycloakAdminClient)
+					implementation(keycloakSpring)
+				}
+				with(Dependencies.Spring.Cache) {
+					implementation(ehcache)
+					implementation(javaxCache)
+				}
+				with(Dependencies.Spring.Oauth) {
+					implementation(securityConf)
+					implementation(securityOauthCore)
+					implementation(securityOauthClient)
+					implementation(securityOauthAutoConfigure)
+					implementation(jjwtApi)
+					runtimeOnly(jjwtImpl)
+					runtimeOnly(jjwtJackson)
+					implementation(web)
+				}
+				with(Dependencies.Ktor) {
 					implementation(clientCore)
 					implementation(clientJava)
 					implementation(clientLogging)
@@ -45,10 +62,10 @@ kotlin {
 					implementation(json)
 					implementation(contentNegotiation)
 				}
-				with(Dependencies.MultiPlatform){
+				with(Dependencies.MultiPlatform) {
 					implementation(kotlinxSerializationJson)
 				}
-				with(Dependencies.Spring.Defaults){
+				with(Dependencies.Spring.Defaults) {
 					implementation(actuator)
 					implementation(web)
 					implementation(dataJpa)
@@ -56,12 +73,19 @@ kotlin {
 					implementation(thymeleaf)
 					implementation(migration)
 					implementation(starterValidation)
+					implementation(security)
+					implementation(cache)
+					implementation(jwt)
+					implementation(mail)
+					implementation(webSpr)
+					implementation(validation)
+					implementation(springCore)
 					runtimeOnly(postgreSQLRun)
 				}
-				with(Dependencies.Spring.swagger){
+				with(Dependencies.Spring.swagger) {
 					implementation(swaggerMVC)
 				}
-				with(Dependencies.Spring.ImageIO){
+				with(Dependencies.Spring.ImageIO) {
 					implementation(bmp)
 					implementation(tiff)
 					implementation(jpeg)
@@ -70,19 +94,20 @@ kotlin {
 					implementation(hdr)
 					implementation(servlet)
 				}
-				with(Dependencies.Spring){
+				with(Dependencies.Spring) {
 					implementation(logging)
 					implementation(skrapeIT)
 					implementation(jackson)
 					implementation(gson)
-					implementation(jjwt)
 					implementation(tomcat)
 					implementation(guava)
 					implementation(uniRest)
 					implementation(commonsIO)
-					implementation(commonsIO)
+					implementation(commonsText)
+					implementation(javax)
+					implementation(jakarta)
+					implementation(hibernate)
 				}
-				implementation(project(BuildModules.shared))
 			}
 		}
 	}
@@ -98,4 +123,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-

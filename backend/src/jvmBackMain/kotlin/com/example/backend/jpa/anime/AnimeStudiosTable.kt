@@ -1,10 +1,10 @@
 package com.example.backend.jpa.anime
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
 import kotlinx.serialization.Serializable
 import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
 
 @Entity

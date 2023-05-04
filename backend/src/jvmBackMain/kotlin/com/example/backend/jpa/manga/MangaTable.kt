@@ -1,14 +1,14 @@
 package com.example.backend.jpa.manga
 
-import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "manga", schema = "manga")
 data class MangaTable (
     @Id
-    val id: String = UUID.randomUUID().toString(),
+    val id: UUID = UUID.randomUUID(),
     var title: String = "",
     var image: String = "",
     var url: String = "",

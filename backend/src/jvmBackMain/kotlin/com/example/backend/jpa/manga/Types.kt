@@ -1,14 +1,16 @@
 package com.example.backend.jpa.manga
 
-import jakarta.persistence.*
 import java.util.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "types", schema = "manga")
 data class MangaTypes(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID? = null,
+    val id: String? = UUID.randomUUID().toString(),
     val type: String = "",
     @Column(nullable = true)
     val year: Int? = null,
