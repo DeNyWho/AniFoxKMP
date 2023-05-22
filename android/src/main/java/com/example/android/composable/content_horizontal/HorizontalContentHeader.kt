@@ -20,6 +20,9 @@ object HorizontalContentHeaderConfig {
   val Default = Modifier
     .fillMaxWidth()
     .padding(start = 16.dp, end = 12.dp, bottom = 4.dp)
+  val NulalbleStart = Modifier
+    .fillMaxWidth()
+    .padding(start = 0.dp, end = 12.dp, bottom = 4.dp)
   val Home = Modifier
     .fillMaxWidth()
     .padding(start = 12.dp, end = 0.dp, bottom = 4.dp)

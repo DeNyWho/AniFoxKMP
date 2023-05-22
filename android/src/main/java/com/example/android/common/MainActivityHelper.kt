@@ -11,13 +11,15 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun OnDestinationChanged(
     systemUiController: SystemUiController = rememberSystemUiController(),
-    color: Color = Color.Transparent,
+    statusBarColor: Color = Color.Transparent,
+    navigationBarColor: Color = Color.Transparent,
     drawOverStatusBar: Boolean = false,
     window: Window
 ) {
 
     SideEffect {
-        systemUiController.setSystemBarsColor(color = color)
+        systemUiController.setStatusBarColor(statusBarColor)
+        systemUiController.setNavigationBarColor(navigationBarColor)
     }
 
     WindowCompat.setDecorFitsSystemWindows(window, !drawOverStatusBar)

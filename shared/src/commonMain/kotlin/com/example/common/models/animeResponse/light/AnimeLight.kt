@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AnimeLight(
-    val id: String = "",
+    val url: String = "",
     var title: String = "",
     var image: String = "",
     var type: String = "",
@@ -19,12 +19,13 @@ data class AnimeLight(
     val genres: List<AnimeGenres> = listOf(),
     val status: String = "",
     val ratingMpa: String = "",
-    val minimalAge: Int = 0
+    val minimalAge: Int = 0,
+    val accentColor: String = "",
 )
 
 fun AnimeLight.toContentLight(): ContentLight {
     return ContentLight(
-        id = id,
+        url = url,
         title = title,
         image = image,
         type = type,
@@ -35,6 +36,7 @@ fun AnimeLight.toContentLight(): ContentLight {
         genres = genres,
         status = status,
         ratingMpa = ratingMpa,
-        minimalAge = minimalAge
+        minimalAge = minimalAge,
+        accentColor = accentColor,
     )
 }

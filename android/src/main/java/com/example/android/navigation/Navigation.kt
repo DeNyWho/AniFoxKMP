@@ -14,8 +14,9 @@ import androidx.navigation.navArgument
 import com.example.android.common.OnDestinationChanged
 import com.example.android.presentation.detail.DetailScreen
 import com.example.android.presentation.home.HomeScreen
-import com.example.android.presentation.manga.MangaScreen
+//import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.morePage.MorePageScreen
+import com.example.android.presentation.player.PlayerScreen
 import com.example.android.presentation.search.SearchScreen
 import com.example.android.presentation.signIn.SignInScreen
 import com.example.android.presentation.signUp.SignUpScreen
@@ -24,6 +25,7 @@ import com.example.common.core.enum.ContentType
 import com.example.common.core.enum.TypesOfMoreScreen
 import com.example.common.nav.ContentDetailsNavArgs
 import com.example.common.nav.ContentMoreNavArgs
+import com.example.common.nav.ContentPlayerNavArgs
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -38,7 +40,8 @@ fun Navigation(window: Window) {
         composable(Screen.Splash.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = Color.Transparent,
+                navigationBarColor = MaterialTheme.colors.background,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = true,
                 window = window
             )
@@ -49,7 +52,8 @@ fun Navigation(window: Window) {
         composable(Screen.SignIn.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = Color.Transparent,
+                navigationBarColor = MaterialTheme.colors.background,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = false,
                 window = window
             )
@@ -60,7 +64,8 @@ fun Navigation(window: Window) {
         composable(Screen.SignUp.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = Color.Transparent,
+                navigationBarColor = MaterialTheme.colors.background,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = false,
                 window = window
             )
@@ -74,7 +79,8 @@ fun Navigation(window: Window) {
         ) { backStack ->
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = MaterialTheme.colors.background,
+                navigationBarColor = MaterialTheme.colors.background,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = true,
                 window = window
             )
@@ -96,7 +102,8 @@ fun Navigation(window: Window) {
         ) { backStack ->
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = Color.Transparent,
+                navigationBarColor = Color.Transparent,
+                statusBarColor = Color.Transparent,
                 drawOverStatusBar = true,
                 window = window
             )
@@ -107,13 +114,32 @@ fun Navigation(window: Window) {
                     contentType = ContentType.valueOf(backStack.arguments?.getString("type")!!),
                 )
             )
+        }
 
+        composable(
+            route = "${Screen.Player.route}/{playerUrl}",
+            arguments = playerScreenArgs
+        ) { backStack ->
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                navigationBarColor = Color.Transparent,
+                statusBarColor = Color.Transparent,
+                drawOverStatusBar = true,
+                window = window
+            )
+            PlayerScreen(
+                navController = navController,
+                navArgs = ContentPlayerNavArgs(
+                    playerUrl = backStack.arguments?.getString("playerUrl")!!
+                )
+            )
         }
 
         composable(Screen.Home.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = MaterialTheme.colors.background,
+                navigationBarColor = MaterialTheme.colors.onSurface,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = false,
                 window = window,
             )
@@ -125,24 +151,25 @@ fun Navigation(window: Window) {
 
         }
 
-        composable(Screen.Manga.route) {
-            OnDestinationChanged(
-                systemUiController = systemUiController,
-                color = MaterialTheme.colors.background,
-                drawOverStatusBar = false,
-                window = window,
-            )
-
-            MangaScreen(
-                navController = navController
-            )
-
-        }
+//        composable(Screen.Manga.route) {
+//            OnDestinationChanged(
+//                systemUiController = systemUiController,
+//                color = MaterialTheme.colors.background,
+//                drawOverStatusBar = false,
+//                window = window,
+//            )
+//
+//            MangaScreen(
+//                navController = navController
+//            )
+//
+//        }
 
         composable(Screen.Search.route) {
             OnDestinationChanged(
                 systemUiController = systemUiController,
-                color = MaterialTheme.colors.background,
+                navigationBarColor = MaterialTheme.colors.background,
+                statusBarColor = MaterialTheme.colors.background,
                 drawOverStatusBar = false,
                 window = window,
             )
@@ -154,6 +181,13 @@ fun Navigation(window: Window) {
 
     }
 }
+
+private val playerScreenArgs = listOf(
+    navArgument(name = "playerUrl") {
+        type = NavType.StringType
+        nullable = false
+    }
+)
 
 private val detailsScreenArgs = listOf(
     navArgument(name = "type") {

@@ -501,7 +501,7 @@ class AnimeService: AnimeRepositoryImpl {
                     contentType(ContentType.Application.Json)
                 }
                 url {
-                    protocol = URLProtocol.HTTPS
+                    protocol = URLProtocol.HTTPSS
                     host = "kodikapi.com/list"
                 }
                 parameter("token", animeToken)
@@ -530,7 +530,7 @@ class AnimeService: AnimeRepositoryImpl {
                             contentType(ContentType.Application.Json)
                         }
                         url {
-                            protocol = URLProtocol.HTTPS
+                            protocol = URLProtocol.HTTPSS
                             host = "kodikapi.com/search"
                         }
                         parameter("token", animeToken)
@@ -604,7 +604,7 @@ class AnimeService: AnimeRepositoryImpl {
                                         contentType(ContentType.Application.Json)
                                     }
                                     url {
-                                        protocol = URLProtocol.HTTPS
+                                        protocol = URLProtocol.HTTPSS
                                         host = "shikimori.me/api/animes/${anime.shikimoriId}"
                                     }
                                 }.body<AnimeMediaParse>()

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.android.ui.Icons
+import com.example.android.ui.MyIcons
 import com.example.android.ui.Shapes
 
 @Composable
@@ -40,7 +40,7 @@ fun ItemVerticalMore(
       verticalArrangement = Arrangement.Center,
     ) {
       Icon(
-        imageVector = ImageVector.vectorResource(id = Icons.Filled.ChevronDown),
+        imageVector = ImageVector.vectorResource(id = MyIcons.Filled.ChevronDown),
         contentDescription = "",
         tint = MaterialTheme.colors.onSurface,
         modifier = Modifier

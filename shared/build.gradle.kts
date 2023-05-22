@@ -15,6 +15,13 @@ android {
         minSdk = Dependencies.Android.Defaults.minSdkVersion
         targetSdk = Dependencies.Android.Defaults.targetSdkVersion
     }
+    packagingOptions {
+        exclude("LICENSE.txt")
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/ASL2.0")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE")
+    }
 }
 
 kotlin {
@@ -29,6 +36,7 @@ kotlin {
             dependencies {
                 with(Dependencies.Ktor) {
                     implementation(clientCore)
+                    implementation(clientApache)
                     implementation(clientJson)
                     implementation(clientLogging)
                     implementation(contentNegotiation)

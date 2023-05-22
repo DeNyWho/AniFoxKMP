@@ -40,7 +40,7 @@ fun ItemVertical(
     modifier = modifier
       .height(thumbnailHeight + 40.dp)
       .clip(Shapes.Rounded12)
-      .clickable { onClick(ContentType.Manga.name, data.id) }
+      .clickable { onClick(ContentType.Anime.name, data.url) }
   ) {
     val thumbnailModifier = Modifier
       .fillMaxWidth()

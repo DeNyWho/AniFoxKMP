@@ -8,38 +8,40 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Password
+import androidx.compose.material.icons.sharp.AlternateEmail
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.presentation.splash.SplashViewModel
+import com.example.android.ui.MyIcons
 import com.example.android.ui.grey
-import com.example.android.ui.lighterGray
-import com.example.android.ui.orange
-import com.example.android.ui.red
+import com.example.android.ui.orange300
+import com.example.android.ui.orange400
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SignInScreen(
     navController: NavController,
-    viewModel: SplashViewModel = getViewModel()
-){
-    Box (
+    viewModel: SignInViewModel = getViewModel()
+) {
+    Box(
         Modifier
             .background(MaterialTheme.colors.background)
             .fillMaxSize()
@@ -49,18 +51,12 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .align(Alignment.TopCenter),
         ) {
-            Image(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.5f),
-                painter = painterResource(id = R.drawable.fox_logo),
-                contentDescription = null
-            )
             Text(
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.Start).padding(25.dp, top = 40.dp),
                 text = stringResource(R.string.signInFull),
-                style = MaterialTheme.typography.h2
+                style = MaterialTheme.typography.h1,
+                fontWeight = FontWeight.Bold,
             )
 
             var email by remember { mutableStateOf(TextFieldValue("")) }
@@ -70,7 +66,7 @@ fun SignInScreen(
                 value = email,
                 onValueChange = { email = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -78,14 +74,14 @@ fun SignInScreen(
                     cursorColor = Color.Black,
                     focusedLabelColor = grey
                 ),
-                textStyle = MaterialTheme.typography.h4,
+                textStyle = MaterialTheme.typography.h3,
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintEmail)) },
+                label = { Text(stringResource(R.string.signInHintEmail), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Email,
-                        tint = orange,
+                        imageVector = Icons.Sharp.AlternateEmail,
+                        tint = orange300,
                         contentDescription = "emailIcon"
                     )
                 },
@@ -102,8 +98,7 @@ fun SignInScreen(
                 value = password,
                 onValueChange = { password = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.Black,
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -111,14 +106,15 @@ fun SignInScreen(
                     cursorColor = Color.Black,
                     focusedLabelColor = grey
                 ),
+                textStyle = MaterialTheme.typography.h3,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintPassword)) },
+                label = { Text(stringResource(R.string.signInHintPassword), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Lock,
-                        tint = orange,
+                        imageVector = Icons.Rounded.Password,
+                        tint = orange300,
                         contentDescription = "passwordIcon"
                     )
                 },
@@ -141,11 +137,11 @@ fun SignInScreen(
 
             Button(
                 onClick = {
-
+                    viewModel.login(email.text, password.text)
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.textButtonColors(
-                    backgroundColor = red,
+                    backgroundColor = orange400,
                     contentColor = Color.White
                 ),
                 modifier = Modifier
@@ -156,37 +152,69 @@ fun SignInScreen(
                 Text(text = stringResource(R.string.SignIn), fontSize = 20.sp)
             }
             Row(
-                modifier = Modifier
-                    .padding(
-                        start = 0.dp,
-                        top = 90.dp,
-                        bottom = 0.dp,
-                        end = 0.dp
-                    )
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Divider(color = MaterialTheme.colors.primary, thickness = 1.dp, modifier = Modifier.weight(1f))
                 Text(
-                    modifier = Modifier
-                        .padding(bottom = 8.dp, end = 8.dp)
-                        .align(Alignment.CenterVertically)
-                        .clickable {
-                            navController.navigate(Screen.Home.route)
-                        },
-                    text = stringResource(R.string.skip),
-                    style = MaterialTheme.typography.h3
+                    modifier = Modifier.padding(horizontal = 10.dp).weight(2f).align(Alignment.CenterVertically),
+                    text = stringResource(R.string.typeAuth),
+                    style = MaterialTheme.typography.h1,
+                    textAlign = TextAlign.Center,
                 )
-                Image(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .fillMaxWidth(0.2f)
-                        .clickable {
-                            navController.navigate(Screen.Home.route)
-                        },
-                    painter = painterResource(id = R.drawable.skip),
-                    contentDescription = null
-                )
+                Divider(color = MaterialTheme.colors.primary, thickness = 1.dp, modifier = Modifier.weight(1f))
             }
+
+            Button(
+                onClick = {
+
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.textButtonColors(
+                    backgroundColor = orange400,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp)
+                    .height(50.dp),
+            ) {
+                Icon(
+                    painter = painterResource(MyIcons.Outlined.shikimori),
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Text(text = stringResource(R.string.shikimori), fontSize = 20.sp)
+            }
+        }
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 140.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .clickable {
+                        navController.navigate(Screen.Home.route)
+                    },
+                text = stringResource(R.string.skip),
+                style = MaterialTheme.typography.h1,
+                fontWeight = FontWeight.Bold
+            )
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth(0.15f)
+                    .clickable {
+                        navController.navigate(Screen.Home.route)
+                    },
+                painter = painterResource(id = R.drawable.skip),
+                contentDescription = null
+            )
         }
         Row(
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -209,10 +237,9 @@ fun SignInScreen(
                     end = 0.dp
                 ).clickable {
                     navController.navigate(route = Screen.SignUp.route)
-                }
-                ,
+                },
                 text = stringResource(R.string.SignUp),
-                color = Color.Red,
+                color = orange400,
                 style = MaterialTheme.typography.h4,
             )
         }

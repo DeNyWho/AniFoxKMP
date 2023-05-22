@@ -25,7 +25,6 @@ class GetAnimeUseCase(private val repository: AnimeRepository) {
         searchQuery: String? = null,
         year: Int? = null
     ): Flow<StateListWrapper<ContentLight>> {
-        println("WAFl = $season | $year")
         return flow {
             emit(StateListWrapper.loading())
             val state = when (val res = repository.getAnime(

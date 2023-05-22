@@ -19,11 +19,13 @@ class AniFoxApplication : Application() {
             it.mkdir()
         }
 
-
-        initKoin {
-            androidLogger()
+        initKoin(
+            context = applicationContext
+        ) {
+//            androidLogger()
             androidContext(this@AniFoxApplication)
             modules(appModule)
         }
     }
 }
+

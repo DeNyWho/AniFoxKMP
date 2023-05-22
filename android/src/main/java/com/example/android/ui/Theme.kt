@@ -8,19 +8,20 @@ import androidx.compose.runtime.Composable
 
 
 private val DarkColorPallete = darkColors(
-    background = DarkBlueBackground,
-    primary = white,
-    secondaryVariant = darkGreyBackground,
-    onSurface = onDarkSurface,
+    background = slate800,
+    primary = slate200,
+    secondaryVariant = slate700,
+    onSurface = slate700,
     onPrimary = onDarkSurface,
-    surface = darkGreyBackground
+    surface = darkGreyBackground,
+
 )
 
 private val LightColorPallete = lightColors(
-    background = whiter,
-    primary = blackP,
-    secondaryVariant = lighterGray,
-    onSurface = onDarkSurface,
+    background = LightBackground,
+    primary = slate200,
+    secondaryVariant = slate300,
+    onSurface = smokyWhite,
     onPrimary = blackP,
     surface = lighterGray
 )
@@ -33,7 +34,7 @@ fun AniFoxTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
     } else LightColorPallete
 
     MaterialTheme(
-        typography = Typography,
+        typography = MyTypography(colors),
         shapes = Shapes.ThemeShapes,
         colors = colors,
         content = content

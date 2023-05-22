@@ -3,6 +3,7 @@ package com.example.common.network
 import com.example.common.core.wrapper.Resource
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.light.AnimeLight
+import com.example.common.models.common.ContentMedia
 import com.example.common.models.response.ServiceResponse
 
 interface AnimeApi {
@@ -21,4 +22,6 @@ interface AnimeApi {
     ): Resource<ServiceResponse<AnimeLight>>
 
     suspend fun getAnimeDetails(id: String): Resource<ServiceResponse<AnimeDetail>>
+    suspend fun getAnimeScreenshots(url: String): Resource<ServiceResponse<String>>
+    suspend fun getAnimeMedia(url: String): Resource<ServiceResponse<ContentMedia>>
 }

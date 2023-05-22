@@ -1,6 +1,7 @@
 package com.example.android.presentation.signUp
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,12 +9,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Password
+import androidx.compose.material.icons.sharp.AlternateEmail
+import androidx.compose.material.icons.sharp.People
+import androidx.compose.material.icons.sharp.PeopleAlt
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -23,30 +29,30 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
-import com.example.android.ui.grey
-import com.example.android.ui.lighterGray
-import com.example.android.ui.orange
-import com.example.android.ui.red
+import com.example.android.ui.*
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SignUpScreen(
     navController: NavController,
     viewModel: SignUpViewModel = getViewModel()
-){
+) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(MaterialTheme.colors.background)
+            .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter),
         ) {
-
             Text(
-                modifier = Modifier.padding(horizontal = 25.dp),
+                modifier = Modifier
+                    .align(Alignment.Start).padding(25.dp, top = 40.dp),
                 text = stringResource(R.string.SignUpWelcome),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h1,
+                fontWeight = FontWeight.Bold,
             )
 
             var email by remember { mutableStateOf(TextFieldValue("")) }
@@ -56,7 +62,7 @@ fun SignUpScreen(
                 value = email,
                 onValueChange = { email = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -66,12 +72,12 @@ fun SignUpScreen(
                 ),
                 textStyle = MaterialTheme.typography.h4,
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintEmail)) },
+                label = { Text(stringResource(R.string.signInHintEmail), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Email,
-                        tint = orange,
+                        imageVector = Icons.Sharp.AlternateEmail,
+                        tint = orange300,
                         contentDescription = "emailIcon"
                     )
                 },
@@ -87,8 +93,7 @@ fun SignUpScreen(
                 value = name,
                 onValueChange = { name = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.Black,
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -97,11 +102,11 @@ fun SignUpScreen(
                     focusedLabelColor = grey
                 ),
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintName)) },
+                label = { Text(stringResource(R.string.signInHintName), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.People,
+                        imageVector = Icons.Sharp.PeopleAlt,
                         tint = orange,
                         contentDescription = "nameIcon"
                     )
@@ -119,8 +124,7 @@ fun SignUpScreen(
                 value = password,
                 onValueChange = { password = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.Black,
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -130,12 +134,12 @@ fun SignUpScreen(
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintPassword)) },
+                label = { Text(stringResource(R.string.signInHintPassword), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Lock,
-                        tint = orange,
+                        imageVector = Icons.Rounded.Password,
+                        tint = orange300,
                         contentDescription = "passwordIcon"
                     )
                 },
@@ -163,8 +167,7 @@ fun SignUpScreen(
                 value = passwordConfirm,
                 onValueChange = { passwordConfirm = it },
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.Black,
-                    backgroundColor = lighterGray,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
@@ -174,12 +177,12 @@ fun SignUpScreen(
                 ),
                 visualTransformation = if (passwordConfirmVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintPassword)) },
+                label = { Text(stringResource(R.string.signInHintPassword), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Lock,
-                        tint = orange,
+                        imageVector = Icons.Rounded.Password,
+                        tint = orange300,
                         contentDescription = "passwordIcon"
                     )
                 },
@@ -207,12 +210,12 @@ fun SignUpScreen(
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.textButtonColors(
-                    backgroundColor = red,
+                    backgroundColor = orange400,
                     contentColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp, top = 75.dp)
+                    .padding(start = 25.dp, end = 25.dp, top = 25.dp)
                     .height(50.dp),
             ) {
                 Text(text = stringResource(R.string.SignUp), fontSize = 20.sp)
@@ -220,27 +223,25 @@ fun SignUpScreen(
         }
         Row(
             modifier = Modifier
-                .padding(
-                    bottom = 140.dp,
-                )
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            horizontalArrangement = Arrangement.Center
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 140.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier
-                    .padding(bottom = 8.dp, end = 8.dp)
-                    .align(Alignment.CenterVertically)
+                    .padding(end = 8.dp)
                     .clickable {
                         navController.navigate(Screen.Home.route)
                     },
                 text = stringResource(R.string.skip),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h1,
+                fontWeight = FontWeight.Bold
             )
             Image(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .fillMaxWidth(0.2f)
+                    .fillMaxWidth(0.15f)
                     .clickable {
                         navController.navigate(Screen.Home.route)
                     },
@@ -271,7 +272,7 @@ fun SignUpScreen(
                     navController.navigate(route = Screen.SignIn.route)
                 },
                 text = stringResource(R.string.SignIn),
-                color = Color.Red,
+                color = orange400,
                 style = MaterialTheme.typography.h4,
             )
         }

@@ -3,12 +3,15 @@
     <string name="appName">AniFox</string>
     <string name="haveAccount">Уже есть аккаунт?</string>
     <string name="haveNotAccount">Нет аккаунта?</string>
+    <string name="typeAuth">Или</string>
     <string name="skip">Пропустить</string>
-    <string name="signInFull">Войдите в аккаунт</string>
-    <string name="signInHintEmail">Введите почту</string>
+    <string name="signInFull">Войти</string>
+    <string name="signInHintEmail">sharingan@ghoul.zxc</string>
     <string name="signInHintName">Введите имя пользователя</string>
     <string name="signInHintPassword">Введите пароль</string>
     <string name="SignIn">Войти</string>
+    <string name="shikimori">Shikimori</string>
+    <string name="watch">Смотреть</string>
     <string name="SignUp">Зарегистрироваться</string>
     <string name="SignUpWelcome">Зарегистрируйтесь, чтобы использовать все возможности приложения AniFox</string>
     <string name="guest">Войти в качестве гостя</string>

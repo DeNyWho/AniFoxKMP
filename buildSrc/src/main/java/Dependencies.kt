@@ -12,7 +12,7 @@ object Dependencies {
 
         // KMM Dependencies Version
         const val kmpNativeCoroutines = "0.13.3"
-        const val ktor = "2.2.2"
+        const val ktor = "2.3.0"
         const val kotlinxCoroutines = "1.6.4"
         const val koin = "3.2.2"
         const val kotlinxSerialization = "1.7.20"
@@ -131,6 +131,7 @@ object Dependencies {
         const val serverContentNegotiation = "io.ktor:ktor-server-content-negotiation:${Versions.ktor}"
 
         const val clientCore = "io.ktor:ktor-client-core:${Versions.ktor}"
+        const val clientApache = "io.ktor:ktor-client-apache5:${Versions.ktor}"
         const val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
         const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
         const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"

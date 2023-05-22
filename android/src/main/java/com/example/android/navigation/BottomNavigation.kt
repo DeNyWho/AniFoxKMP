@@ -22,18 +22,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.android.presentation.anime.AnimeScreen
 import com.example.android.presentation.home.HomeScreen
-import com.example.android.presentation.manga.MangaScreen
+//import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.myList.MyListScreen
-import com.example.android.ui.Icons
+import com.example.android.ui.*
 import com.example.android.ui.blacker
-import com.example.android.ui.reder
-import com.example.android.ui.smokyWhite
 
 enum class BottomNavTabs(val label: String, val icon: Int) {
-    Anime("Аниме", Icons.Outlined.anime),
-    Manga("Манга", Icons.Outlined.manga),
-    Home("Главная ", Icons.Outlined.home),
-    Favourite("Избранное", Icons.Outlined.favourite)
+    Anime("Аниме", MyIcons.Outlined.anime),
+//    Manga("Манга", Icons.Outlined.manga),
+    Home("Главная ", MyIcons.Outlined.home),
+    Favourite("Избранное", MyIcons.Outlined.favourite)
 }
 
 @Composable
@@ -79,7 +77,7 @@ fun NavScreen(
             } else {
                 BottomNavigation(
                     modifier = Modifier.height(64.dp),
-                    backgroundColor = blacker,
+                    backgroundColor = slate700,
                     elevation = 16.dp
                 ) {
                     for (tab in BottomNavTabs.values()) {
@@ -120,10 +118,10 @@ fun NavScreen(
                 navController,
                 modifier = modifier
             )
-            BottomNavTabs.Manga -> MangaScreen(
-                navController,
-                modifier = modifier
-            )
+//            BottomNavTabs.Manga -> MangaScreen(
+//                navController,
+//                modifier = modifier
+//            )
             BottomNavTabs.Home -> HomeScreen(
                 navController,
                 modifier = modifier

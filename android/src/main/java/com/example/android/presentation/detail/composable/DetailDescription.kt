@@ -44,7 +44,7 @@ fun DetailDescription(
             MaterialTheme.colors.background,
         )
     )
-    val visible = data.length > 300
+    val visible = data?.length!! > 300
 
     if (visible) {
         AnimatedContent(

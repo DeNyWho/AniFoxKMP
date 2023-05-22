@@ -2,10 +2,11 @@ package com.example.common.di
 
 //import com.example.common.data.paging.MangaPagingSource
 import com.example.common.data.repository.AnimeRepository
-import com.example.common.data.repository.MangaRepository
+import com.example.common.data.repository.AuthRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.client.engine.apache5.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -18,38 +19,48 @@ import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import javax.net.ssl.SSLContext
 
-fun initKoin(enableNetworkLogs: Boolean = true, appDeclaration: KoinAppDeclaration = {}) =
+fun initKoin(enableNetworkLogs: Boolean = true, context: Any,  appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
         modules(
-            commonModule(enableNetworkLogs = true),
+            commonModule(enableNetworkLogs = true, context),
             platformModule(),
             networkModule,
             useCaseModule
         )
     }
 
-fun commonModule(enableNetworkLogs: Boolean) = module {
+fun commonModule(enableNetworkLogs: Boolean, context: Any) = module {
     single { createJson() }
-    single { createHttpClient(get(), get(), enableNetworkLogs = enableNetworkLogs) }
+    single { createHttpClient(get(), context, get(), enableNetworkLogs = enableNetworkLogs) }
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
 
-    single { MangaRepository(get()) }
+//    single { MangaRepository(get()) }
     single { AnimeRepository(get()) }
+    single { AuthRepository(get()) }
 }
 
-fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
+fun createJson() = Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+    coerceInputValues = true
+    encodeDefaults = false
+}
 
 
-fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetworkLogs: Boolean) = HttpClient(httpClientEngine) {
+fun createHttpClient(httpClientEngine: HttpClientEngine, context: Any, json: Json, enableNetworkLogs: Boolean) = HttpClient(Apache5) {
+    engine {
+        sslContext = getSSLContext(context)
+    }
     install(ContentNegotiation) {
         json(json)
     }
     install(HttpCache)
     install(Logging) {
-        logger = Logger.DEFAULT
+        logger = Logger.ANDROID
         level = LogLevel.ALL
     }
     install(HttpTimeout){

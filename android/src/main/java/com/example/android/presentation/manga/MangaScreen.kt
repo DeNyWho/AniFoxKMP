@@ -23,86 +23,86 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
 
-@Composable
-fun MangaScreen(
-    navController: NavController,
-    viewModel: MangaViewModel = getViewModel(),
-    lazyColumnState: LazyListState = rememberLazyListState(),
-    modifier: Modifier = Modifier,
-){
-    val snackbarHostState = remember { SnackbarHostState() }
-    val snackbarChannel = remember { Channel<String?>(Channel.CONFLATED) }
-
-    LaunchedEffect(viewModel){
-        viewModel.getOngoingManga()
-        viewModel.getFinishManga()
-        viewModel.getRomanceManga()
-        viewModel.getRandomManga()
-    }
-
-    Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background),
-        scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState)
-    ) {
-        Column(Modifier.fillMaxWidth()) {
-            SearchBoxField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable(
-                        onClick = { navController.navigate(Screen.Search.route)}
-                    ),
-                isEnabled = false
-            )
-            MangaContentList(
-                lazyColumnState = lazyColumnState,
-                onGoingMangaState = viewModel.ongoingManga.value,
-                onFinalMangaState = viewModel.finishManga.value,
-                randomMangaState = viewModel.randomManga.value,
-                romanceMangaState = viewModel.romanceManga.value,
-                onContentClick = { type, id ->
-                    navController.navigate("${Screen.Details.route}/$type/$id")
-                },
-                onHeaderClick = { typeOfScreen: String, type: String, order: String?, status: String?, genres: List<String>? ->
-                    navController.navigate(
-                        "${Screen.MorePage.route}/$typeOfScreen/$type/$order/$status/${
-                            genres?.joinToString(
-                                ","
-                            )
-                        }"
-                    )
-                },
-                onRandomClick = { viewModel.getRandomManga() }
-            )
-        }
-    }
-
-    LaunchedEffect(snackbarChannel) {
-        snackbarChannel.receiveAsFlow().collect { error ->
-
-            val result = if (error != null) {
-                snackbarHostState.showSnackbar(
-                    message = error,
-                    actionLabel = "Dismiss",
-                    duration = SnackbarDuration.Long
-                )
-            } else {
-                null
-            }
-
-            when (result) {
-                SnackbarResult.ActionPerformed -> {
-                    /* action has been performed */
-                }
-                SnackbarResult.Dismissed -> {
-                    /* dismissed, no action needed */
-                }
-
-                else -> {}
-            }
-        }
-    }
-}
+//@Composable
+//fun MangaScreen(
+//    navController: NavController,
+//    viewModel: MangaViewModel = getViewModel(),
+//    lazyColumnState: LazyListState = rememberLazyListState(),
+//    modifier: Modifier = Modifier,
+//){
+//    val snackbarHostState = remember { SnackbarHostState() }
+//    val snackbarChannel = remember { Channel<String?>(Channel.CONFLATED) }
+//
+//    LaunchedEffect(viewModel){
+//        viewModel.getOngoingManga()
+//        viewModel.getFinishManga()
+//        viewModel.getRomanceManga()
+//        viewModel.getRandomManga()
+//    }
+//
+//    Scaffold(
+//        modifier = modifier
+//            .fillMaxSize()
+//            .background(MaterialTheme.colors.background),
+//        scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState)
+//    ) {
+//        Column(Modifier.fillMaxWidth()) {
+//            SearchBoxField(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(12.dp)
+//                    .clip(RoundedCornerShape(8.dp))
+//                    .clickable(
+//                        onClick = { navController.navigate(Screen.Search.route)}
+//                    ),
+//                isEnabled = false
+//            )
+//            MangaContentList(
+//                lazyColumnState = lazyColumnState,
+//                onGoingMangaState = viewModel.ongoingManga.value,
+//                onFinalMangaState = viewModel.finishManga.value,
+//                randomMangaState = viewModel.randomManga.value,
+//                romanceMangaState = viewModel.romanceManga.value,
+//                onContentClick = { type, id ->
+//                    navController.navigate("${Screen.Details.route}/$type/$id")
+//                },
+//                onHeaderClick = { typeOfScreen: String, type: String, order: String?, status: String?, genres: List<String>? ->
+//                    navController.navigate(
+//                        "${Screen.MorePage.route}/$typeOfScreen/$type/$order/$status/${
+//                            genres?.joinToString(
+//                                ","
+//                            )
+//                        }"
+//                    )
+//                },
+//                onRandomClick = { viewModel.getRandomManga() }
+//            )
+//        }
+//    }
+//
+//    LaunchedEffect(snackbarChannel) {
+//        snackbarChannel.receiveAsFlow().collect { error ->
+//
+//            val result = if (error != null) {
+//                snackbarHostState.showSnackbar(
+//                    message = error,
+//                    actionLabel = "Dismiss",
+//                    duration = SnackbarDuration.Long
+//                )
+//            } else {
+//                null
+//            }
+//
+//            when (result) {
+//                SnackbarResult.ActionPerformed -> {
+//                    /* action has been performed */
+//                }
+//                SnackbarResult.Dismissed -> {
+//                    /* dismissed, no action needed */
+//                }
+//
+//                else -> {}
+//            }
+//        }
+//    }
+//}

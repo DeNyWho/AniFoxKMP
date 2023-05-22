@@ -204,15 +204,15 @@ private fun resolveHeaderIconAndStatus(
     data: ContentDetail
 ): Pair<ImageVector, String> {
     return if (
-        data.types.type == "ongoing"
+        data.type == "ongoing"
     ) {
         Pair(
-            ImageVector.vectorResource(id =  Icons.Outlined.Clock4),
+            ImageVector.vectorResource(id =  MyIcons.Outlined.Clock4),
             "Онгоинг"
         )
     } else {
         Pair(
-            ImageVector.vectorResource(id = Icons.Outlined.DoubleCheck),
+            ImageVector.vectorResource(id = MyIcons.Outlined.DoubleCheck),
             "Завершён"
         )
     }

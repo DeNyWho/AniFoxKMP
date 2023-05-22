@@ -2,7 +2,7 @@ package com.example.android.ui
 
 import com.example.android.R
 
-object Icons {
+object MyIcons {
     object Filled {
         const val ChevronDown = R.drawable.ic_circle_chevron_down_filled
     }
@@ -14,5 +14,7 @@ object Icons {
         const val manga = R.drawable.comic
         const val favourite = R.drawable.bookmark
         const val anime = R.drawable.anime
+        const val play = R.drawable.play
+        const val shikimori = R.drawable.shikimori
     }
 }

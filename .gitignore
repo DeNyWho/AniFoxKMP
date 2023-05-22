@@ -5,10 +5,14 @@ build/
 !**/src/main/**/build/
 !**/src/main/**/.gradle/
 !**/src/test/**/.gradle/
+!**/src/main/assets/
 !**/src/test/**/build/
 local.properties
 app.tar
 config/*
+
+**/src/main/assets/
+**/src/test/assets/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

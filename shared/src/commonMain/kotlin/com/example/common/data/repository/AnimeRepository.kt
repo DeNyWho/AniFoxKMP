@@ -5,6 +5,7 @@ import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.light.AnimeLight
+import com.example.common.models.common.ContentMedia
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.AnimeApi
 import com.example.common.util.Endpoints
@@ -31,7 +32,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
         val request = HttpRequestBuilder().apply {
             method = HttpMethod.Get
             url {
-                protocol = URLProtocol.HTTP
+                protocol = URLProtocol.HTTPS
                 host = Endpoints.BASE_URL
                 encodedPath = Endpoints.anime
                 parameter("pageNum", pageNum)
@@ -48,7 +49,37 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request)
+        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request, false)
+    }
+
+    override suspend fun getAnimeScreenshots(
+        url: String
+    ): Resource<ServiceResponse<String>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.anime}$url/${Endpoints.screenshots}"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<String>, GeneralError>(client, request, false)
+    }
+
+    override suspend fun getAnimeMedia(
+        url: String
+    ): Resource<ServiceResponse<ContentMedia>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.anime}$url/${Endpoints.media}"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<ContentMedia>, GeneralError>(client, request, false)
     }
 
     override suspend fun getAnimeDetails(
@@ -57,12 +88,12 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
         val request = HttpRequestBuilder().apply {
             method = HttpMethod.Get
             url {
-                protocol = URLProtocol.HTTP
+                protocol = URLProtocol.HTTPS
                 host = Endpoints.BASE_URL
                 encodedPath = "${Endpoints.anime}$id"
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeDetail>, GeneralError>(client, request)
+        return safeApiCall<ServiceResponse<AnimeDetail>, GeneralError>(client, request, false)
     }
 }

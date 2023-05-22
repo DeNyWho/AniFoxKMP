@@ -61,7 +61,7 @@ fun ScrollableHorizontalContent(
 			)
 		} else if (contentState.data.isNotEmpty()) {
 			items(
-				items = contentState.data, key =  {it.id}
+				items = contentState.data, key =  {it.url}
 			) {data ->
 				ItemVertical(
 					modifier = itemModifier,

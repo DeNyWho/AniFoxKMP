@@ -1,7 +1,7 @@
 package com.example.common.core.wrapper
 
-sealed class Resource<T>(val data: T? = null, val message: String? = null) {
-    class Success<T>(data: T): Resource<T>(data)
+sealed class Resource<T>(val data: T? = null, val message: String? = null, val cookie: List<String>? = listOf()) {
+    class Success<T>(data: T?, cookie: List<String>?): Resource<T>(data = data, cookie = cookie)
 
     class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
 

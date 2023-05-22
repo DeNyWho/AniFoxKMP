@@ -1,5 +1,8 @@
 package com.example.android.presentation.anime
 
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AnimeScreen(
     navController: NavHostController,

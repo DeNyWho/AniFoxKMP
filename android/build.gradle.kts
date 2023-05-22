@@ -18,6 +18,13 @@ android {
             testInstrumentationRunner = testInstrumentationRunner
         }
     }
+    packagingOptions {
+        exclude("LICENSE.txt")
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/ASL2.0")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE")
+    }
 
     buildTypes {
         getByName("release") {

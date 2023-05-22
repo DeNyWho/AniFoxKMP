@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:${Dependencies.Versions.gradle}")
+        classpath("com.android.tools.build:gradle:7.4.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Dependencies.Versions.kotlin}")
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${Dependencies.Versions.spring}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Dependencies.Versions.kotlin}")
