@@ -19,6 +19,7 @@ suspend inline fun <reified T : Any, reified U : Any> safeApiCall(
         val res: HttpResponse = client.request(request)
 
         val status = res.status
+        println("WAFL = $status")
 
         when {
             status.isSuccess() -> {
@@ -30,6 +31,7 @@ suspend inline fun <reified T : Any, reified U : Any> safeApiCall(
                     Resource.Success(body, listOf())
                 }
             }
+            status == HttpStatusCode.Unauthorized -> Resource.Error(MyError.WRONG_CREDENTIALS)
             status == HttpStatusCode.NotFound -> Resource.Error("Not Found")
 //            status == HttpStatusCode.Unauthorized -> Resource.Unauthorized(responseBody.toString())
 //            status == HttpStatusCode.Forbidden -> Resource.Forbidden(responseBody.toString())

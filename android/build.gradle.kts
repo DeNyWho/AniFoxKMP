@@ -63,6 +63,8 @@ dependencies {
     implementation(Dependencies.MultiPlatform.composeRuntime)
     with(Dependencies.Android.AndroidXAnDCompose) {
         implementation(pagingRuntime)
+        implementation(datastore)
+        implementation(datastorePreferences)
         implementation(pagingCompose)
         implementation(viewPager)
         implementation(pagingCommon)

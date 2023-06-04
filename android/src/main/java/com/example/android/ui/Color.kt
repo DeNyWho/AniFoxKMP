@@ -34,6 +34,7 @@ val gray600 = Color(0xFF4B5563)
 val orange400 = Color(0xFFFB923C)
 val orange300 = Color(0xFFFDBA74)
 val orange200 = Color(0xFFFED7AA)
+val red400 = Color(0xFFF87171)
 
 val darkGreyBackground = Color(0xFF2B2B2B)
 val OnDarkSurfaceLight = Color(0xFFFFFFFF)

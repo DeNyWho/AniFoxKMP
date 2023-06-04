@@ -6,6 +6,7 @@
     <string name="typeAuth">Или</string>
     <string name="skip">Пропустить</string>
     <string name="signInFull">Войти</string>
+    <string name="wrongCredentials">Неверный логин или пароль</string>
     <string name="signInHintEmail">sharingan@ghoul.zxc</string>
     <string name="signInHintName">Введите имя пользователя</string>
     <string name="signInHintPassword">Введите пароль</string>

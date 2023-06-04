@@ -56,6 +56,7 @@ object Dependencies {
         const val material = "1.6.0"
         const val appCompat = "1.4.1"
         const val viewPager = "1.1.0-alpha01"
+        const val dataStore = "1.0.0"
         const val splash = "1.0.0"
         const val pagingRunTime = "3.1.1"
         const val pagingCompose = "1.0.0-alpha18"
@@ -238,7 +239,8 @@ object Dependencies {
             const val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
             const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
             const val viewPager = "androidx.viewpager2:viewpager2:${Versions.viewPager}"
-
+            const val datastore = "androidx.datastore:datastore:${Versions.dataStore}"
+            const val datastorePreferences = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
             const val constraintLayout =
                 "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
             const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"

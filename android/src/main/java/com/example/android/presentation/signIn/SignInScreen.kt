@@ -1,5 +1,6 @@
 package com.example.android.presentation.signIn
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,11 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
-import com.example.android.presentation.splash.SplashViewModel
-import com.example.android.ui.MyIcons
-import com.example.android.ui.grey
-import com.example.android.ui.orange300
-import com.example.android.ui.orange400
+import com.example.android.ui.*
+import com.example.common.core.exception.MyError.WRONG_CREDENTIALS
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -41,6 +39,9 @@ fun SignInScreen(
     navController: NavController,
     viewModel: SignInViewModel = getViewModel()
 ) {
+    val isError = viewModel.login.value.error.peekContent() == WRONG_CREDENTIALS
+    var isCommonError = false
+
     Box(
         Modifier
             .background(MaterialTheme.colors.background)
@@ -74,6 +75,7 @@ fun SignInScreen(
                     cursorColor = Color.Black,
                     focusedLabelColor = grey
                 ),
+                isError = isError || isCommonError,
                 textStyle = MaterialTheme.typography.h3,
                 singleLine = true,
                 label = { Text(stringResource(R.string.signInHintEmail), style = MaterialTheme.typography.caption) },
@@ -106,6 +108,7 @@ fun SignInScreen(
                     cursorColor = Color.Black,
                     focusedLabelColor = grey
                 ),
+                isError = isError || isCommonError,
                 textStyle = MaterialTheme.typography.h3,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
@@ -135,22 +138,38 @@ fun SignInScreen(
                     .padding(start = 25.dp, end = 25.dp, top = 15.dp)
             )
 
-            Button(
-                onClick = {
-                    viewModel.login(email.text, password.text)
-                },
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.textButtonColors(
-                    backgroundColor = orange400,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp, top = 25.dp)
-                    .height(50.dp),
+            Column(
+                modifier = Modifier.padding(start = 25.dp, end = 25.dp, top = 15.dp)
             ) {
-                Text(text = stringResource(R.string.SignIn), fontSize = 20.sp)
+                AnimatedVisibility(visible = isError, modifier = Modifier.align(Alignment.End)) {
+                    Text(
+                        text = stringResource(R.string.wrongCredentials),
+                        style = MaterialTheme.typography.h4,
+                        color = red400,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        if (email.text.isNotEmpty() && password.text.isNotEmpty())
+                            viewModel.login(email.text, password.text)
+                        else isCommonError = true
+                    },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.textButtonColors(
+                        backgroundColor = orange400,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .height(50.dp),
+                ) {
+                    Text(text = stringResource(R.string.SignIn), fontSize = 20.sp)
+                }
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -168,7 +187,6 @@ fun SignInScreen(
 
             Button(
                 onClick = {
-
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.textButtonColors(
@@ -191,7 +209,7 @@ fun SignInScreen(
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 140.dp)
+                .padding(bottom = 60.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
