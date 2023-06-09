@@ -1,26 +1,25 @@
 package com.example.android.presentation.detail.composable
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons.Default
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -30,7 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.android.composable.CenterCircularProgressIndicator
+import com.example.android.composable.common.SubComposeAsyncImageWithSSL
 import com.example.android.ui.*
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentDetail
@@ -40,24 +42,25 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import kotlin.math.roundToInt
 
 @Composable
-fun CollapsingToolbarScope.DetailScreenToolbar(
-    detailState: StateListWrapper<ContentDetail> = StateListWrapper(listOf(ContentDetail())),
+fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
+    contentDetailsState: StateListWrapper<ContentDetail> = StateListWrapper(),
     toolbarScaffoldState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
-    onArrowClick: () -> Boolean,
-){
+    onArrowClick: () -> Boolean = { false }
+) {
     val blockerColorGradients = listOf(
-        MaterialTheme.colors.background.copy(alpha = 0.8F),
-        MaterialTheme.colors.background.copy(alpha = 0.9F),
-        MaterialTheme.colors.background,
+        darkGreyBackground.copy(alpha = 0.8F),
+        darkGreyBackground.copy(alpha = 0.9F),
+        darkGreyBackground
     )
 
+    val data = contentDetailsState.data[0]
     val isTitleVisible = toolbarScaffoldState.toolbarState.progress <= 0.25
-    val data = detailState.data[0]
+    val imageUrl = data.image
 
     val (
         headerCaptionIcon: ImageVector,
-        headerCaptionStatus: String
-    ) = resolveHeaderIconAndStatus(data)
+        headerCaptionDescription: String
+    ) = resolveHeaderIconAndDescription(data)
 
     Box(
         modifier = Modifier
@@ -66,101 +69,107 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
             .parallax(0.5f)
             .graphicsLayer {
                 alpha = toolbarScaffoldState.toolbarState.progress
-            }
+            },
     ) {
         Box {
-            AsyncImage(
-                model = data.image,
-                contentDescription = "Background of header",
-                contentScale = ContentScale.Crop,
+            val request = ImageRequest.Builder(LocalContext.current)
+                .data(data.image.replace("http", "https").replace("httpss", "https"))
+                .scale(Scale.FILL)
+                .build()
+
+            SubComposeAsyncImageWithSSL(
+                image = imageUrl,
+                modifier = Modifier
+                    .fillMaxSize(),
+                request = request
+            )
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(colors = blockerColorGradients)
-                )
-        )
-        Row (
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .padding(top = 52.dp, start = 16.dp, end = 16.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SubcomposeAsyncImage(
-                modifier = Modifier
-                    .width(130.dp)
-                    .fillMaxHeight()
-                    .clip(Shapes.Rounded12),
-                model = data.image,
-                contentDescription = "Content thumbnail",
-                contentScale = ContentScale.Crop,
-                loading = {
-                    CenterCircularProgressIndicator(
-                        strokeWidth = 2.dp,
-                        size = 20.dp,
-                        color = red
+                    .background(
+                        brush = Brush.verticalGradient(colors = blockerColorGradients)
                     )
-                }
             )
-            Column (
+
+            // Header Content
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .padding(top = 52.dp, start = 16.dp, end = 16.dp, bottom = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = data.title,
-                    style = TextStyle(
-                        color = white,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = Size.Text20
-                    ),
-                    color = MaterialTheme.colors.primary
-                )
-                Row(
+                // Left cover image
+                SubComposeAsyncImageWithSSL(
+                    image = imageUrl,
                     modifier = Modifier
-                        .padding(top = 12.dp)
+                        .width(120.dp)
+                        .height(240.dp)
+                        .clip(Shapes.Rounded12),
+                    request = request
+                )
+
+                // Header right content
+                Column(
+                    modifier = Modifier
                         .fillMaxWidth()
+                        .padding(start = 16.dp)
                 ) {
-                    Image(
-                        imageVector = headerCaptionIcon,
-                        modifier = Modifier.size(20.dp),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(grey),
-                    )
                     Text(
-                        text = headerCaptionStatus,
-                        color = MaterialTheme.colors.primary
+                        text = data.title ?: "-",
+                        style = TextStyle(
+                            color = OnDarkSurfaceLight,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
                     )
+
+                    // Ongoing / Airing status
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+
+                        Icon(
+                            imageVector = headerCaptionIcon,
+                            contentDescription = headerCaptionDescription,
+                            tint = onDarkSurface,
+                            modifier = Modifier
+                                .height(14.dp)
+                                .padding(end = 6.dp))
+
+                        Text(
+                            text = data.status ?: "-",
+                            style = TextStyle(
+                                color = onDarkSurface,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp
+                            )
+                        )
+                    }
                 }
             }
         }
     }
 
-    val density = LocalDensity.current
-    val initialOffset = with(density){
-        40.dp.toPx().roundToInt()
-    }
-    val targetOffset = with(density){
-        -40.dp.toPx().roundToInt()
-    }
 
+    // Toolbar
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { onArrowClick()}){
+        IconButton(onClick = { onArrowClick() }) {
             Icon(
-                imageVector = Default.ArrowBack,
-                contentDescription = null,
-                tint = MaterialTheme.colors.primary
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Back", tint = OnDarkSurfaceLight
             )
+        }
+
+        val density = LocalDensity.current
+        val initialOffset = with(density) {
+            40.dp.toPx().roundToInt()
+        }
+        val targetOffset = with(density) {
+            -40.dp.toPx().roundToInt()
         }
 
         AnimatedVisibility(
@@ -168,26 +177,26 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
             enter = slideInVertically(
                 initialOffsetY = { initialOffset },
                 animationSpec = tween(
-                    durationMillis = 1200,
+                    durationMillis = 800,
                     delayMillis = 50,
-                    easing = LinearOutSlowInEasing
+                    easing = FastOutSlowInEasing
                 )
-            ) + fadeIn(initialAlpha = 0F),
+            ) + fadeIn(initialAlpha = 0f),
             exit = slideOutVertically(
                 targetOffsetY = { targetOffset },
                 animationSpec = tween(
-                    durationMillis = 1200,
+                    durationMillis = 800,
                     delayMillis = 50,
                     easing = LinearOutSlowInEasing
                 )
             ) + fadeOut()
         ) {
             Text(
-                text = data.title,
+                text = data.title ?: "-",
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 style = TextStyle(
-                    color = MaterialTheme.colors.primary,
+                    color = OnDarkSurfaceLight,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 ),
@@ -200,7 +209,7 @@ fun CollapsingToolbarScope.DetailScreenToolbar(
 }
 
 @Composable
-private fun resolveHeaderIconAndStatus(
+private fun resolveHeaderIconAndDescription(
     data: ContentDetail
 ): Pair<ImageVector, String> {
     return if (
@@ -216,5 +225,4 @@ private fun resolveHeaderIconAndStatus(
             "Завершён"
         )
     }
-
 }

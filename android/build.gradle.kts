@@ -59,6 +59,7 @@ android {
 }
 
 dependencies {
+    implementation("com.github.jvziyaoyao:ImageViewer:1.0.2-alpha.3")
     implementation(project(BuildModules.shared))
     implementation(Dependencies.MultiPlatform.composeRuntime)
     with(Dependencies.Android.AndroidXAnDCompose) {

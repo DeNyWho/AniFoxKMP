@@ -27,14 +27,10 @@ fun SearchScreen(
     navController: NavController,
     viewModel: SearchViewModel = getViewModel()
 ) {
-    val selectedType = rememberSaveable { mutableStateOf(ContentType.Manga) }
     val searchQuery = rememberSaveable { mutableStateOf("") }
 
     val listState = rememberLazyGridState()
-    val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { (FocusRequester()) }
-    val snackbarHostState = remember { SnackbarHostState() }
-    val snackbarChannel = remember { Channel<String?>(Channel.CONFLATED) }
 
     LaunchedEffect(key1 = viewModel.hashCode()) {
         focusRequester.requestFocus()

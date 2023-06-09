@@ -1,109 +1,80 @@
 package com.example.android.presentation.manga
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.android.composable.content_horizontal.GridHorizontalContent
-import com.example.android.composable.content_horizontal.HorizontalContentHeaderConfig
-import com.example.android.composable.content_horizontal.ScrollableHorizontalContent
+import coil.annotation.ExperimentalCoilApi
+import com.example.android.composable.item.ItemVertical
 import com.example.android.composable.item.ItemVerticalModifier
+import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
+import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.common.core.enum.ContentType
-import com.example.common.core.enum.TypesOfMoreScreen
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import com.example.common.util.Constants
+import com.valentinilk.shimmer.Shimmer
 
-//@Composable
-//fun MangaContentList(
-//    randomMangaState: StateListWrapper<ContentLight>,
-//    lazyColumnState: LazyListState = rememberLazyListState(),
-//    romanceMangaState: StateListWrapper<ContentLight>,
-//    onContentClick: (String, String) -> Unit,
-//    onGoingMangaState: StateListWrapper<ContentLight>,
-//    onFinalMangaState: StateListWrapper<ContentLight>,
-//    onHeaderClick: (String, String, String?, String?, List<String>?) -> Unit,
-//    onRandomClick: () -> Unit,
-//) {
-//    LazyColumn(
-//        state = lazyColumnState
-//    ) {
-//        item(key = "ongoing_manga") {
-//            ScrollableHorizontalContent(
-//                modifier = Modifier,
-//                shimmer = rememberShimmerCustomBounds(),
-//                headerTitle = "Выходит сейчас",
-//                contentState = onGoingMangaState,
-//                contentPadding = PaddingValues(horizontal = 12.dp),
-//                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-//                headerModifier = HorizontalContentHeaderConfig.Home,
-//                onIconClick = {
-//                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Manga.name, null, null, null)
-//                },
-//                onItemClick = onContentClick
-//            )
-//        }
-//        item(key = "finish_manga") {
-//            ScrollableHorizontalContent(
-//                modifier = Modifier,
-//                shimmer = rememberShimmerCustomBounds(),
-//                headerTitle = "Завершено",
-//                contentState = onFinalMangaState,
-//                contentPadding = PaddingValues(horizontal = 12.dp),
-//                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-//                headerModifier = HorizontalContentHeaderConfig.Home,
-//                onIconClick = {
-//                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Manga.name, null, "завершён", null)
-//                },
-//                onItemClick = onContentClick
-//            )
-//        }
-//        item(key = "romance_manga") {
-//            ScrollableHorizontalContent(
-//                modifier = Modifier,
-//                shimmer = rememberShimmerCustomBounds(),
-//                headerTitle = "Романтика",
-//                contentState = romanceMangaState,
-//                contentPadding = PaddingValues(horizontal = 12.dp),
-//                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-//                headerModifier = HorizontalContentHeaderConfig.Home,
-//                onIconClick = {
-//                    onHeaderClick(
-//                        TypesOfMoreScreen.Default.name, ContentType.Manga.name, null, null, listOf(
-//                            Constants.romance,
-//                            Constants.dramma,
-//                            Constants.sedze
-//                        )
-//                    )
-//                },
-//                onItemClick = onContentClick
-//            )
-//        }
-//        item(key = "random_manga") {
-//            GridHorizontalContent(
-//                modifier = Modifier,
-//                shimmer = rememberShimmerCustomBounds(),
-//                headerTitle = "Рандом",
-//                contentState = randomMangaState,
-//                contentPadding = PaddingValues(12.dp),
-//                headerModifier = HorizontalContentHeaderConfig.Home,
-//                onIconClick = {
-//                    onRandomClick()
-//                },
-//                onItemClick = onContentClick
-//            )
-//        }
-//    }
-//}
-//
-//
-//
-//
-//
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+fun MangaContentList(
+    modifier: Modifier = Modifier,
+    itemModifier: Modifier = ItemVerticalModifier.fillParentWidth,
+    shimmerInstance: Shimmer = rememberShimmerCustomBounds(),
+    contentState: StateListWrapper<ContentLight>,
+    contentPadding: PaddingValues = PaddingValues(start = 12.dp, end = 12.dp, top = 0.dp, bottom = 12.dp),
+    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightGrid,
+    gridCells: GridCells = GridCells.Fixed(3),
+    lazyGridState: LazyGridState = rememberLazyGridState(),
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(8.dp),
+    textAlign: TextAlign = TextAlign.Start,
+    onItemClick: (String, String) -> Unit,
+) {
+
+    LazyVerticalGrid(
+        modifier = modifier
+            .onUpdateShimmerBounds(shimmerInstance),
+        columns = gridCells,
+        state = lazyGridState,
+        contentPadding = contentPadding,
+        verticalArrangement = verticalArrangement,
+        horizontalArrangement = horizontalArrangement
+    ) {
+        if(contentState.data != null) {
+            items(contentState.data.size) { index ->
+                ItemVertical(
+                    modifier = itemModifier,
+                    data = contentState.data[index],
+                    thumbnailHeight = thumbnailHeight,
+                    textAlign = textAlign,
+                    onClick = onItemClick,
+                    contentType = ContentType.Manga.name,
+                )
+            }
+
+            if (contentState.isLoading) {
+                showItemVerticalAnimeShimmer(
+                    modifier = itemModifier,
+                    shimmerInstance = shimmerInstance,
+                    thumbnailHeight = thumbnailHeight
+                )
+            }
+        }
+    }
+}
+
+
+
+
+
 
 
 

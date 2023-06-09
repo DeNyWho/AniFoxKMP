@@ -16,15 +16,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.android.composable.CenterCircularProgressIndicator
+import com.example.android.composable.common.SubComposeAsyncImageWithSSL
 import com.example.android.ui.Shapes
 import com.example.android.ui.redLikeOrange
 import com.example.android.ui.teal200
 import com.example.common.core.enum.ContentType
+import com.example.common.di.getSSLContext
 import com.example.common.models.common.ContentLight
+import okhttp3.OkHttpClient
+import java.security.KeyStore
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 @ExperimentalCoilApi
 @Composable
@@ -34,13 +42,16 @@ fun ItemVertical(
   thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightDefault,
   textAlign: TextAlign = TextAlign.Start,
   onClick: (String, String) -> Unit,
-//  onClick: (String, ContentType) -> Unit
+  contentType: String
 ) {
+
+  val context = LocalContext.current
+
   Column(
     modifier = modifier
       .height(thumbnailHeight + 40.dp)
       .clip(Shapes.Rounded12)
-      .clickable { onClick(ContentType.Anime.name, data.url) }
+      .clickable { onClick(contentType, data.url) }
   ) {
     val thumbnailModifier = Modifier
       .fillMaxWidth()
@@ -57,34 +68,19 @@ fun ItemVertical(
       }
     } else {
       val request = ImageRequest.Builder(LocalContext.current)
-        .data(data.image)
-        .size(200,100)
-//        .memoryCacheKey(data.image) // задаем ключ для кэширования в памяти
-//        .diskCacheKey(data.image) // задаем ключ для кэширования на диске
-//        .diskCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование на диске
-//        .memoryCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование в памяти
-//        .networkCachePolicy(CachePolicy.ENABLED) // разрешаем кэширование в сети
+        .data(data.image.replace("http", "https").replace("httpss", "https"))
+        .size(200, 100)
+        .scale(Scale.FILL)
         .build()
 
-//      LaunchedEffect(key1 = request) {
-//        ImageLoaderSingleton.loadImage(request)
-//      }
       Card(
         elevation = 2.dp,
         shape = Shapes.Rounded12
       ) {
-        SubcomposeAsyncImage(
+        SubComposeAsyncImageWithSSL(
           modifier = thumbnailModifier,
-          model = request,
-          contentDescription = "Content thumbnail",
-          contentScale = ContentScale.Crop,
-          loading = {
-            CenterCircularProgressIndicator(
-              strokeWidth = 2.dp,
-              size = 20.dp,
-              color = redLikeOrange
-            )
-          }
+          image = data.image,
+          request = request
         )
       }
     }

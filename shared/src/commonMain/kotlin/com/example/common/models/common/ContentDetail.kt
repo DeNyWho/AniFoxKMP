@@ -2,8 +2,6 @@ package com.example.common.models.common
 
 import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
-import com.example.common.models.mangaResponse.detail.GenresDetail
-import com.example.common.models.mangaResponse.detail.TypesDetail
 import java.time.LocalDate
 
 data class ContentDetail(
@@ -21,7 +19,7 @@ data class ContentDetail(
     val type: String? = null,
     val episodesCount: Int? = null,
     val episodesCountAired: Int? = null,
-    val genres: List<AnimeGenres> = listOf(),
+    val genres: List<GenresDetail> = listOf(),
     val status: String? = null,
     val ratingMpa: String? = null,
     val minimalAge: Int? = null,

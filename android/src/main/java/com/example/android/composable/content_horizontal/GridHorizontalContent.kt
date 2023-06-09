@@ -16,6 +16,7 @@ import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.android.util.calculateGridCount
+import com.example.common.core.enum.ContentType
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
 import com.valentinilk.shimmer.Shimmer
@@ -67,7 +68,8 @@ fun GridHorizontalContent(
                     data = contentState.data[index],
                     thumbnailHeight = thumbnailHeight,
                     textAlign = textAlign,
-                    onClick = onItemClick
+                    onClick = onItemClick,
+                    contentType = ContentType.Anime.name
                 )
             }
         }

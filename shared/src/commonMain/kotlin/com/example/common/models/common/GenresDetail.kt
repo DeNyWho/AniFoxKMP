@@ -1,4 +1,4 @@
-package com.example.common.models.mangaResponse.detail
+package com.example.common.models.common
 
 import kotlinx.serialization.Serializable
 

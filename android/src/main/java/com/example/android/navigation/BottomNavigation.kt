@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.android.presentation.anime.AnimeScreen
 import com.example.android.presentation.home.HomeScreen
+import com.example.android.presentation.manga.MangaScreen
 //import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.myList.MyListScreen
 import com.example.android.ui.*
@@ -29,7 +30,7 @@ import com.example.android.ui.blacker
 
 enum class BottomNavTabs(val label: String, val icon: Int) {
     Anime("Аниме", MyIcons.Outlined.anime),
-//    Manga("Манга", Icons.Outlined.manga),
+    Manga("Манга", MyIcons.Outlined.manga),
     Home("Главная ", MyIcons.Outlined.home),
     Favourite("Избранное", MyIcons.Outlined.favourite)
 }
@@ -118,10 +119,9 @@ fun NavScreen(
                 navController,
                 modifier = modifier
             )
-//            BottomNavTabs.Manga -> MangaScreen(
-//                navController,
-//                modifier = modifier
-//            )
+            BottomNavTabs.Manga -> MangaScreen(
+                navController,
+            )
             BottomNavTabs.Home -> HomeScreen(
                 navController,
                 modifier = modifier

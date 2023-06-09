@@ -3,6 +3,7 @@ package com.example.common.di
 //import com.example.common.data.paging.MangaPagingSource
 import com.example.common.data.repository.AnimeRepository
 import com.example.common.data.repository.AuthRepository
+import com.example.common.data.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -38,7 +39,7 @@ fun commonModule(enableNetworkLogs: Boolean, context: Any) = module {
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
 
-//    single { MangaRepository(get()) }
+    single { MangaRepository(get()) }
     single { AnimeRepository(get()) }
     single { AuthRepository(get()) }
 }

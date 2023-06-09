@@ -11,49 +11,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class GetAnimeUseCase(private val repository: AnimeRepository) {
-    operator fun invoke(
-        season: String? = null,
-        ratingMpa: String? = null,
-        minimalAge: String? = null,
-        type: String? = null,
-        order: String? = null,
-        pageNum: Int = 0,
-        pageSize: Int = 24,
-        status: String? = null,
-        genres: List<String>? = null,
-        searchQuery: String? = null,
-        year: Int? = null
-    ): Flow<StateListWrapper<ContentLight>> {
+
+class GetAnimeSimilarUseCase(private val repository: AnimeRepository){
+    operator fun invoke(url: String): Flow<StateListWrapper<ContentLight>> {
         return flow {
             emit(StateListWrapper.loading())
-            val state = when (val res = repository.getAnime(
-                order = order,
-                pageNum = pageNum,
-                pageSize = pageSize,
-                status = status,
-                genres = genres,
-                searchQuery = searchQuery,
-                minimalAge = minimalAge,
-                ratingMpa = ratingMpa,
-                season = season,
-                type = type,
-                year = year
-            )) {
+
+            val state = when (val res = repository.getAnimeSimilar(url)) {
                 is Resource.Success -> {
                     val data = res.data?.data?.map {
                         it.toContentLight()
                     } .orEmpty()
+
                     StateListWrapper(data)
                 }
-
                 is Resource.Error -> {
                     StateListWrapper(error = Event(res.message))
                 }
-
                 is Resource.Loading -> StateListWrapper.loading()
             }
-
             emit(state)
         }.flowOn(Dispatchers.IO)
     }

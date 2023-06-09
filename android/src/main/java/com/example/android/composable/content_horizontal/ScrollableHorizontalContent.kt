@@ -17,6 +17,7 @@ import com.example.android.composable.shimmer.ContentListHeaderWithButtonShimmer
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.composable.shimmer.rememberShimmerCustomBounds
 import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
+import com.example.common.core.enum.ContentType
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
 import com.valentinilk.shimmer.Shimmer
@@ -64,12 +65,13 @@ fun ScrollableHorizontalContent(
 				items = contentState.data, key =  {it.url}
 			) {data ->
 				ItemVertical(
-					modifier = itemModifier,
-					data = data,
-					thumbnailHeight = thumbnailHeight,
-					textAlign = textAlign,
-					onClick = onItemClick
-				)
+                    modifier = itemModifier,
+                    data = data,
+                    thumbnailHeight = thumbnailHeight,
+                    textAlign = textAlign,
+                    onClick = onItemClick,
+                    contentType = ContentType.Anime.name
+                )
 			}
 			showItemVerticalAnimeMoreWhenPastLimit(
 				modifier = itemModifier,

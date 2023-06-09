@@ -1,44 +1,46 @@
 package com.example.android.composable
 
-import android.view.ViewGroup
+import android.content.Context
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-
+import java.net.URLEncoder
 
 @Composable
-fun WebViewComponent(url: String) {
-    val refererUrl = "https://anifox.club" // Укажите нужный реферер URL
+fun WebViewComponent(urlw: String) {
+    val generatedLink = generateLink(urlw.drop(18), currentUrl)
 
-    val iframeHtml = remember {
-        """
-        <html>
-        <head>
-        </head>
-        <body>
-        <iframe src="$url" frameborder="0" allowfullscreen ></iframe>
-        </body>
-        </html>
-        """.trimIndent()
-    }
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
     AndroidView(factory = { context ->
         val webView = WebView(context).apply {
-            settings.javaScriptEnabled = true
+            settings.apply {
+                javaScriptEnabled = true
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                builtInZoomControls = false
+                displayZoomControls = false
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                setSupportMultipleWindows(true)
+                domStorageEnabled = true
+            }
+            setPadding(0, 0, 0, 0)
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     request?.let {
                         val headers = HashMap<String, String>()
-                        headers["Referer"] = refererUrl
+                        headers["Referer"] = currentUrl
                         view?.loadUrl(request.url.toString(), headers)
                     }
                     return true
@@ -46,22 +48,57 @@ fun WebViewComponent(url: String) {
             }
         }
 
-        webView.loadDataWithBaseURL(null, iframeHtml, "text/html", "UTF-8", null)
+        val iframe = "<html><body style='margin:0;padding:0;'><div style='position:relative;padding-bottom:47%;overflow:hidden;'><iframe src='$generatedLink' frameborder='0' allowfullscreen style='position:absolute;top:0;left:0;width:100%;height:100%;'></iframe></div></body></html>"
+        webView.loadDataWithBaseURL(currentUrl, iframe, "text/html", "UTF-8", null)
+
         webView
-    })
+    }, modifier = Modifier.fillMaxSize())
+}
 
-//    AndroidView(
-//        modifier = Modifier.fillMaxSize(),
-//        factory = { webView }
-//    )
 
-//    DisposableEffect(Unit) {
-//        onDispose {
-//            webView.clearCache(true)
-//            webView.destroy()
-//        }
-//    }
-
-    LaunchedEffect(iframeHtml) {
+// Вычисление программного зума на основе пропорций экрана
+private fun calculateScale(screenWidth: Dp, screenHeight: Dp): Int {
+    val aspectRatio = 16f / 9f // Пропорции 16:9
+    val screenAspectRatio = screenWidth.value / screenHeight.value.toFloat()
+    return if (screenAspectRatio > aspectRatio) {
+        (screenHeight.value / (screenWidth.value / aspectRatio)).toInt()
+    } else {
+        (screenWidth.value / (screenHeight.value / aspectRatio)).toInt()
     }
+}
+
+
+
+
+
+fun generateLink(serialUrl: String, currentUrl: String): String {
+    val regex = Regex("/serial/\\d+/[a-f0-9]+")
+    val newSerialUrl = regex.replace(serialUrl) { matchResult ->
+        val matchedText = matchResult.value
+        val serialId = matchedText.split("/")[2]
+        val serialKey = matchedText.split("/")[3]
+        "/serial/$serialId/$serialKey"
+    }
+
+    val url = "https://kodik.info$newSerialUrl"
+    val queryParams = mapOf(
+        "pd" to "kodik.info",
+        "advert_debug" to "true"
+    )
+
+    val queryString = queryParams.entries.joinToString("&") { (key, value) ->
+        "$key=${value.encodeURIComponent()}"
+    }
+
+    return "$url?$queryString"
+}
+
+fun String.encodeURIComponent(): String {
+    return URLEncoder.encode(this, "UTF-8")
+        .replace("+", "%20")
+        .replace("%21", "!")
+        .replace("%27", "'")
+        .replace("%28", "(")
+        .replace("%29", ")")
+        .replace("%7E", "~")
 }

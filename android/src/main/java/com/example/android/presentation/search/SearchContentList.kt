@@ -3,6 +3,7 @@ package com.example.android.presentation.search
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import com.example.android.composable.item.ItemVertical
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
 import com.example.android.util.calculateGridCount
+import com.example.common.core.enum.ContentType
 import com.example.common.models.common.ContentLight
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
@@ -41,8 +43,11 @@ fun SearchContentList(
         if(!isListEmpty) {
             items(searchResults.itemCount) { index ->
                 ItemVertical(
+                    modifier = Modifier.width(ItemVerticalModifier.Default),
                     data = searchResults[index]!!,
+                    thumbnailHeight = ItemVerticalModifier.ThumbnailHeightDefault,
                     onClick = onItemClick,
+                    contentType = ContentType.Anime.name,
                 )
             }
         }

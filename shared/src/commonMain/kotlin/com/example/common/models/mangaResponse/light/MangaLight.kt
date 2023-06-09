@@ -5,14 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MangaLight(
-    val url: String = "",
+    val id: String = "",
     var title: String = "",
     var image: String = ""
 )
 
 fun MangaLight.toContentLight(): ContentLight {
     return ContentLight(
-        url = url,
+        url = id,
         title = title,
         image = image
     )

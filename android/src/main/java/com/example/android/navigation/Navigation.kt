@@ -125,7 +125,9 @@ fun Navigation(window: Window) {
                 navigationBarColor = Color.Transparent,
                 statusBarColor = Color.Transparent,
                 drawOverStatusBar = true,
-                window = window
+                window = window,
+                hideSystemBar = true,
+                landscape = true
             )
             PlayerScreen(
                 navController = navController,

@@ -3,8 +3,10 @@ package com.example.common.data.repository
 import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
+import com.example.common.models.animeResponse.AnimeRelatedLight
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.light.AnimeLight
+import com.example.common.models.common.ContentLight
 import com.example.common.models.common.ContentMedia
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.AnimeApi
@@ -80,6 +82,36 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
         }
 
         return safeApiCall<ServiceResponse<ContentMedia>, GeneralError>(client, request, false)
+    }
+
+    override suspend fun getAnimeSimilar(
+        url: String
+    ): Resource<ServiceResponse<AnimeLight>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.anime}$url/${Endpoints.similar}"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request, false)
+    }
+
+    override suspend fun getAnimeRelated(
+        url: String
+    ): Resource<ServiceResponse<AnimeRelatedLight>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = Endpoints.BASE_URL
+                encodedPath = "${Endpoints.anime}$url/${Endpoints.related}"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<AnimeRelatedLight>, GeneralError>(client, request, false)
     }
 
     override suspend fun getAnimeDetails(
