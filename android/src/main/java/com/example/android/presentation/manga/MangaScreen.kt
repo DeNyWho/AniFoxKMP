@@ -38,7 +38,7 @@ fun MangaScreen(
     LaunchedEffect(viewModel) {
         viewModel.getNextContentPart()
         snapshotFlow {
-            listState.isScrolledToTheEnd() && listState.layoutInfo.totalItemsCount != listState.layoutInfo.visibleItemsInfo.size && listState.isScrollInProgress && searchQuery.value.isNotEmpty()
+            listState.isScrolledToTheEnd() && listState.layoutInfo.totalItemsCount != listState.layoutInfo.visibleItemsInfo.size && !listState.isScrollInProgress && searchQuery.value.isEmpty()
         }.distinctUntilChanged().onEach {
             if (it) {
                 viewModel.getNextContentPart()
@@ -50,7 +50,7 @@ fun MangaScreen(
     val collapsingState = rememberCollapsingToolbarScaffoldState()
 
     CollapsingToolbarScaffold(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background) ,
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background),
         toolbar = {
             SearchBoxField(
                 modifier = Modifier.padding(12.dp),
@@ -75,5 +75,4 @@ fun MangaScreen(
             },
         )
     }
-
 }

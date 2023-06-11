@@ -45,21 +45,21 @@ fun MorePageScreen(
 
     val collapsingState = rememberCollapsingToolbarScaffoldState()
 
-    CollapsingToolbarScaffold(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background) ,
-        toolbar = {
-            MorePageToolbar { navController.navigateUp() }
-        },
-        state = collapsingState,
-        scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed
-    ) {
-        SearchContentList(
-            listState = listState,
-            searchResults = viewModel.searchedManga.collectAsLazyPagingItems(),
-            onItemClick = { type, id ->
-                navController.navigate("${Screen.Details.route}/$type/$id")
-            },
-        )
-    }
+//    CollapsingToolbarScaffold(
+//        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background) ,
+//        toolbar = {
+//            MorePageToolbar { navController.navigateUp() }
+//        },
+//        state = collapsingState,
+//        scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed
+//    ) {
+//        SearchContentList(
+//            listState = listState,
+//            searchResults = viewModel.searchedManga.collectAsLazyPagingItems(),
+//            onItemClick = { type, id ->
+//                navController.navigate("${Screen.Details.route}/$type/$id")
+//            },
+//        )
+//    }
 
 }

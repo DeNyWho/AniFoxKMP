@@ -50,7 +50,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
             method = HttpMethod.Get
             url {
                 protocol = URLProtocol.HTTPS
-                host = Endpoints.BASE_URL
+                host = BASE_URL
                 encodedPath = "${Endpoints.manga}$id"
             }
         }
@@ -65,7 +65,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
             method = HttpMethod.Get
             url {
                 protocol = URLProtocol.HTTPS
-                host = Endpoints.BASE_URL
+                host = BASE_URL
                 encodedPath = "${Endpoints.manga}$id${Endpoints.linked}"
             }
         }
@@ -82,7 +82,7 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
             method = HttpMethod.Get
             url {
                 protocol = URLProtocol.HTTPS
-                host = Endpoints.BASE_URL
+                host = BASE_URL
                 encodedPath = "${Endpoints.manga}$id${Endpoints.similar}"
                 parameter("pageNum", pageNum)
                 parameter("pageSize", pageSize)

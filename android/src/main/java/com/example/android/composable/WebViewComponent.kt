@@ -20,9 +20,6 @@ import java.net.URLEncoder
 fun WebViewComponent(urlw: String) {
     val generatedLink = generateLink(urlw.drop(18), currentUrl)
 
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-
     AndroidView(factory = { context ->
         val webView = WebView(context).apply {
             settings.apply {
@@ -55,22 +52,6 @@ fun WebViewComponent(urlw: String) {
     }, modifier = Modifier.fillMaxSize())
 }
 
-
-// Вычисление программного зума на основе пропорций экрана
-private fun calculateScale(screenWidth: Dp, screenHeight: Dp): Int {
-    val aspectRatio = 16f / 9f // Пропорции 16:9
-    val screenAspectRatio = screenWidth.value / screenHeight.value.toFloat()
-    return if (screenAspectRatio > aspectRatio) {
-        (screenHeight.value / (screenWidth.value / aspectRatio)).toInt()
-    } else {
-        (screenWidth.value / (screenHeight.value / aspectRatio)).toInt()
-    }
-}
-
-
-
-
-
 fun generateLink(serialUrl: String, currentUrl: String): String {
     val regex = Regex("/serial/\\d+/[a-f0-9]+")
     val newSerialUrl = regex.replace(serialUrl) { matchResult ->
@@ -83,6 +64,7 @@ fun generateLink(serialUrl: String, currentUrl: String): String {
     val url = "https://kodik.info$newSerialUrl"
     val queryParams = mapOf(
         "pd" to "kodik.info",
+        "ref" to currentUrl,
         "advert_debug" to "true"
     )
 

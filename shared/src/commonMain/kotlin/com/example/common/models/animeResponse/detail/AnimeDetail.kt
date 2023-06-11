@@ -3,6 +3,7 @@ package com.example.common.models.animeResponse.detail
 
 import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
+import com.example.common.models.animeResponse.common.toGenresDetail
 import com.example.common.models.common.ContentDetail
 import com.example.common.models.common.GenresDetail
 import com.example.common.util.LocalDateSerializer
@@ -27,7 +28,7 @@ data class AnimeDetail(
      val type: String? = null,
      val episodesCount: Int? = null,
      val episodesCountAired: Int? = null,
-     val genres: List<GenresDetail> = listOf(),
+     val genres: List<AnimeGenres> = listOf(),
      val status: String? = null,
      val ratingMpa: String? = null,
      val minimalAge: Int? = null
@@ -49,7 +50,9 @@ fun AnimeDetail.toContentDetail(): ContentDetail {
         type = type,
         episodesCount = episodesCount,
         episodesCountAired = episodesCountAired,
-        genres = genres,
+        genres = genres.map {
+            it.toGenresDetail()
+        },
         status = status,
         ratingMpa = ratingMpa,
         minimalAge = minimalAge

@@ -8,7 +8,8 @@
     <string name="signInFull">Войти</string>
     <string name="wrongCredentials">Неверный логин или пароль</string>
     <string name="signInHintEmail">sharingan@ghoul.zxc</string>
-    <string name="signInHintName">Введите имя пользователя</string>
+    <string name="signUpHintName">Введите имя пользователя</string>
+    <string name="signUpHintLogin">Введите логин пользователя</string>
     <string name="signInHintPassword">Введите пароль</string>
     <string name="SignIn">Войти</string>
     <string name="shikimori">Shikimori</string>

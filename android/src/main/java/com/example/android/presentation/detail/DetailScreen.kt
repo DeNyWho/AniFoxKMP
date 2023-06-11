@@ -8,12 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,11 +18,10 @@ import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.navigation.Screen
 import com.example.android.presentation.detail.composable.ContentDetailsScreenToolbar
 import com.example.android.ui.MyIcons
-import com.example.android.ui.orange
+import com.example.android.ui.orange400
 import com.example.android.ui.red
 import com.example.android.ui.white
 import com.example.common.nav.ContentDetailsNavArgs
-import com.google.accompanist.insets.LocalWindowInsets
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -38,20 +34,28 @@ fun DetailScreen(
     navArgs: ContentDetailsNavArgs
 ) {
     val toolbarScaffoldState = rememberCollapsingToolbarScaffoldState()
-    val animateDuration = 250
-    val density = LocalDensity.current
-    val statusBarHeight = with (density) { LocalWindowInsets.current.statusBars.top.toDp() }
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val contentHeight = with(density) {
-        (190 * screenWidth.roundToPx() / 140).toDp()
-    }
+    println("182 = $navArgs")
 
-    LaunchedEffect(navArgs, viewModel) {
-        viewModel.getDetailAnime(navArgs.contentType.name, navArgs.id)
-        viewModel.getScreenshots(navArgs.id)
-        viewModel.getMedia(navArgs.id)
-        viewModel.getSimilar(navArgs.id)
-        viewModel.getRelated(navArgs.id)
+    val updatedNavArgs = rememberUpdatedState(navArgs)
+
+    DisposableEffect(updatedNavArgs, viewModel) {
+        viewModel.getDetail(updatedNavArgs.value.contentType.name, updatedNavArgs.value.id)
+
+        if (updatedNavArgs.value.contentType.name == "Anime") {
+            viewModel.getRelated(updatedNavArgs.value.contentType.name, updatedNavArgs.value.id)
+            viewModel.getScreenshots(updatedNavArgs.value.id)
+            viewModel.getMedia(updatedNavArgs.value.id)
+            viewModel.getSimilar(updatedNavArgs.value.contentType.name, updatedNavArgs.value.id)
+        }
+
+        if (updatedNavArgs.value.contentType.name == "Manga") {
+            viewModel.getRelated(updatedNavArgs.value.contentType.name, updatedNavArgs.value.id)
+            viewModel.getSimilar(updatedNavArgs.value.contentType.name, updatedNavArgs.value.id)
+        }
+
+        onDispose {
+
+        }
     }
 
     Box(
@@ -111,7 +115,7 @@ fun DetailScreen(
                         top = 0.dp
                     )
                     .size(64.dp),
-                backgroundColor = orange
+                backgroundColor = orange400
             ) {
                 Icon(
                     painter = painterResource(MyIcons.Outlined.play),

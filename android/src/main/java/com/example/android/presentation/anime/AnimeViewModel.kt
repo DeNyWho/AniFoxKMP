@@ -5,10 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.domain.common.StateListWrapper
-import com.example.common.domain.common.StateMapWrapper
 import com.example.common.models.common.ContentLight
 import com.example.common.usecase.anime.GetAnimeUseCase
-import com.example.common.usecase.auth.LoginUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

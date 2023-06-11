@@ -20,7 +20,7 @@ fun ContentDetailsThreeColumnSection(
     modifier: Modifier = Modifier,
     data: ContentDetail
 ) {
-    val first = data.year!!.toString()
+    val first = data.year.toString()
     var second = when(data.season){
         "Winter" -> "Зима"
         "Spring" -> "Весна"

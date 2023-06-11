@@ -46,19 +46,19 @@ fun MyTypography(colors: Colors): Typography {
         ),
         h4 = TextStyle(
             fontFamily = nunito,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
             color = colors.primary
         ),
         h5 = TextStyle(
             fontFamily = nunito,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             color = colors.primary
         ),
         h6 = TextStyle(
             fontFamily = nunito,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             color = colors.primary
         ),

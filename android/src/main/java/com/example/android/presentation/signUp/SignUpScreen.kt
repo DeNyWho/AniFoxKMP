@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.sharp.AlternateEmail
-import androidx.compose.material.icons.sharp.People
 import androidx.compose.material.icons.sharp.PeopleAlt
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +29,7 @@ import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
 import com.example.android.ui.*
+import com.example.common.models.auth.SignUpRequest
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -37,6 +37,7 @@ fun SignUpScreen(
     navController: NavController,
     viewModel: SignUpViewModel = getViewModel()
 ) {
+
     Box(
         modifier = Modifier
             .background(MaterialTheme.colors.background)
@@ -51,7 +52,7 @@ fun SignUpScreen(
                 modifier = Modifier
                     .align(Alignment.Start).padding(25.dp, top = 40.dp),
                 text = stringResource(R.string.SignUpWelcome),
-                style = MaterialTheme.typography.h1,
+                style = MaterialTheme.typography.h2,
                 fontWeight = FontWeight.Bold,
             )
 
@@ -87,11 +88,11 @@ fun SignUpScreen(
                     .padding(start = 25.dp, end = 25.dp, top = 40.dp)
             )
 
-            var name by remember { mutableStateOf(TextFieldValue("")) }
+            var nickName by remember { mutableStateOf(TextFieldValue("")) }
             TextField(
                 shape = RoundedCornerShape(10.dp),
-                value = name,
-                onValueChange = { name = it },
+                value = nickName,
+                onValueChange = { nickName = it },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colors.secondaryVariant,
                     disabledTextColor = Color.Transparent,
@@ -102,12 +103,44 @@ fun SignUpScreen(
                     focusedLabelColor = grey
                 ),
                 singleLine = true,
-                label = { Text(stringResource(R.string.signInHintName), style = MaterialTheme.typography.caption) },
+                textStyle = MaterialTheme.typography.h4,
+                label = { Text(stringResource(R.string.signUpHintLogin), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Sharp.PeopleAlt,
-                        tint = orange,
+                        tint = orange400,
+                        contentDescription = "loginIcon"
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(start = 25.dp, end = 25.dp, top = 15.dp)
+            )
+
+            var username by remember { mutableStateOf(TextFieldValue("")) }
+            TextField(
+                shape = RoundedCornerShape(10.dp),
+                value = username,
+                onValueChange = { username = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
+                    disabledTextColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black,
+                    focusedLabelColor = grey
+                ),
+                singleLine = true,
+                textStyle = MaterialTheme.typography.h4,
+                label = { Text(stringResource(R.string.signUpHintName), style = MaterialTheme.typography.caption) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Sharp.PeopleAlt,
+                        tint = orange400,
                         contentDescription = "nameIcon"
                     )
                 },
@@ -134,6 +167,7 @@ fun SignUpScreen(
                 ),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
+                textStyle = MaterialTheme.typography.h4,
                 label = { Text(stringResource(R.string.signInHintPassword), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
@@ -177,6 +211,7 @@ fun SignUpScreen(
                 ),
                 visualTransformation = if (passwordConfirmVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 singleLine = true,
+                textStyle = MaterialTheme.typography.h4,
                 label = { Text(stringResource(R.string.signInHintPassword), style = MaterialTheme.typography.caption) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
@@ -206,7 +241,16 @@ fun SignUpScreen(
 
             Button(
                 onClick = {
-
+                    viewModel.register(
+                        SignUpRequest(
+                            email = email.text,
+                            password = password.text,
+                            nickName = nickName.text,
+                            username = username.text
+                        )
+                    ) {
+                        navController.navigate(Screen.Home.route)
+                    }
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.textButtonColors(
@@ -224,7 +268,7 @@ fun SignUpScreen(
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 140.dp)
+                .padding(bottom = 60.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically

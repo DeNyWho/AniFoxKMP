@@ -14,12 +14,11 @@ private val DarkColorPallete = darkColors(
     onSurface = slate700,
     onPrimary = onDarkSurface,
     surface = darkGreyBackground,
-
 )
 
 private val LightColorPallete = lightColors(
     background = LightBackground,
-    primary = slate200,
+    primary = slate800,
     secondaryVariant = slate300,
     onSurface = smokyWhite,
     onPrimary = blackP,

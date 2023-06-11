@@ -51,7 +51,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request)
     }
 
     override suspend fun getAnimeScreenshots(
@@ -66,7 +66,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<String>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<String>, GeneralError>(client, request)
     }
 
     override suspend fun getAnimeMedia(
@@ -81,7 +81,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<ContentMedia>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<ContentMedia>, GeneralError>(client, request)
     }
 
     override suspend fun getAnimeSimilar(
@@ -92,11 +92,11 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             url {
                 protocol = URLProtocol.HTTPS
                 host = Endpoints.BASE_URL
-                encodedPath = "${Endpoints.anime}$url/${Endpoints.similar}"
+                encodedPath = "${Endpoints.anime}$url${Endpoints.similar}"
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<AnimeLight>, GeneralError>(client, request)
     }
 
     override suspend fun getAnimeRelated(
@@ -111,7 +111,7 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeRelatedLight>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<AnimeRelatedLight>, GeneralError>(client, request)
     }
 
     override suspend fun getAnimeDetails(
@@ -126,6 +126,6 @@ class AnimeRepository(private val client: HttpClient): KoinComponent, AnimeApi {
             }
         }
 
-        return safeApiCall<ServiceResponse<AnimeDetail>, GeneralError>(client, request, false)
+        return safeApiCall<ServiceResponse<AnimeDetail>, GeneralError>(client, request)
     }
 }

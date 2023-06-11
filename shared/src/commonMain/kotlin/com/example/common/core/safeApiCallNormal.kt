@@ -10,7 +10,8 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
-suspend inline fun <reified T : Any, reified U : Any> safeApiCall(
+
+suspend inline fun <reified T : Any, reified U : Any> safeApiCallNormal(
     client: HttpClient,
     request: HttpRequestBuilder
 ): Resource<T> {

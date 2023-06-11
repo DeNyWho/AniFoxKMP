@@ -3,7 +3,7 @@ package com.example.common.domain.common
 import com.example.common.core.wrapper.Event
 
 data class StateWrapper<T>(
-    val data: T? = null,
+    var data: T? = null,
     val isLoading: Boolean = false,
     var error: Event<String?> = Event(null)
 ) {

@@ -38,10 +38,6 @@ fun commonModule(enableNetworkLogs: Boolean, context: Any) = module {
     single { createHttpClient(get(), context, get(), enableNetworkLogs = enableNetworkLogs) }
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob() ) }
-
-    single { MangaRepository(get()) }
-    single { AnimeRepository(get()) }
-    single { AuthRepository(get()) }
 }
 
 fun createJson() = Json {

@@ -173,6 +173,21 @@ fun DetailContentList(
                 onExpandedChanged = { isDescriptionExpanded = it }
             )
         }
+        item(key = ContentDetailsScreenSection.ContentRelated) {
+            ScrollableHorizontalContent(
+                modifier = Modifier,
+                shimmer = rememberShimmerCustomBounds(),
+                headerTitle = "Связанные",
+                contentState = relatedState,
+                contentPadding = PaddingValues(horizontal = 0.dp),
+                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
+                headerModifier = HorizontalContentHeaderConfig.NulalbleStart,
+                onIconClick = {
+                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Anime.name, null, null, null)
+                },
+                onItemClick = onContentClick
+            )
+        }
         item(key = ContentDetailsScreenSection.ContentScreenshots) {
             ScrollableHorizontalScreenshots(
                 modifier = Modifier,
@@ -192,21 +207,6 @@ fun DetailContentList(
                 contentPadding = PaddingValues(horizontal = 0.dp),
                 contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
                 headerTitle = "Видео"
-            )
-        }
-        item(key = ContentDetailsScreenSection.ContentRelated) {
-            ScrollableHorizontalContent(
-                modifier = Modifier,
-                shimmer = rememberShimmerCustomBounds(),
-                headerTitle = "Связанные",
-                contentState = relatedState,
-                contentPadding = PaddingValues(horizontal = 0.dp),
-                contentArrangement = ItemVerticalModifier.HorizontalArrangement.Default,
-                headerModifier = HorizontalContentHeaderConfig.NulalbleStart,
-                onIconClick = {
-                    onHeaderClick(TypesOfMoreScreen.Minimize.name, ContentType.Anime.name, null, null, null)
-                },
-                onItemClick = onContentClick
             )
         }
         item(key = ContentDetailsScreenSection.ContentSimilar) {

@@ -8,8 +8,9 @@ object Endpoints {
     const val auth = "/api/auth/"
     const val screenshots = "screenshots"
     const val media = "media"
-    const val similar = "similar"
+    const val similar = "/similar"
     const val related = "related"
     const val login = "login"
+    const val register = "register"
     const val linked = "/linked"
 }

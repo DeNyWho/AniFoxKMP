@@ -4,17 +4,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.core.enum.ContentType
 import com.example.common.domain.common.StateListWrapper
-import com.example.common.models.animeResponse.light.AnimeLight
 import com.example.common.models.common.ContentDetail
 import com.example.common.models.common.ContentLight
 import com.example.common.models.common.ContentMedia
 import com.example.common.usecase.anime.GetAnimeMediaUseCase
-import com.example.common.usecase.anime.GetAnimeRelatedUseCase
+import com.example.common.usecase.content.GetRelatedUseCase
 import com.example.common.usecase.anime.GetAnimeScreenshotsUseCase
-import com.example.common.usecase.anime.GetAnimeSimilarUseCase
-import com.example.common.usecase.manga.GetDetailsUseCase
+import com.example.common.usecase.content.GetSimilarUseCase
+import com.example.common.usecase.content.GetDetailsUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -22,8 +20,8 @@ class DetailViewModel(
     private val getDetailsUseCase: GetDetailsUseCase,
     private val getAnimeScreenshots: GetAnimeScreenshotsUseCase,
     private val getAnimeMedia: GetAnimeMediaUseCase,
-    private val getAnimeSimilar: GetAnimeSimilarUseCase,
-    private val getAnimeRelated: GetAnimeRelatedUseCase
+    private val getAnimeSimilar: GetSimilarUseCase,
+    private val getAnimeRelated: GetRelatedUseCase
 ): ViewModel() {
 
     private val _detailAnime: MutableState<StateListWrapper<ContentDetail>> =
@@ -46,19 +44,19 @@ class DetailViewModel(
         mutableStateOf(StateListWrapper.default())
     val related: MutableState<StateListWrapper<ContentLight>> = _related
 
-    fun getSimilar(url: String) {
-        getAnimeSimilar.invoke(url).onEach {
+    fun getSimilar(contentType: String?, url: String) {
+        getAnimeSimilar.invoke(contentType, url).onEach {
             _similar.value = it
         }.launchIn(viewModelScope)
     }
 
-    fun getRelated(url: String) {
-        getAnimeRelated.invoke(url).onEach {
+    fun getRelated(contentType: String?, url: String) {
+        getAnimeRelated.invoke(contentType, url).onEach {
             _related.value = it
         }.launchIn(viewModelScope)
     }
 
-    fun getDetailAnime(contentType: String?, id: String){
+    fun getDetail(contentType: String?, id: String){
         getDetailsUseCase.invoke(contentType, id).onEach {
             _detailAnime.value = it
         }.launchIn(viewModelScope)

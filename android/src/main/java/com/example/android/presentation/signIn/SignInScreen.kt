@@ -153,7 +153,9 @@ fun SignInScreen(
                 Button(
                     onClick = {
                         if (email.text.isNotEmpty() && password.text.isNotEmpty())
-                            viewModel.login(email.text, password.text)
+                            viewModel.login(email.text, password.text) {
+                                navController.navigate(Screen.Home.route)
+                            }
                         else isCommonError = true
                     },
                     shape = RoundedCornerShape(10.dp),
