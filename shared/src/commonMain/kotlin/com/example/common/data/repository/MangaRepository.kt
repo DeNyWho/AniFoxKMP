@@ -3,6 +3,7 @@ package com.example.common.data.repository
 import com.example.common.core.error.GeneralError
 import com.example.common.core.safeApiCall
 import com.example.common.core.wrapper.Resource
+import com.example.common.models.mangaResponse.chapters.ChaptersLight
 import com.example.common.models.mangaResponse.detail.MangaDetail
 //import com.example.common.models.mangaResponse.detail.MangaDetail
 import com.example.common.models.mangaResponse.light.MangaLight
@@ -41,6 +42,42 @@ class MangaRepository(private val client: HttpClient): KoinComponent, MangaApi {
         }
 
         return safeApiCall<ServiceResponse<MangaLight>, GeneralError>(client, request)
+    }
+
+    override suspend fun getMangaChapters(
+        pageNum: Int,
+        pageSize: Int,
+        mangaId: String
+    ): Resource<ServiceResponse<ChaptersLight>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = BASE_URL
+                encodedPath = "${Endpoints.manga}$mangaId/chapters"
+                parameter("pageNum", pageNum)
+                parameter("pageSize", pageSize)
+            }
+        }
+        println("ZZ = ${request.url}")
+
+        return safeApiCall<ServiceResponse<ChaptersLight>, GeneralError>(client, request)
+    }
+
+    override suspend fun getMangaChapterInfo(
+        mangaId: String,
+        chapterId: String
+    ): Resource<ServiceResponse<String>> {
+        val request = HttpRequestBuilder().apply {
+            method = HttpMethod.Get
+            url {
+                protocol = URLProtocol.HTTPS
+                host = BASE_URL
+                encodedPath = "${Endpoints.manga}$mangaId/chapters/$chapterId"
+            }
+        }
+
+        return safeApiCall<ServiceResponse<String>, GeneralError>(client, request)
     }
 
     override suspend fun getMangaDetails(

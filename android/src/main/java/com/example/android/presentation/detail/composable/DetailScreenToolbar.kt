@@ -5,20 +5,20 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
@@ -27,13 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.composable.common.SubComposeAsyncImageWithSSL
 import com.example.android.ui.*
+import com.example.android.ui.Shapes
+import com.example.common.core.enum.StatusListType
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentDetail
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
@@ -45,7 +44,9 @@ import kotlin.math.roundToInt
 fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
     contentDetailsState: StateListWrapper<ContentDetail> = StateListWrapper(),
     toolbarScaffoldState: CollapsingToolbarScaffoldState = rememberCollapsingToolbarScaffoldState(),
-    onArrowClick: () -> Boolean = { false }
+    onArrowClick: () -> Boolean = { false },
+    onStatusClick: (StatusListType, String, String) -> Unit,
+    contentType: String
 ) {
     val blockerColorGradients = listOf(
         darkGreyBackground.copy(alpha = 0.8F),
@@ -65,7 +66,7 @@ fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(280.dp)
+            .height(320.dp)
             .parallax(0.5f)
             .graphicsLayer {
                 alpha = toolbarScaffoldState.toolbarState.progress
@@ -83,6 +84,7 @@ fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
                     .fillMaxSize(),
                 request = request
             )
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -94,17 +96,17 @@ fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
             // Header Content
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .statusBarsPadding()
-                    .padding(top = 52.dp, start = 16.dp, end = 16.dp, bottom = 12.dp),
+                    .padding(top = 52.dp, start = 16.dp, end = 16.dp, bottom = 24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Left cover image
                 SubComposeAsyncImageWithSSL(
                     image = imageUrl,
                     modifier = Modifier
-                        .width(120.dp)
-                        .height(240.dp)
+                        .width(130.dp)
+                        .padding(bottom = 20.dp)
                         .clip(Shapes.Rounded12),
                     request = request
                 )
@@ -126,14 +128,14 @@ fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
 
                     // Ongoing / Airing status
                     Row(verticalAlignment = Alignment.CenterVertically) {
-
                         Icon(
                             imageVector = headerCaptionIcon,
                             contentDescription = headerCaptionDescription,
                             tint = onDarkSurface,
                             modifier = Modifier
                                 .height(14.dp)
-                                .padding(end = 6.dp))
+                                .padding(end = 6.dp)
+                        )
 
                         Text(
                             text = data.status ?: "-",
@@ -144,6 +146,66 @@ fun CollapsingToolbarScope.ContentDetailsScreenToolbar(
                             )
                         )
                     }
+                }
+            }
+
+            val statusListType = listOf(
+                StatusListType.Watching,
+                StatusListType.InPlan,
+                StatusListType.Watched,
+                StatusListType.Postponed,
+            )
+            val statusListTitle = listOf("Смотрю", "Запланировано", "Просмотрено", "Отложено")
+
+            var expandedDropDownMenu by remember { mutableStateOf(false) }
+            var titleChoice: String by remember { mutableStateOf("Добавить в список") }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                    .width(180.dp)
+            ) {
+                Row(
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .clickable {
+                            expandedDropDownMenu = !expandedDropDownMenu
+                        }
+                        .background(
+                            shape = RoundedCornerShape(10.dp),
+                            color = orange400
+                        )
+                        .width(180.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DropdownMenu(
+                        expanded = expandedDropDownMenu,
+                        onDismissRequest = {
+                            expandedDropDownMenu = false
+                        }) {
+                        statusListTitle.forEachIndexed { index, s ->
+                            val isSelected = titleChoice == s
+                            Text(
+                                text = s,
+                                style = MaterialTheme.typography.h3,
+                                color = if (isSelected) orange400 else MaterialTheme.colors.primary,
+                                modifier = Modifier.padding(8.dp)
+                                    .clickable {
+                                        println("Wafl?!@#")
+                                        titleChoice = s
+                                        onStatusClick.invoke(statusListType[index], contentType, data.url)
+                                        expandedDropDownMenu = !expandedDropDownMenu
+                                    }
+                            )
+                        }
+                    }
+                    Text(text = titleChoice, style = MaterialTheme.typography.h3)
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Choice type content"
+                    )
                 }
             }
         }

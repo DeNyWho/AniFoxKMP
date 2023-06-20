@@ -1,27 +1,62 @@
 package com.example.android.presentation.search
 
+//import com.example.android.domain.usecases.GetPagingMangaUseCase
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-//import com.example.android.domain.usecases.GetPagingMangaUseCase
+import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import com.example.common.usecase.anime.GetAnimeUseCase
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class SearchViewModel (
-//    private val getPagingMangaUseCase: GetPagingMangaUseCase
+    private val getAnimeUseCase: GetAnimeUseCase,
 ): ViewModel() {
 
-    private val _searchedManga = MutableStateFlow<PagingData<ContentLight>>(PagingData.empty())
-    val searchedManga = _searchedManga
+    private val _contentState: MutableState<StateListWrapper<ContentLight>> =
+        mutableStateOf(StateListWrapper.default())
+    val contentState: MutableState<StateListWrapper<ContentLight>> = _contentState
 
-    fun search(query: String) {
-        viewModelScope.launch {
-//            getPagingMangaUseCase.invoke(searchQuery = query).cachedIn(viewModelScope).collect {
-//                _searchedManga.value = it
-//            }
-        }
+    private var search: String? = null
+    private var currentPage: Int = 0
+    private var isWaiting: Boolean = false
+
+
+    fun getNewSearch(query: String) {
+        currentPage = 0
+        search = query
+        getAnimeUseCase.invoke(pageNum = currentPage, searchQuery = search)
+            .onEach { newState: StateListWrapper<ContentLight> ->
+                if (newState.isLoading) {
+                    _contentState.value = _contentState.value.copy(isLoading = true)
+                    return@onEach
+                } else {
+                    isWaiting = false
+                }
+                _contentState.value = newState
+            }.launchIn(viewModelScope)
+    }
+
+    fun getNextContentPart() {
+        currentPage = nextContentPage()
+        isWaiting = true
+        getAnimeUseCase.invoke(pageNum = currentPage, searchQuery = search)
+            .onEach { newState: StateListWrapper<ContentLight> ->
+                if (newState.isLoading) {
+                    _contentState.value = _contentState.value.copy(isLoading = true)
+                    return@onEach
+                } else {
+                    isWaiting = false
+                }
+
+                _contentState.value = _contentState.value.copy(data = _contentState.value.data.plus(newState.data), isLoading = false)
+            }.launchIn(viewModelScope)
+    }
+
+    private fun nextContentPage(): Int {
+        return currentPage + 1
     }
 
 }

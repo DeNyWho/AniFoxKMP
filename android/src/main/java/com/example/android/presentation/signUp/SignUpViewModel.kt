@@ -8,8 +8,6 @@ import com.example.android.domain.usecases.RegisterUseCase
 import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.auth.SignUpRequest
 import com.example.common.models.auth.TokenResponse
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(

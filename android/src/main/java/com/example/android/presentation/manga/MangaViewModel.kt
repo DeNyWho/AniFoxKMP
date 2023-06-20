@@ -2,18 +2,13 @@ package com.example.android.presentation.manga
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.constraintlayout.solver.state.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.domain.common.StateListWrapper
-import com.example.common.domain.common.StateWrapper
 import com.example.common.models.common.ContentLight
-import com.example.common.models.common.ContentLightWithPaging
-import com.example.common.models.common.Pagination
 import com.example.common.usecase.manga.GetMangaUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class MangaViewModel(
     private val getMangaUseCase: GetMangaUseCase,
@@ -55,7 +50,7 @@ class MangaViewModel(
                     isWaiting = false
                 }
 
-                _contentState.value = _contentState.value.copy(_contentState.value.data.plus(newState.data))
+                _contentState.value = _contentState.value.copy(data = _contentState.value.data.plus(newState.data), isLoading = false)
             }.launchIn(viewModelScope)
     }
 

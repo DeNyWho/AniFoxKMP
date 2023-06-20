@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android.ui.orange400
-import com.example.android.ui.red
 import com.example.common.models.common.ContentDetail
 
 @Composable
@@ -42,7 +41,7 @@ fun ContentDetailsThreeColumnSection(
     ) {
         TwoRowTextComp(title = "Год", subtitle = first)
         VerticalDivider()
-        TwoRowTextComp(title = if(second.length > 3) "Сезон" else "Статус", subtitle = second)
+        TwoRowTextComp(title = if(second.length > 5) "Статус" else "Сезон", subtitle = second)
         VerticalDivider()
         TwoRowTextComp(title = "Эпизоды", subtitle = third)
     }

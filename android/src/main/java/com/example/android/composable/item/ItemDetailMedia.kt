@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
@@ -24,7 +23,6 @@ import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.ui.Shapes
 import com.example.android.ui.redLikeOrange
 import com.example.android.ui.teal200
-import com.example.common.core.enum.ContentType
 import com.example.common.models.common.ContentMedia
 
 @ExperimentalCoilApi

@@ -8,6 +8,8 @@ sealed class Screen(val route: String) {
     object Player: Screen("player_screen")
     object Anime: Screen("anime_screen")
     object Manga: Screen("manga_screen")
+    object ReaderChapters: Screen("chapters_screen")
+    object ReadChapter: Screen("read_screen")
     object MorePage: Screen("more_page_screen")
     object Details: Screen("details_screen")
     object Search: Screen("search_screen")

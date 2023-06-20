@@ -4,24 +4,31 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.domain.usecases.ReadTokenUseCase
+import com.example.common.core.enum.StatusListType
 import com.example.common.domain.common.StateListWrapper
+import com.example.common.domain.common.StateWrapper
 import com.example.common.models.common.ContentDetail
 import com.example.common.models.common.ContentLight
 import com.example.common.models.common.ContentMedia
 import com.example.common.usecase.anime.GetAnimeMediaUseCase
-import com.example.common.usecase.content.GetRelatedUseCase
 import com.example.common.usecase.anime.GetAnimeScreenshotsUseCase
-import com.example.common.usecase.content.GetSimilarUseCase
 import com.example.common.usecase.content.GetDetailsUseCase
+import com.example.common.usecase.content.GetRelatedUseCase
+import com.example.common.usecase.content.GetSimilarUseCase
+import com.example.common.usecase.user.SetFavoriteListUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val getDetailsUseCase: GetDetailsUseCase,
     private val getAnimeScreenshots: GetAnimeScreenshotsUseCase,
     private val getAnimeMedia: GetAnimeMediaUseCase,
     private val getAnimeSimilar: GetSimilarUseCase,
-    private val getAnimeRelated: GetRelatedUseCase
+    private val getAnimeRelated: GetRelatedUseCase,
+    private val readTokenUseCase: ReadTokenUseCase,
+    private val setFavoriteListUseCase: SetFavoriteListUseCase,
 ): ViewModel() {
 
     private val _detailAnime: MutableState<StateListWrapper<ContentDetail>> =
@@ -43,6 +50,32 @@ class DetailViewModel(
     private val _related: MutableState<StateListWrapper<ContentLight>> =
         mutableStateOf(StateListWrapper.default())
     val related: MutableState<StateListWrapper<ContentLight>> = _related
+
+    private val _token: MutableState<StateWrapper<String>> =
+        mutableStateOf(StateWrapper.loading())
+    val token: MutableState<StateWrapper<String>> = _token
+
+    init {
+        fetchToken()
+    }
+
+    private fun fetchToken() {
+        viewModelScope.launch {
+            readTokenUseCase.invoke().collect { token ->
+                _token.value = token
+            }
+        }
+    }
+
+    fun setList(status: StatusListType, contentType: String?, url: String) {
+        println("WW 12 = $status")
+        println("WW = $contentType")
+        println("WW = $url")
+        println("WW = ${token.value.data}")
+        setFavoriteListUseCase.invoke(contentType = contentType, token = token.value.data!!, url = url, statusListType = status).onEach {
+
+        }.launchIn(viewModelScope)
+    }
 
     fun getSimilar(contentType: String?, url: String) {
         getAnimeSimilar.invoke(contentType, url).onEach {

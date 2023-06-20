@@ -16,24 +16,28 @@ suspend inline fun <reified T : Any, reified U : Any> safeApiCall(
 ): Resource<T> {
     return try {
         val res: HttpResponse = client.request(request)
+        println("WWW ZZ S = ${res.status}")
+        println("WWW ZZ S = ${res.body<T>()}")
 
-        val status = res.status
-
-        when {
-            status.isSuccess() -> {
-                val body = res.body<T>()
-                Resource.Success(body, listOf())
+        when (res.status) {
+            HttpStatusCode.Created -> {
+                Resource.Success(data = res.body<T>(), message = "Created")
             }
-
-            status == HttpStatusCode.Unauthorized -> Resource.Error(MyError.WRONG_CREDENTIALS)
-            status == HttpStatusCode.NotFound -> Resource.Error("Not Found")
+            HttpStatusCode.OK -> {
+                Resource.Success(data = res.body<T>(), message = "OK")
+            }
+            HttpStatusCode.Unauthorized -> Resource.Error(MyError.WRONG_CREDENTIALS)
+            HttpStatusCode.NotFound -> Resource.Error("Not Found")
             else -> Resource.Error(res.body<U>().toString())
         }
     } catch (e: Exception) {
         when (e) {
             is ClientRequestException -> Resource.Error(e.message)
             is ConnectTimeoutException -> Resource.Error(e.message ?: MyError.UNKNOWN_ERROR)
-            else -> Resource.Error(MyError.UNKNOWN_ERROR)
+            else -> {
+                println(e.message)
+                Resource.Error(MyError.UNKNOWN_ERROR)
+            }
         }
     }
 }

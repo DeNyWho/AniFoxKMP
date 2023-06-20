@@ -1,5 +1,6 @@
 package com.example.android.navigation
 
+//import com.example.android.presentation.manga.MangaScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,10 +24,11 @@ import androidx.navigation.NavHostController
 import com.example.android.presentation.anime.AnimeScreen
 import com.example.android.presentation.home.HomeScreen
 import com.example.android.presentation.manga.MangaScreen
-//import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.myList.MyListScreen
-import com.example.android.ui.*
-import com.example.android.ui.blacker
+import com.example.android.ui.MyIcons
+import com.example.android.ui.reder
+import com.example.android.ui.slate700
+import com.example.android.ui.smokyWhite
 
 enum class BottomNavTabs(val label: String, val icon: Int) {
     Anime("Аниме", MyIcons.Outlined.anime),

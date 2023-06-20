@@ -6,7 +6,6 @@ import com.example.common.core.wrapper.Resource
 import com.example.common.data.repository.AnimeRepository
 import com.example.common.data.repository.MangaRepository
 import com.example.common.domain.common.StateListWrapper
-import com.example.common.models.animeResponse.light.toContentLight
 import com.example.common.models.common.ContentLight
 import com.example.common.util.resolveContentType
 import kotlinx.coroutines.Dispatchers

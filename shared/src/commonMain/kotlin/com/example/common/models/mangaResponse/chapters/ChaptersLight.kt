@@ -5,15 +5,15 @@ import com.example.common.util.LocalDateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.time.LocalDate
 
 @Serializable
 data class ChaptersLight(
     @SerialName("title")
     val title: String = "",
-    @SerialName("url")
-    val url: String = "",
+    @SerialName("urlCode")
+    val urlCode: Int = 0,
     @SerialName("date")
-    val date: LocalDate = LocalDate.now(),
+    val date: String = "",
+    @SerialName("id")
     val id: String
 )

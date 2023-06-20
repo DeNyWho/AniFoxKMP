@@ -9,30 +9,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.android.composable.CenterCircularProgressIndicator
 import com.example.android.composable.common.SubComposeAsyncImageWithSSL
 import com.example.android.ui.Shapes
-import com.example.android.ui.redLikeOrange
 import com.example.android.ui.teal200
-import com.example.common.core.enum.ContentType
-import com.example.common.di.getSSLContext
 import com.example.common.models.common.ContentLight
-import okhttp3.OkHttpClient
-import java.security.KeyStore
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 @ExperimentalCoilApi
 @Composable

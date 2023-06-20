@@ -5,10 +5,7 @@ import com.example.common.core.wrapper.Event
 import com.example.common.core.wrapper.Resource
 import com.example.common.data.repository.AuthRepository
 import com.example.common.domain.common.StateListWrapper
-import com.example.common.domain.common.StateMapWrapper
-import com.example.common.models.animeResponse.light.toContentLight
 import com.example.common.models.auth.TokenResponse
-import com.example.common.util.ExtractCookie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

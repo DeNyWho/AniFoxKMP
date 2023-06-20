@@ -5,12 +5,9 @@ import com.example.common.models.animeResponse.common.AnimeGenres
 import com.example.common.models.animeResponse.common.AnimeStudios
 import com.example.common.models.animeResponse.common.toGenresDetail
 import com.example.common.models.common.ContentDetail
-import com.example.common.models.common.GenresDetail
 import com.example.common.util.LocalDateSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.time.LocalDate
-import kotlinx.serialization.Transient
 
 @Serializable
 data class AnimeDetail(

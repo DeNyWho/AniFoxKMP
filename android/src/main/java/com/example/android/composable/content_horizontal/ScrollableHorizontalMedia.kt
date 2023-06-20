@@ -7,11 +7,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import coil.annotation.ExperimentalCoilApi
 import com.example.android.composable.item.ItemDetailMedia
-import com.example.android.composable.item.ItemDetailScreenshot
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.ContentListHeaderWithButtonShimmer
 import com.example.android.composable.shimmer.onUpdateShimmerBounds

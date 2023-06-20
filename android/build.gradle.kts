@@ -59,6 +59,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.19.0")
+    implementation("org.jsoup:jsoup:1.14.3")
     implementation("com.github.jvziyaoyao:ImageViewer:1.0.2-alpha.3")
     implementation(project(BuildModules.shared))
     implementation(Dependencies.MultiPlatform.composeRuntime)

@@ -1,8 +1,5 @@
 package com.example.android.composable
 
-import android.content.Context
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -10,14 +7,12 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import java.net.URLEncoder
 
 @Composable
 fun WebViewComponent(urlw: String) {
+    val currentUrl = "https://anifox.club/"
     val generatedLink = generateLink(urlw.drop(18), currentUrl)
 
     AndroidView(factory = { context ->
@@ -63,8 +58,12 @@ fun generateLink(serialUrl: String, currentUrl: String): String {
 
     val url = "https://kodik.info$newSerialUrl"
     val queryParams = mapOf(
+        "d" to "anifox.club",
+        "d_sign" to "7570fdfb8ae6082d89373ab0c43ecfcbf3a52915009793b2cf322054ba67b7d0",
         "pd" to "kodik.info",
+        "pd_sign" to "09ffe86e9e452eec302620225d9848eb722efd800e15bf707195241d9b7e4b2b",
         "ref" to currentUrl,
+        "ref_sign" to "1b7398d1048ab5008680761c154d5dc2ff5e0b13ae9e9ded913a1e9c03b40075",
         "advert_debug" to "true"
     )
 

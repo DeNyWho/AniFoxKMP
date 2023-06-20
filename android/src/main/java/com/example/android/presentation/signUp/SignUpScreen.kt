@@ -8,7 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.sharp.AlternateEmail
 import androidx.compose.material.icons.sharp.PeopleAlt
@@ -28,7 +29,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.android.R
 import com.example.android.navigation.Screen
-import com.example.android.ui.*
+import com.example.android.ui.grey
+import com.example.android.ui.orange300
+import com.example.android.ui.orange400
 import com.example.common.models.auth.SignUpRequest
 import org.koin.androidx.compose.getViewModel
 

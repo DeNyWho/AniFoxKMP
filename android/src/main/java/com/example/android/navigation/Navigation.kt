@@ -17,15 +17,15 @@ import com.example.android.presentation.home.HomeScreen
 //import com.example.android.presentation.manga.MangaScreen
 import com.example.android.presentation.morePage.MorePageScreen
 import com.example.android.presentation.player.PlayerScreen
+import com.example.android.presentation.read.ReadChapterInfoScreen
+import com.example.android.presentation.read.ReaderChaptersScreen
 import com.example.android.presentation.search.SearchScreen
 import com.example.android.presentation.signIn.SignInScreen
 import com.example.android.presentation.signUp.SignUpScreen
 import com.example.android.presentation.splash.SplashScreen
 import com.example.common.core.enum.ContentType
 import com.example.common.core.enum.TypesOfMoreScreen
-import com.example.common.nav.ContentDetailsNavArgs
-import com.example.common.nav.ContentMoreNavArgs
-import com.example.common.nav.ContentPlayerNavArgs
+import com.example.common.nav.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -105,7 +105,8 @@ fun Navigation(window: Window) {
                 navigationBarColor = Color.Transparent,
                 statusBarColor = Color.Transparent,
                 drawOverStatusBar = true,
-                window = window
+                window = window,
+                portrait = true
             )
             DetailScreen(
                 navController = navController,
@@ -133,6 +134,49 @@ fun Navigation(window: Window) {
                 navController = navController,
                 navArgs = ContentPlayerNavArgs(
                     playerUrl = backStack.arguments?.getString("playerUrl")!!
+                )
+            )
+        }
+
+        composable(
+            route = "${Screen.ReaderChapters.route}/{mangaId}",
+            arguments = chaptersScreenArgs
+        ) { backStack ->
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                navigationBarColor = Color.Transparent,
+                statusBarColor = Color.Transparent,
+                drawOverStatusBar = true,
+                window = window,
+                portrait = true
+            )
+            ReaderChaptersScreen(
+                navController = navController,
+                navArgs = ContentChaptersNavArgs(
+                    mangaID = backStack.arguments?.getString("mangaId")!!
+                )
+            )
+        }
+
+        composable(
+            route = "${Screen.ReadChapter.route}/{mangaId}/{chapterCode}/{chapterId}/{chapterTitle}",
+            arguments = chaptersScreenArgs
+        ) { backStack ->
+            OnDestinationChanged(
+                systemUiController = systemUiController,
+                navigationBarColor = Color.Transparent,
+                statusBarColor = Color.Transparent,
+                drawOverStatusBar = true,
+                window = window,
+                portrait = true
+            )
+            ReadChapterInfoScreen(
+                navController = navController,
+                navArgs = ContentReaderNavArgs(
+                    mangaID = backStack.arguments?.getString("mangaId")!!,
+                    chapterId = backStack.arguments?.getString("chapterId")!!,
+                    chapterCode = backStack.arguments?.getString("chapterCode")!!,
+                    chapterTitle = backStack.arguments?.getString("chapterTitle")!!
                 )
             )
         }
@@ -186,6 +230,13 @@ fun Navigation(window: Window) {
 
 private val playerScreenArgs = listOf(
     navArgument(name = "playerUrl") {
+        type = NavType.StringType
+        nullable = false
+    }
+)
+
+private val chaptersScreenArgs = listOf(
+    navArgument(name = "mangaId") {
         type = NavType.StringType
         nullable = false
     }

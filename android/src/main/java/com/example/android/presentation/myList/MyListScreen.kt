@@ -31,7 +31,7 @@ import org.koin.androidx.compose.getViewModel
 fun MyListScreen (
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: MyListViewModel = getViewModel (),
+    viewModel: MyListViewModel = getViewModel<MyListViewModel>(),
 ) {
     val listStateOnWatch = rememberLazyGridState()
     val listStateOnWatched = rememberLazyGridState()
@@ -48,7 +48,7 @@ fun MyListScreen (
 
     val contentListState = listOf(listStateOnWatch, listStateInPlan, listStateOnWatched, listStateOnPostponed)
 
-    println(viewModel.token.value.data )
+    println(viewModel.inPlan.value )
 
     LaunchedEffect(viewModel) {
             snapshotFlow {
@@ -94,6 +94,14 @@ fun MyListScreen (
             onItemClick = { type, id ->
                 navController.navigate("${Screen.Details.route}/$type/$id")
             },
+            onRefreshWatch = { viewModel.refreshDataWatch() },
+            onRefreshWatched = { viewModel.refreshDataWatched() },
+            onRefreshInPlan = { viewModel.refreshDataInPlan() },
+            onRefreshPostponed = { viewModel.refreshDataPostponed() },
+            onDropDownClick = { type ->
+                viewModel.setContentType(type)
+            },
+            contentType = viewModel.getContentType()
         )
     } else if(token.data == null && !token.isLoading) {
         Column(

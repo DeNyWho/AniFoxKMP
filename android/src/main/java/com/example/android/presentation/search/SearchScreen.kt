@@ -5,18 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.android.navigation.Screen
 import com.example.android.presentation.search.composable.SearchBoxField
-import com.example.common.core.enum.ContentType
-import kotlinx.coroutines.channels.Channel
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
@@ -31,6 +27,8 @@ fun SearchScreen(
 
     val listState = rememberLazyGridState()
     val focusRequester = remember { (FocusRequester()) }
+
+    val contentState by viewModel.contentState
 
     LaunchedEffect(key1 = viewModel.hashCode()) {
         focusRequester.requestFocus()
@@ -48,7 +46,8 @@ fun SearchScreen(
                 onSearchQueryCleared = { searchQuery.value = "" },
                 onSearchQueryChanged = {
                     searchQuery.value = it
-                    viewModel.search(it)
+                    viewModel.getNewSearch(searchQuery.value)
+                    viewModel.getNextContentPart()
                 }
             )
         },
@@ -56,8 +55,8 @@ fun SearchScreen(
         scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed
     ) {
         SearchContentList(
-            listState = listState,
-            searchResults = viewModel.searchedManga.collectAsLazyPagingItems(),
+            lazyGridState = listState,
+            contentState = contentState,
             onItemClick = { type, id ->
                 navController.navigate("${Screen.Details.route}/$type/$id")
             },

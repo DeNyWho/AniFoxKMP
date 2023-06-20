@@ -6,5 +6,6 @@ object Constants {
     const val REFRESH_TOKEN_KEY = "REFRESH_TOKEN_KEY"
     const val PREFERENCES_NAME = "anime_preferences"
     const val ACCESS_TOKEN = "access_token"
+    const val FavoriteListSize = 24
 
 }

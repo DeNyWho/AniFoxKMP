@@ -6,7 +6,6 @@ import com.example.common.core.wrapper.Resource
 import com.example.common.models.animeResponse.AnimeRelatedLight
 import com.example.common.models.animeResponse.detail.AnimeDetail
 import com.example.common.models.animeResponse.light.AnimeLight
-import com.example.common.models.common.ContentLight
 import com.example.common.models.common.ContentMedia
 import com.example.common.models.response.ServiceResponse
 import com.example.common.network.AnimeApi

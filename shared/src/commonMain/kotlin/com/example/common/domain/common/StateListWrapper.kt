@@ -2,7 +2,6 @@ package com.example.common.domain.common
 
 import com.example.common.core.exception.MyError
 import com.example.common.core.wrapper.Event
-import com.example.common.models.common.ContentLightWithPaging
 
 data class StateListWrapper<T>(
     val data: List<T> = listOf(),

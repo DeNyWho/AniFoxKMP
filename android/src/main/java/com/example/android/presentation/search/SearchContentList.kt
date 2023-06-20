@@ -2,52 +2,69 @@ package com.example.android.presentation.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.example.android.composable.item.ItemVertical
 import com.example.android.composable.item.ItemVerticalModifier
 import com.example.android.composable.shimmer.onUpdateShimmerBounds
-import com.example.android.util.calculateGridCount
+import com.example.android.composable.shimmer.rememberShimmerCustomBounds
+import com.example.android.composable.shimmer.showItemVerticalAnimeShimmer
 import com.example.common.core.enum.ContentType
+import com.example.common.domain.common.StateListWrapper
 import com.example.common.models.common.ContentLight
-import com.valentinilk.shimmer.ShimmerBounds
-import com.valentinilk.shimmer.rememberShimmer
+import com.valentinilk.shimmer.Shimmer
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun SearchContentList(
-    searchResults: LazyPagingItems<ContentLight>,
+    modifier: Modifier = Modifier,
+    itemModifier: Modifier = ItemVerticalModifier.fillParentWidth,
+    shimmerInstance: Shimmer = rememberShimmerCustomBounds(),
+    contentState: StateListWrapper<ContentLight>,
+    contentPadding: PaddingValues = PaddingValues(start = 12.dp, end = 12.dp, top = 0.dp, bottom = 12.dp),
+    thumbnailHeight: Dp = ItemVerticalModifier.ThumbnailHeightGrid,
+    gridCells: GridCells = GridCells.Fixed(3),
+    lazyGridState: LazyGridState = rememberLazyGridState(),
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(8.dp),
+    textAlign: TextAlign = TextAlign.Start,
     onItemClick: (String, String) -> Unit,
-    listState: LazyGridState
 ) {
-    var shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Custom)
-    val loadState = searchResults.loadState
-    val isListEmpty = loadState.prepend is LoadState.NotLoading && searchResults.itemCount == 0
 
     LazyVerticalGrid(
         modifier = Modifier
-            .onUpdateShimmerBounds(shimmerInstance).padding(bottom = 40.dp),
-        columns = GridCells.Fixed(calculateGridCount(columnWidth = ItemVerticalModifier.Default)),
-        contentPadding = PaddingValues(4.dp),
-        userScrollEnabled = true,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .onUpdateShimmerBounds(shimmerInstance),
+        columns = gridCells,
+        state = lazyGridState,
+        contentPadding = contentPadding,
+        verticalArrangement = verticalArrangement,
+        horizontalArrangement = horizontalArrangement
     ) {
-        if(!isListEmpty) {
-            items(searchResults.itemCount) { index ->
+        if(contentState.data != null) {
+            items(contentState.data.size) { index ->
                 ItemVertical(
-                    modifier = Modifier.width(ItemVerticalModifier.Default),
-                    data = searchResults[index]!!,
-                    thumbnailHeight = ItemVerticalModifier.ThumbnailHeightDefault,
+                    modifier = itemModifier,
+                    data = contentState.data[index],
+                    thumbnailHeight = thumbnailHeight,
+                    textAlign = textAlign,
                     onClick = onItemClick,
                     contentType = ContentType.Anime.name,
+                )
+            }
+
+            if (contentState.isLoading) {
+                showItemVerticalAnimeShimmer(
+                    modifier = itemModifier,
+                    shimmerInstance = shimmerInstance,
+                    thumbnailHeight = thumbnailHeight
                 )
             }
         }

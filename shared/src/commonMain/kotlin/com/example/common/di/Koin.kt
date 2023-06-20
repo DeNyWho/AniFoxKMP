@@ -1,9 +1,6 @@
 package com.example.common.di
 
 //import com.example.common.data.paging.MangaPagingSource
-import com.example.common.data.repository.AnimeRepository
-import com.example.common.data.repository.AuthRepository
-import com.example.common.data.repository.MangaRepository
 import com.example.common.repository.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -20,7 +17,6 @@ import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import javax.net.ssl.SSLContext
 
 fun initKoin(enableNetworkLogs: Boolean = true, context: Any,  appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
