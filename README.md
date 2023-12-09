@@ -23,7 +23,6 @@ The **AniFox** is a project that was created with passion. It all started when a
 - [Kotlin serialization](https://kotlinlang.org/docs/serialization.html) - is the process of converting data used by an application to a format that can be transferred over a network or stored in a database or a file.
 - [Koin](https://insert-koin.io/) - the pragmatic Kotlin & Kotlin Multiplatform Dependency Injection framework
 - [Datastore](https://developer.android.com/topic/libraries/architecture/datastore) - is a new **data** storage solution introduced by Google as part of the **Android** Jetpack library.
-- [MVVM](https://developer.android.com/topic/libraries/architecture/datastore) - is a new **data** storage solution introduced by Google as part of the **Android** Jetpack library.
 ***Backend:***
 - [Kotlin](https://kotlinlang.org/) - is a modern but already mature programming language designed to make developers happier.
 - [Spring boot](https://spring.io/projects/spring-boot) - is a Java framework designed to simplify the configuration and deployment of applications, providing a streamlined development experience.
