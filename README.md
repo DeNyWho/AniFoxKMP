@@ -1,4 +1,4 @@
-
+![](media/Header.png)
 **AniFox** is a kotlin multiplatform anime project where people can watch anime. `**Open source project**`
 
 ## About
