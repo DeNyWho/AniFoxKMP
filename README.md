@@ -2,7 +2,7 @@
 **AniFox** is a kotlin multiplatform anime project where people can watch anime. `**Open source project**`
 
 ## About
-The **AniFox** is a project that was created with passion. It all started when a young person wanted to create their own version of an anime application, as every app with anime viewing capabilities had a large amount of advertising. It ended up evolving into a [diploma](https://github.com/DeNyWho/AniFoxKMP/blob/master/diplom/%D0%92%D0%9A%D0%A0.docx) project. This repository contains the final diploma kmp version. All the features of the new backend version part can be seen on the [website](https://anifox.club/anime).  The Android part of the KMP project was developed using the MVVM and SOLID architecture.
+The **AniFox** is a project that was created with passion. It all started when a young person wanted to create their own version of an anime application, as every app with anime viewing capabilities had a large amount of advertising. It ended up evolving into a [diploma](https://github.com/DeNyWho/AniFoxKMP/blob/master/%D0%92%D0%9A%D0%A0.pdf) project. This repository contains the final diploma kmp version. All the features of the new backend version part can be seen on the [website](https://anifox.su).  The Android part of the KMP project was developed using the MVVM and SOLID architecture.
 ## Features
 - **Parser** -   using scheduled tasks in Spring Boot, new anime data from shikimori, jikan, kitsu, haglund, kodik are added to the PostgreSQL database every 12 hours
 - **Update** - using scheduled tasks in Spring Boot, new anime episodes from kodik, and episodes info from kitsu and jikan are added to the PostgreSQL database every 1 hour
