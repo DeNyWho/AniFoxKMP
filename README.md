@@ -4,16 +4,12 @@
 ## About
 The **AniFox** is a project that was created with passion. It all started when a young person wanted to create their own version of an anime application, as every app with anime viewing capabilities had a large amount of advertising. It ended up evolving into a [diploma](https://github.com/DeNyWho/AniFoxKMP/blob/master/diplom/%D0%92%D0%9A%D0%A0.docx) project. This repository contains the final diploma kmp version. All the features of the new backend version part can be seen on the [website](https://anifox.club/anime).  The Android part of the KMP project was developed using the MVVM and SOLID architecture.
 ## Features
-- **Parser** -   using scheduled tasks in Spring Boot, new anime data from shikimori, jikan, kitsu, haglund, kodik are added to the PostgreSQL database every 12 hours✅
-- **Update** - using scheduled tasks in Spring Boot, new anime episodes from kodik, and episodes info from kitsu and jikan are added to the PostgreSQL database every 1 hour✅
-- Default anime requests: anime main catalog request, details, etc✅
-- Default manga requests: manga main catalog request, details✅
-- Oauth 2.0 authorization between Keycloak which installed on anifox server, and spring boot application ( works with cookie )✅
-- Default user requests: add rating to anime, add anime to favourite lists ( watching, watched, in plan, postponed )✅
-- Default admin requests for anime: add anime to blocked list (users don't see this anime). ❌
-- Chat between users. ❌
-- The user's ability to add friends. ❌
-- The user's ability to watch anime with friends. ❌
+- **Parser** -   using scheduled tasks in Spring Boot, new anime data from shikimori, jikan, kitsu, haglund, kodik are added to the PostgreSQL database every 12 hours
+- **Update** - using scheduled tasks in Spring Boot, new anime episodes from kodik, and episodes info from kitsu and jikan are added to the PostgreSQL database every 1 hour
+- Default anime requests: anime main catalog request, details, etc
+- Default manga requests: manga main catalog request, details
+- Oauth 2.0 authorization between Keycloak which installed on anifox server, and spring boot application ( works with cookie )
+- Default user requests: add rating to anime, add anime to favourite lists ( watching, watched, in plan, postponed )
 ## Built With 🛠
 ***Android KMP:***
 - [Kotlin](https://kotlinlang.org/) - is a modern but already mature programming language designed to make developers happier.
